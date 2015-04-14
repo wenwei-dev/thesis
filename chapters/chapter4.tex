@@ -1,24 +1,29 @@
-﻿\chapter{从语言到逻辑}{From Language to Logic}
+\chapter{自然语言理解：从语言到逻辑}{From Language to Logic}
+\label{chap:comprehension}
 
-本章阐述如何对第1章中的提到的假设1开展研究。根据该假设，我们认为， 借助于依存关系语法和传统逻辑与谓词逻辑的合理结合，将自然语言表达式转换成满足下列两个条件的逻辑表达方式是完全可行的：
+本章阐述如何对第\ref{chap:intro}章中的提到的假设1展开研究。根据该假设，我们认为， 借助于依存关系语法和传统逻辑与谓词逻辑的合理结合，将自然语言表达式转换成满足下列两个条件的逻辑表达方式是完全可行的：
 \begin{itemize}
 \item 包含该自然语言表达式的主要语义
 \item 具体化自然语言表达式中存在的任何无法在语言到逻辑的转换消除的歧义，使得这些歧义能通过基于语境知识的逻辑推理后很直截了当地得到消除。
 \end{itemize}
 
-基于这样的假设，我们采用的自然语言方法是，首先利用链语法分析工具Link Parser[XXX]，然后在此基础上搭建了一个用于依存关系抽取的工具RelEx，最后开发了一个新的逻辑关系抽取工具RelEx2Logic，通过超图的同态映射方式将句法结构转换成语义表示。该方法概念上的本质并不依赖这些特定的工具，而是具体的实现方法。
+基于这样的假设，我们采用的自然语言方法是，首先利用链语法分析工具Link Parser\cite{Sleator1993}，然后在此基础上搭建了一个用于依存关系抽取的工具RelEx，最后开发了一个新的逻辑关系抽取工具RelEx2Logic，通过超图的同态映射方式将句法结构转换成语义表示。该方法概念上的本质并不依赖这些特定的工具，而是具体的实现方法。
 
-确切地说，如何将“自然语言理解流水线”分解成不同模块以及如何进行不同模块之间的转换，取决于对语言学理论的选择。在2008-2012年期间，OpenCog中的自然语言理解模块采用如下流程：
+确切地说，如何将“自然语言理解系统”分解成不同模块以及如何进行不同模块之间的转换，取决于对语言学理论的选择。在2008-2012年期间，OpenCog中的自然语言理解模块采用如下流程：
 
-文本 —> 分词/断句 —> 基于链语法的句法分析（Link Parser） —> 依存关系抽取（RelEx）—> 基于FrameNet的语义关系抽取（RelEx2Frame） —> 语义节点和关系链 （SemanticNodes \& Links）
+\begin{verbatim}
+文本 --> 分词/断句 --> 基于链语法的句法分析（Link Parser） --> 依存关系抽取（RelEx）--> 基于FrameNet的语义关系抽取（RelEx2Frame） --> 语义节点和关系链（SemanticNodes & Links）
+\end{verbatim}
 
-2012年的时候我们对系统进行了一些简化，取消了对FrameNet的依赖，采用了如下的目前正在使用的流水线：
+2012年的时候我们对系统进行了一些简化，取消了对FrameNet的依赖，采用了如下的目前正在使用的系统：
 
-文本 —> 分词/断句 —> 基于链语法的句法分析（Link Parser） —> 依存关系抽取（RelEx）—> 抽象的逻辑关系抽取（RelEx2Logic —> 语义节点和关系链 （SemanticNodes \& Links）
+\begin{verbatim}
+文本 --> 分词/断句 --> 基于链语法的句法分析（Link Parser） --> 依存关系抽取（RelEx）--> 抽象的逻辑关系抽取（RelEx2Logic --> 语义节点和关系链（SemanticNodes & Links）
+\end{verbatim}
 
-需要注意的是，目前的很多自然语言理解流水线都有“词性标注”阶段，在我们目前使用的方法中，词性标注被绑定在句法分析阶段，对于Link Parser来说，词性已被作为单词的一个属性定义在词典里。尽管如此，如果能在Link Parser里使用先进词性标注技术，无疑能减少不少字典编写方面的工作，也能在一定程度上指导句法分析过程，因此也是有一定存在意义的。
+需要注意的是，目前的很多自然语言理解系统都有“词性标注”阶段，在我们目前使用的方法中，词性标注被绑定在句法分析阶段，对于Link Parser来说，词性已被作为单词的一个属性定义在词典里。尽管如此，如果能在Link Parser里使用先进词性标注技术，无疑能减少不少字典编写方面的工作，也能在一定程度上指导句法分析过程，因此也是有一定存在意义的。
 
-本文的工作已经表明，上述流水线中的各模块操作都是可行的，只需针对每一步制定相应的规则，或者通过有监督的机器学习方法来学习相应的规则，来指导其中的操作。针对本文自然语言理解方面的以下几个额外事项将在未来的研究中被实现：
+本文的工作已经表明，上述系统中的各模块操作都是可行的，只需针对每一步制定相应的规则，或者通过有监督的机器学习方法来学习相应的规则，来指导其中的操作。针对本文自然语言理解方面的以下几个额外事项将在未来的研究中被实现：
 \begin{itemize}
 \item 使得各个子流程中所使用的规则，能很自然地支持基于持续经验增长的修正和泛化。
 \item 使得语义理解能根据特定的语境来指导规则的选择。
@@ -27,9 +32,9 @@
 
 另外需要注意的一点是，当使用基于规则的方法时，在规则的设计需要特别注意规则的可扩展性和可普及性，因为随着系统的经验增长，原先设计的规则可能无法被满足。
 
-本章接下来的章节会系统介绍我们使用的自然语言理解流水线中的各个子系统的工作原理和方法。
+本章接下来的章节会系统介绍我们使用的自然语言理解系统中的各个子系统的工作原理和方法。
 
-\section{链语法}{Link Grammar}
+\section{链语法}{Link Grammar}\label{sec:linkGrammar}
 
 本小节主要介绍链语法的基本原理和方法，并分析了和语言形式主义的不同，同时指出其中的问题以及我们对其进行的一些改进。
 
@@ -46,24 +51,33 @@
 \item 排它性(Exclusion)，一对单词之间同时不能有两条链链接。
 \end{itemize}
 
-下面我们借用Sleator和Temperley的“Parsing with a Link Grammar”[XXX]中使用的例句来解释链语法分析的操作过程。
-The cat chased a snake.
-链语法分析器对上面的例子分析后产生如下结果：
- 
-由于我们对该链语法分析器做了不少的改进，所有我们这里给出的分析结果和Sleator和Temperley的原文中的结果以及发布在网上的分析器得到的结果会有细微的不同 ，后面章节会介绍我们做的改进 。
+下面我们借用Sleator和Temperley的“Parsing with a Link Grammar”\cite{Sleator1993}中使用的例句来解释链语法分析的操作过程。
 
-链语法认为在句子最前面加上一个虚拟词（通常用LEFT-WALL表示）是很有必要的，这样首先能保证链语法的“连通性“原则，使得句子最后的标点符号能与LEFT-WALL连接而不被孤立。另外，在本文的4.1.2节也提到，通过这样的虚拟词来追溯句子的头（主动词）也是非常方便可行的。上面的句法分析结果中出现的”RIGHT-WALL”是可选的，可以用于特殊标点符号的处理，但通常情况下只是用RW链与句子最后的标点符号相连。
+\begin{center}
+\textbf{The cat chased a snake.}
+\end{center}
+
+链语法分析器对上面的例子分析后产生如下结果：
+
+\includegraphics[width=12cm]{figures/catSnake.png}
+
+由于我们对该链语法分析器做了不少的改进，所有我们这里给出的分析结果和Sleator和Temperley的原文中的结果以及发布在网上的分析器得到的结果会有细微的不同，后面章节会介绍我们做的改进。
+
+链语法认为在句子最前面加上一个虚拟词（通常用LEFT-WALL表示）是很有必要的，这样首先能保证链语法的“连通性“原则，使得句子最后的标点符号能与LEFT-WALL连接而不被孤立。另外，在本文的\ref{sec:head}节也提到，通过这样的虚拟词来追溯句子的头（主动词）也是非常方便可行的。上面的句法分析结果中出现的”RIGHT-WALL”是可选的，可以用于特殊标点符号的处理，但通常情况下只是用RW链与句子最后的标点符号相连。
 
 前面提到链语法词典是链语法的核心，它包含所有常用的英文单词的链接要求。下方的表格列出上述例句中出现的单词以及它们在链语法词典里被定义的链接要求。
-\begin{verbatim}
-words	formula
-a the	D+
-snake cat	D- & (O- or S+)
-chased	S- & O+
-\end{verbatim}
+
+\begin{tabular}{|p{2.0in}|p{2.1in}|} \hline 
+\textbf{单词} & \textbf{公式} \\ \hline 
+a, the & D+ \\ \hline 
+snake, cat & D- \& (O- or S+) \\ \hline 
+Chased & S- \& O+ \\ \hline 
+\end{tabular}
+
 如前面所述，链接要求限制了这些连接子必须按照一定的原则来分配，例如“the”只有一个向右的连接子D+，那么它只能和带有D-的单词形成合法的链接。而“snake”和“cat”都能和它相连，但根据链语法的“顺序性原则”，“cat”比“snake”近，所以“the”“cat”之间可以画一条D链，同样的道理，“chased”和“snake”之间可以画一条O链，以此类推。最终我们可以得到如下的结构图。需要注意的是，我们这里只是对链语法的工作原理做简单地介绍，因此忽略了链接子类型的子类型等细节，比如“cat”含有Ss+，“chased”含有链接子Ss-,，所以该句法结构图和我们上面列出的目前链语法分析器在连接类型上有点小出入。 
 
 链语法分析器在对句子进行句法分析时，对句子中的每个单词，都会考虑下面两种变量：
+
 \begin{itemize}
 \item 该单词在链语法词典中对应的链接要求，即上面中的公式（Formula）
 \item 该单词为了满足句子结构的一致性（Agreement）必须具备的特征属性
@@ -72,12 +86,14 @@ chased	S- & O+
 比如在上述例句中，对于单词“snake”，通过查询链语法词典，我们得到相应的公式“D- \& (O- or S+)”，同时该单词还有相应的特征属性如“时态（tense）”“人称（person）”等。但对于单词“the”，就不需要与一致性相关的变量。
 
 链语法分析器中也使用简单的转换生成类似短语结构语法的句法分析结果，如下：
-\begin{verbatim}
-    (S (NP The cat)
-           (VP chased
-                (NP a snake ))
-    .)
-\end{verbatim}
+
+{\tt\begin{small}\begin{lstlisting}
+(S (NP The cat)
+	(VP chased
+	 	(NP a snake))
+ 	.)
+\end{lstlisting}\end{small}}
+
 在我们的工作中，对该短语结构用的不多，所以这里不做详细说明。我们会在下一节简单讨论链语法和短语结构语法的潜在关系。
 
 \subsection{链语法与短语结构语法}{Link Grammar vs. Phrase Structure Grammar}
@@ -90,28 +106,33 @@ grammars tend to be easier understand.
 图片来自[XXX]
 
 简单起见，这里只列出两条有用的观察结果，基于这些观察结果，我们不难发现，在链语法中也隐形存在短语结构。这是有一定道理的，但由于自然语言的复杂性，某些情况下可能也不是那么简单。
+
 \begin{itemize}
 \item 链语法中的公式是符合语法范畴的。例如，前面提到的例句中“chased”的链结构是“S- \& O+”，在范畴语法中，这意味着，“chased”属于这样的语法范畴，该范畴中的词都满足链结构“S- \& O+”。换句话说，链语法中每一个“公式”都对应依附该公式的单词的范畴。 
 \item 词之间的链接也可以看成是短语的核心词（head）之间的链接。例如，在例句“The cat chased a snake”中，“chased”和“snake”之间有链接O，那么也可以说，以“chased”为核心词的短语和以“snake”为核心词的短语之间有链接O。换句话说，可以理解成，链语法为了简化，通过核心词来识别短语。
 \end{itemize}
 
 \subsection{识别句子的中心词}{Identifying the Head of a Sentence}
+\label{sec:head}
+
 链语法从词的局部着手关注任意两个词之间的关系，在一定程度上忽略了语言的层次结构。因此标准的链语法也存一些弊端，有不少语言现象会被链语法拒绝认为是不合法的结构。比如并列结构、介词短语等。在本文的研究过程，我们对链语法做了很多的改进，由于链语法的链接要求非常复杂，修改链语法词典可能牵扯到很多语言学上的问题。但这不是本文的研究重点，所以这里不一一列出我们做过的改进，只简单的列出几项较大的改进：
+
 \begin{itemize}
 \item 改进了链语法对连词的处理
 \item 改进了链语法对量词的处理
 \item 识别句子的中心词。
 \end{itemize}
 
-链语法分析器（Link Parser）是一个开源工具，包括链语法词典，我们所有的改进都发布在 http://abisource.com/projects/link-grammar/
+链语法分析器（Link Parser）是一个开源工具，包括链语法词典，我们所有的改进都发布在 \url{http://abisource.com/projects/link-grammar/}
 
 为了读者对如何修改链语法词典有个大致的思路，本小节就其中的改进“识别句子的中心词”展开讨论。
 
 对于“识别句子的中心词”的改进，我们的出发点是使链语法分析结构（Link Parse）能转换成一颗类似的依存句法树。改进后，我们能直接通过追溯“WV”链找到句子的中心词，或者通过追溯“CV”链找到子句的中心词。找到中心词后，可以将其定为树的根节点，然后依次遍历各个链，最终能得到一颗句法树（见图XXX）。具有这样的转换能力有以下优点：
+
 \begin{itemize}
-\item 能使用很多能用在树结构上的机器学习方法来改进链语法分析器，比如频繁子树挖掘(Frequent Subtree Mining)[XXX]
+\item 能使用很多能用在树结构上的机器学习方法来改进链语法分析器，比如频繁子树挖掘(Frequent Subtree Mining)\cite{Chi2005}
 \item 能更直接的链语法分析结果转换成依存句法树，从而能使用依存语法的语料库或者工具来改进链语法分析器
-\item 能更好地从其他语法理论（例如词语法（Word Grammar）[XXX]）角度来解析链语法分析结构
+\item 能更好地从其他语法理论（例如词语法（Word Grammar）\cite{Hudson2007}）角度来解析链语法分析结构
 \item 能简化一些RelEx中需要通过追溯很多链来找到中心词的规则
 \end{itemize}
 
@@ -119,13 +140,14 @@ grammars tend to be easier understand.
 
 此项改进的具体目标就是使句子的中心词，即句子的主动词，更容易从链语法分析得到的结果中被检索到。这样的改进不仅仅使链语法分析结构能够很直接地转换成类似依存句法树，因为依存语法一般以主动词为根节点；还无意中改进了链语法分析器对复句的分析能力，使其产生了更直观合理的分析结果，因为我们采用了将功能词与子句的主动词相连的方法来追溯子句的中心词，这显然比标准链语法中，不论什么情况，都使用功能词与子句的第一个词互相链接更直观合理；这样的改进给我们后续研究的依存关系抽取和逻辑关系抽取带来了诸多方便，因为在改进之前，无聊是并列复句还是偏正复句，或者是带状语的单句，链语法都将其中功能词与子句的第一个词相连，这样使得判断子句之间的语义逻辑关系变得很困难。
 
-为了能实现这样的改进，我们首先引入了三种标准链语法中不存在的链接类型：WV，CV和IV。其中，WV用于链接LEFT-WALL和句子的中心词，CV用于链接功能词和子句的中心词，IV用于链接LEFT-WALL和非限定动词。这些链接类型并不是第一批用来处理句子中心词的链接类型，链语法词典中有几个链接类型已经充当类似的角色，如B，AF，CP,Eq，COq等，但是这些链类型的用法非常复杂而且分类很模糊，引入的这几个新的链接类型，使句子的中心词角色更突出和直观，同时也和其他语法接轨。有关不同的链接语法中的链接类型的含义和使用方法，可参考链语法词典的在线文档： http://www.abisource.org/projects/link-grammar/dict/section-WV.html
+为了能实现这样的改进，我们首先引入了三种标准链语法中不存在的链接类型：WV，CV和IV。其中，WV用于链接LEFT-WALL和句子的中心词，CV用于链接功能词和子句的中心词，IV用于链接LEFT-WALL和非限定动词。这些链接类型并不是第一批用来处理句子中心词的链接类型，链语法词典中有几个链接类型已经充当类似的角色，如B，AF，CP,Eq，COq等，但是这些链类型的用法非常复杂而且分类很模糊，引入的这几个新的链接类型，使句子的中心词角色更突出和直观，同时也和其他语法接轨。有关不同的链接语法中的链接类型的含义和使用方法，可参考链语法词典的在线文档： \url{http://www.abisource.org/projects/link-grammar/dict/section-WV.html}
+
 对这一改进，我们采用的具体实现方法可以归纳为以下几步：
-\begin{itemize}
+\begin{enumerate}
 \item 修改并增强链接B，使得B能指向句子的中心词，以及子句的中心词。上面一段提到，链语法词典中的链接类型B有类似能指向句子的主动词的功能，但是其使用方法和能被应用的情况分类很模糊。
 \item 通过链接B找到句子的中心词，然后将LEFT-WALL和该中心词之间用新引入的W链接相连。
 \item 通过B链接找到子句的中心词，修改链接CO或者Cs（CO和Cs都是改进前链语法中用于链接功能词和子句的第一个词的链接类型），使其指向子句的中心词，并将其链接类型改为CV。
-\end{itemize}
+\end{enumerate}
 
 IV的处理方式和WV类似，这里不再详述。
 
@@ -193,32 +215,48 @@ LEFT-WALL apparently , she loves.v cheese.n-u .
 
 需要说明的是，在链语法分析器的当前版本中，虽然我们采用了WV链来链接LEFT-WALL和句子的中心词，但我们仍然保留了原来版本中的链接LEFT-WALL和句子的第一个词的Wd或者Wi等链，只是为了保持版本的向后兼容性。在转换成句法分析树的时候，我们会忽略Wd或者Wi等这些链。
 
-\section{RelEx}{RelEx}
+\subsection{RelEx}{RelEx}
 
 这一节我们将介绍依存关系抽取工具RelEx（Relation Extractor）的工作原理和基本实现方法。RelEx采用上一节中链语法分析器的输出作为输入，将其转换成一个特殊的特征结构图，然后根据相应的规则进行一系列的图结构转换，最后得到一个含有比链语法分析结果更抽象一点的介于句法关系和语义关系之间（syntactico-semantic）的依存关系图。
 
 RelEx包含了很多个模块，我们这里只介绍其中关键的模块。它的核心思想就是将链语法分析器的分析结果转换成一个特有的特征结构有向图（Feature Structure），然后使用一系列规则（在RelEx系统中被称为句子算法，Sentence Algorithm）对特征结构图进行一系列相应的有序的修改，最终得到一个精炼的特征结构图。最终得到的特征结构图中包含了句子中词和词之间的RelEx句法语义关系（如主谓关系、动宾关系等），还包含了句子中每个词的相关属性（如词性、时态等）。RelEx还处理一些消歧工作，如指代消解，我们会在下面章节进一步阐述。
 
+\begin{figure*}
+\begin{centering}
+\includegraphics[width=12cm]{figures/RelEx.png}
+\protect\caption{\label{fig:relex}Overview of the internal dynamics of the RelEx semantic extraction system, which maps link parses into sets of more abstract syntactico-semantic relationships.}
+\end{centering}
+\end{figure*}
+
 RelEx的输出可看作是被简化了的输入句子的语法结构，在一定程度上，RelEx还对一些表层关系进行归一化处理，因为很多等效但异构的动词框架会被映射到一致或者同态的特征结构图中。例如下面的两个不同的句子语义却一样：
-             Mary ate the cake.
-           The cake was eaten by Mary.
+
+\begin{verbatim}
+      Mary ate the cake.
+      The cake was eaten by Mary. 
+\end{verbatim}
+
 在RelEx的输出中，它们同时含有下面的RelEx依存关系：
-       \_subj(ate, Mary)
-            \_obj(ate, cake)
+
+\begin{verbatim}
+     _subj(ate, Mary)
+     _obj(ate, cake)
+\end{verbatim}
 
 \subsection{RelEx的系统框架}{RelEx Framework}
 
-RelEx系统框架主要包括两大模块：附属关系抽取模块和语法关系抽取（参见图XXX）。它能识别句子中词和词之间的主语、宾语、间接宾语和其他依存关系，也能像其他依存语法分析器那样生成依存关系树。 
+RelEx系统框架主要包括两大模块：附属关系抽取模块和语法关系抽取（参见图\ref{fig:relex}）。它能识别句子中词和词之间的主语、宾语、间接宾语和其他依存关系，也能像其他依存语法分析器那样生成依存关系树。 
 
 RelEx首先对句子中的每个词创建一个特征节点（FeatureNode），然后通过一系列相关规则不断更新每个特征节点。这些规则将链语法分析器的输出结果中的不同链的组合转换成相应的RelEx依存关系，有些转换可能是通过某一条规则直接从链到RelEx依存关系的转换，也可能是间接地根据几条规则动态修改一个词的特征节点，并结合其他相关的特征节点中的特征，最终得到相应的RelEx关系。
 
 接下来我们使用在链语法章节中使用的例句“The cat chased a snake.”来更详细地解析RelEx的每个步骤和实现方法。
 
-\rm{步骤1： 将链语法分析器的输出转换成一个特征结构图。}
+\noindent {\bf 步骤1：将链语法分析器的输出转换成一个特征结构图。}
 
 如上所述，RelEx首先将链语法分析器的输出结果转换成一个特征结构图。特征结构图是一个带权有向图，其中节点可以表示一个值，也可以是一个无序的特征列表。 RelEx中，特征指的就是一条指向另一个节点的带权边，而特征的值通常是一个字符串。
 
 从上一节中我们可知，例句输入链语法分析器后产生下面的链语法结构： 
+
+\includegraphics[width=12cm]{figures/catSnake.png}
 
 根据我们上面的步骤描述，首先需要将上面的链语法分析结构转换成特定的特征结构图。句子中的每个词都会被转换成特征结构图的一个节点，其中该节点包含以下特征（[]中的内容表示特征的类型，如 NEXT[node]表示该特征是一个特征节点类型）：
 
@@ -241,23 +279,26 @@ RelEx首先对句子中的每个词创建一个特征节点（FeatureNode），�
 \end{itemize}
 
 类似地，链语法分析结构中的每个链接也被表示成一个特征节点，其中该节点包含以下特征：
+
 \begin{itemize}
 \item LAB [string]: 该链接的名称
 \item F\_L[node]: 指向表示该链接左边的词的节点
 \item F\_R[node]: 指向表示该链接右边的词的节点
 \end{itemize}
 
+\includegraphics[width=12cm]{figures/featureStructure.png}
+
 不难发现，RelEx中的使用特征结构图非常复杂，为了能更形象地理解特征结构图，本文截取了上述例句的特征结构图的部分来进一步解释（参见图XXX）。
  
   图XXX中，带\$的节点可以表示代表句子中的某个词的特征节点，通过特征str指向词的内容；也可以表示代表某个链接的特征节点，通过特征LAB指向链接名称。从上图我们可以看出，“cat”和“snake”通过链接Ss相连。例句中的第二个个词节点的特征str表示该词的内容“cat”，特征NEXT指向表示下一个词的特征节点（即str为“chased”的节点），特征F\_L表示该词是链接“Ss”的左右的词。“LinkR0”表示它指向的链接Ss是从该词“cat”出发指向右边的链接。以此类推，不难从上图中找出例句中第三个词节点的一系列相关特征。
 
-\rm{步骤2： 执行包含一系列句子算法的句子算法应用器（Sentence Algorithm Applier），对步骤1中得到的特征结构图进行相应的改写操作。}
+\noindent {\bf 步骤2： 执行包含一系列句子算法的句子算法应用器（Sentence Algorithm Applier），对步骤1中得到的特征结构图进行相应的改写操作。}
 
 句子算法应用器从句子算法的定义文件中导入一系列的句子算法，句子算法的执行顺序必须按照定义文件中句子算法的排序。当一个句子算法被执行时，RelEx不断迭代遍历特征结构图中的每一个特征节点，对每个节点都尝试执行该句子算法。句子算法的执行会导致特征结构图的修改，因此它们的操作顺序是很重要的。例如，假如前面的句子算法执行后，特征结构中的所有特征节点的词性（POS）特征都被删除，那么用于处理含有POS特征节点的句子算法将无法被执行。
 
 所有的句子算法都带有一个特定的标记（可以理解成该句子算法的名称），当某个句子算法被成功执行后，该算法会在被成功执行该算法的节点上添加一个特征SIG，并将其赋值为该句子算法名称。被句子算法添加的一个最重要的特征是指向表示词的特征节点的ref，RelEx使用ref特征来输出最后的关系集合。
 
-除了复杂的特征结构，RelEx的另一个核心部分是前文一直提到的句子算法。RelEx使用的句子算法也是很复杂的，可分为抽象的句子算法和需要实例化的句子算法。我们这里选择一个用的最广泛的通用句子算法TemplateActionAlg来进一步阐述。一个TemplateActionAlg实例能接受文本输入，第一行表示该实例的名称（不可重复），接下来是一个用于匹配的模板路径集合（Template Paths和行为路径集合（Action Paths），之间用“=”隔开。对于模板路径<x, y, z>，表示目标值按照<x, y, z>这样的路径来解析。对于操作路径<x, y, z>，表示目标值按照<x, y, z>这样的路径被赋值。例如，在如下的被实例化的TemplateActionAlg的句子算法中，
+除了复杂的特征结构，RelEx的另一个核心部分是前文一直提到的句子算法。RelEx使用的句子算法也是很复杂的，可分为抽象的句子算法和需要实例化的句子算法。我们这里选择一个用的最广泛的通用句子算法TemplateActionAlg来进一步阐述。一个TemplateActionAlg实例能接受文本输入，第一行表示该实例的名称（不可重复），接下来是一个用于匹配的模板路径集合（Template Paths和行为路径集合（Action Paths），之间用“=”隔开。对于模板路径\textless x, y, z\textgreater ，表示目标值按照\textless x, y, z\textgreater 这样的路径来解析。对于操作路径\textless x, y, z\textgreater ，表示目标值按照\textless x, y, z\textgreater 这样的路径被赋值。例如，在如下的被实例化的TemplateActionAlg的句子算法中，
 
 \begin{verbatim}
 #TemplateActionAlg
@@ -272,23 +313,32 @@ SPECIAL-ADJ
 <F_R obj> = <F_L subj>
 <F_L ADJ-OBJ-FLAG> = T
 \end{verbatim}
+
 在该句子算法中，模板就是：
+
 \begin{verbatim}
 <LAB> = \B\.*|\BW\.*
 <F_L POS> = adj
 \end{verbatim}
 
 不难看出，第一行表示用于匹配那些表示链接名称B或者BW的特征节点，句子算法的表示使用了正则表达式，意味着，只要链接名称以B或者BW的特征节点都满足。除此之外，要想上面的句子算法能被执行，还要满足第二行，即该特征节点表示的链接左边的词必须是一个形容词。
+
 如果上面的两条模板都匹配成功，那么下面的操作将会被执行：
+
 \begin{verbatim}
-<F\_R obj> = %
-<F\_R obj> = <F\_L subj>
-<F\_L ADJ-OBJ-FLAG> = T
+<F_R obj> = %
+<F_R obj> = <F_L subj>
+<F_L ADJ-OBJ-FLAG> = T
 \end{verbatim}
 
 这些操作可被解释如下：第一行的操作表示该链接的右边的词所在的特征节点的obj特征会被清空。清空后，紧接着将该链接左边的词所在的特征节点的sub特征值赋给它。最后，将该链接的左边的词所在的特征节点的ADJ-OBJ-FLAG特征值设为T（真）。
+
 我们接着用上面的例句“The cat chased a snake.”，接下来两个图是图XXX的节选特征结构图，更直观地解释了，通过执行相关的句子算法后，被修改的结构特征图。  
+
+\includegraphics[width=12cm]{figures/revisedFeatureStructure.png}
+
 图XXX中虚线部分是执行了下面的句子算法后特征结构图被修改的部分：
+
 \begin{verbatim}
 #TemplateActionAlg
 BASIC_REF
@@ -296,15 +346,506 @@ BASIC_REF
 =
 <ref name> = <str>
 \end{verbatim}
+
 根据上面的句子算法，当模板“<str> = \$string”被匹配时，会执行操作“<ref name>=<str>”，也就是，把该词的内容赋值给通过路径<ref, name>找到的节点。
- 
+
+
+\includegraphics[width=12cm]{figures/revisedFeatureStructure_1.png}
+
 如图XXX，同样虚线部分表示执行相应的句子算法后特征结构图被修改的部分。
-     步骤3： 遍历最后得到的特征结构图，输出最终的RelEx关系集合。
+
+\noindent {\bf 步骤3： 遍历最后得到的特征结构图，输出最终的RelEx关系集合。}
+
 当所有的句子算法都被遍历过后，会得到一个精简的用于生成RelEx关系集合的特征结构图。
+XXX
+
+\subsection{RelEx关系的形式化}{RelEx Relationship Formalization}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{基于涉身的指代消解}{Standard and Embodiment-Based Anaphor Resolution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+XXXXXX
+指代解析器将构建一个列表，此列表包含针对第三个句子中代词“it”的两个选项：ball和stick。如果stick是最近使用的名词，那么正如Hobbs建议的那样，代理将抓取stick，而不是ball。
+与此类似，如果代理的历史包含
+"From here I can see a tree and a ball."
+"Grab it."
+，那么Hobbs的算法按顺序返回名词tree和ball作为候选。但是如果使用我们的综合指代消解（引用解析）处理，代理将推断不能抓取tree，所以仅选择ball。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RelEx2Logic：把语言依赖关系转换成逻辑关系}{RelEx2Logic: Translating Linguistic Dependency Relations into Logical Relations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+现在解释我们的自然语言理解管道中最后的纯语言学阶段，这称为RelEx2Logic。RelEx2Logic是我们本论题所做工作的一个关键组成部分，用于将RelEx生成的句法-语义语言分析结果转换成PLN和其它OpenCog认知组件可以使用的逻辑表示，从而使得我们的自然语言理解管道可以与逻辑推理系统（例如PLN）、控制系统（例如OpenPsi）和OpenCog的其它组件进行有效交互。
+
+\subsection{RelEx2Logic}{RelEx2Logic}
+
+自然语言允许内在含义相同的内容存在许多不同的表示。要想用OpenCog AtomSpace表示格式来表达自然语言语句的含义，必须面对这个事实：可以有许多语句不同但是语义等同的方法来表示一个简单的句子。RelEx2Logic系统的目标是以尽可能简单的方式将RelEx输出映射到PLN可以理解和推理的AtomSpace表示，生成可以获取相关表达所包含的大量含义的精确表示。RelEx2Logic不会试图解析RelEx输出中所有的语义歧义，而是努力解析为了生成精确的原子（Atom）结构（这些原子结构较易进行处理而获得有用的推断）所必须解析的那些歧义。
+
+从操作上讲，RelEx2Logic的核心理念是通过应用一系列简单的重写规则以及较复杂的后处理规则（处理复杂句子和问题需要这些后处理规则，例如进行概念实例区分）把RelEx关系映射到语义解释（例如OpenCog AtomSpace表示）。
+每个核心重写规则的输入是句法分析图中满足特定约束的子图，输出是一个原子（Atom）超图。在实践中，需要的规则通常采用成对标记(G,A)的形式，其中：
+
+\begin{itemize}
+\item $G$是一个图，其节点是单词或变量，其边是RelEx关系类型。
+\item  $A$是一个超图，其节点是单词、变量或特殊的语言学节点（根据一个小型词汇表绘制），其超图边是OpenCog原子（Atom）类型（例如InheritanceLink和EvaluationLink）。
+\item $G$和$A$中的变量列表必须相同。
+\end{itemize}
+
+我们把符合这种说明的规则称为“简单映射规则”。
+
+对于处理人类语言真正需要的简单映射规则来讲，满足约束条件{\bf $G$中的每个边映射到$A$中的单个超图边}。从数学上讲，这个约束条件的后半部分意味着每个重写规则各自都是一个图同态\cite{Voloshin2009}，这进一步意味着一起应用的一系列重写规则也是一个图同态。
+
+这种规则的一个简单例子是这样一个(G,A)，其中
+$$
+G = \{ S_*(v_1,v_2), \ O_*(v_1, v_3) \}
+$$
+
+$$
+A = (EvaluationLink \ v_1 \ v_2 \ v_3)
+$$
+
+这把主语为$v_2$，宾语为$v_3$的动词$v_1$映射到一个v1为谓语，($v_2$, $v_3$)为参数列表的OpenCog EvaluationLink。例如，$S_*$ 指任何$S$的链路分析器子类型。当然，大部分规则都比这个例子复杂。
+
+在具体实现中，由于自然语言的复杂性，仍然有一些这种形式的RelEx2Logic规则无法处理的语言学信息。所以，为了获取句子正确的逻辑表示而不影响其含义，我们向RelEx2Logic框架添加一个后处理步骤，这个步骤主要包含下列部分：
+
+\begin{itemize}
+\item 处理OpenCog Atomspace中的实例。根据输入的自然语言的含义，将通用概念或谓语与特定概念或谓语进行区分。
+\item 估计模糊谓语或概念的概率。例如，如果句子是“Maybe the cat chased a snake.”，那么我们需要给最后的逻辑表示指定相较于句子“the cat chased a snake.”较低的概率。
+\item 正确处理量词。众所周知，自然语言中的量词十分复杂。不可能创建一个通用规则而以通用方式获取所有量词的正确抽象表示。而且，我们想要使得我们的规则更加通用，所以我们不想为每个量词使用单独的规则，这需要以简化的方式编写量词规则，而不是极力利用后处理方法允许的更大灵活性。
+\end{itemize}
+
+下面将解释后处理的更多细节。
+
+将我们当前的简单映射规则应用于上述的例句“The cat chased a snake.”，会生成以下基本输出：
+
+ {\tt\begin{small}\begin{lstlisting}
+EvaluationLink 
+      PredicateNode chase@3453432
+      ListLink
+            ConceptNode cat@1243546464
+            ConceptNode snake@564636322
+       
+\end{lstlisting}\end{small}}
+
+这些“基本输出”仅仅是这个句子解释后Atomspace中所创建的完整原子（Atom）集合的一小部分。一个更完整的列表是
+
+{\tt\begin{small}\begin{lstlisting}
+XXX paste in full output for the sample sentence "The cat chased a snake." XXX
+\end{lstlisting}\end{small}}
+
+本节最后会给出更多映射例子以及所涉及原子（Atom）类型的解释。
+
+如果链路分析器给出多个分析选项，RelEx2Logic规则将为每个分析选项提供一个逻辑解释。目前已经实现基于语料库进行统计启发来排列多个分析的可信性，当然这并不完美。一些情况中，会向OpenCog提供多个逻辑输出选项，并且必须基于更高层次的上下文推断在这些选项之间进行选择，这是当前研究的一个难题和主题。
+
+
+\subsection{RelEx2Logic所使用的规则}{RelEx2Logic Rules}
+
+为了将RelEx关系转换成抽象的OpenCog AtomSpace逻辑表示，我们引入一系列RelEx2Logic规则。RelEx2Logic规则（以前称为Link2Atom和Syn2Sem规则\cite{Lian2012}）是一系列人工编码的规则，用于把RelEx的输出映射到OpenCog原子（Atom）表示的形式，这种表示更适合于由PLN和其它工具进行自动化推断。本节总结性地阐述规则集合并给出一些规则例子。可以在\url{opencog/nlp/scm/relex-to-logic.scm}在线找到所有规则。
+
+RelEx2Logic规则有多个目标：
+
+\begin{itemize}
+\item 作为运行的OpenCog自然语言处理系统的一部分，其潜在用途包括文本分析和自然语言对话。
+\item 作为概念研究工具，帮助我们理解句法-语义输出（例如RelEx生成的句法-语义输出）映射到更抽象的逻辑关系（例如PLN采用的逻辑关系）的问题。
+\item 作为工具来帮助生成成对（链路分析和抽象的PLN形式的原子）的语料库，然后可以自动分析此语料库来产生语言理解和生成规则（更多信息请参见Syn2Sem）。
+\end{itemize}
+
+{\bf 示例规则（Tense规则）}
+
+为了方便阐述剩下的内容，我们从一个非常简单的RelEx2Logic规则例子开始。当然，大部分规则比这个例子复杂。此处，为了方便人理解，采用RelEx SFF格式（RelEx许多输出格式中的一种）来说明规则输入。
+
+为了用便于阅读的方式说明RelEx2Logic规则，我们在此使用类似以下的格式：
+
+\begin{verbatim}
+规则输入：
+tense(W, Tense)
+pos(W, verb)
+规则输出：
+(tense-rule W (get_instance_name W word_index sentence_index) Tense)
+\end{verbatim}
+
+在OpenCog中运行此规则，规则的输出将启动一个帮助器函数（在Scheme中编码）。下面会列出这个帮助器函数。然后帮助器函数将最终生成最后的OpenCog Atomspace表示。
+
+如同上一子节中所述，在我们真实的软件实现中，我们使用诸如(ImplicationLink $P_G$ $P_A$)这样的格式来表示RelEx2Logic规则，从而使得RelEx2Logic与OpenCog系统的其余组件保持一致。例如，这种格式意味着规则可以由OpenCog模式匹配器来执行（OpenCog模式匹配器用来在OpenCog Atomspace中搜索原子的特定模式、排列或“模板”）。所以上述简单的RelEx2Logic规则在当前系统中将被如下表示：
+
+\begin{verbatim}
+ImplicationLink
+     EvaluationLink
+           PredicateNode "tense"
+           ListLink
+                WordNode W
+                ConceptNode Tense
+     ExecutionOutputLink
+              GroundedSchemNode "r2l/tense-rule.scm"
+              ListLink
+                   WordNode W
+                   ConceptNode Tense
+                   NumberNode word_index
+                   NumberNode sentence_index
+
+\end{verbatim}
+
+对应于上述RelEx2Logic规则的提供后处理的相应帮助器函数为：
+
+\begin{verbatim}
+帮助器函数：
+(define (tense-rule verb instance tense)
+   (define new_predicate (PredicateNode instance))
+   (define verb_node (PredicateNode verb)) 
+   (define tense_node (ConceptNode tense))
+   (list
+      (InheritanceLink new_predicate verb_node)
+      (InheritanceLink new_predicate tense_node)
+   )
+)
+
+例子：
+tense(chase, Past)
+pos(chase, verb)
+==>
+(tense-rule "chase" "chase@3453432" "Past")
+==>
+(InheritanceLink "chase@3453432" chase)
+(InheritanceLink "chase@3453432" Past)
+
+\end{verbatim}
+
+注意：这个例子使用了额外的帮助器函数$get\_instance\_name$。
+
+下面解释这个帮助器函数。本质上，这个函数只是为概念的实例选择一个在给出的AtomSpace中唯一的名字（例如，它可能为$chair$的实例选择名字$chair77$）。如果单词W在句子中是第K次出现，那么单词序号为K。句子序号是该句子区别于其它句子的一个标识符。
+
+\subsection{RelEx2Logic的后处理过程}{PostProcessing}
+
+RelEx2Logic最初的设计意图是如同上述例子那样通过直接的逻辑含义进行所有需要的处理。但是随着工作的进展，我们认识到这样做在许多情况中会非常麻烦，同时我们发现引入一些更精巧的后处理方法是最直接的解决办法。此处我们阐述这些后处理规则的基本类型。
+
+现阶段，我们已经实现的后处理规则包括下列类别：
+
+\begin{itemize}
+\item 量词：为带有量词的单词引入变量并通过使用相应的链路限定变量的范围，同时给链路指定一些真值。
+\item 模糊情态动词：为模糊情态动词发生过修改的谓语指定一些置信下限。例如“Maybe dogs like fish.”，这表示“dogs like fish”的置信度不是很高，所以我们把“he is a genius.”的置信度从默认的0.99调整为0.5。
+\item 冗余实例清理：为可以从句法分析知道的通用概念清理实例号。例如“Dogs like meat.”，没有为dogs和meat指定任何明确的冠词、修饰语或代词，并且也没有意指任何其它概念，所以我们认为dogs和meat指通用概念dog和meat，而不是某些特定概念（特定概念需要指定实例号）。
+\end{itemize}
+
+下面更详细地阐述我们怎样为上面列出的每种类别实现后处理。
+
+{\bf 量词：}在前面的阶段，我们使用量词记号来标记需要进行后处理的量词。例如“All dogs like meat.”，在应用量词RelEx2Logic规则期间创建“allmarker”并生成下列结果。
+
+\begin{verbatim}
+           EvaluationLink
+                 PredicateNode "allmarker"
+                  ListLink
+                         ConceptNode "dog@13456"
+\end{verbatim}
+
+本例中，在后处理阶段，我们为量词“all”引入“ForAllLink”（它代表OpenCog Atomspace中的通用量化）和变量节点“\$X”来限定范围包含所有含有$dog@13456$的链路。然后，每个$dog@13456$都将被替换为VariableNode “\$X”。“allmarker”将在后处理后被删除。所以，在后处理结束后，将创建：
+
+\begin{verbatim}
+           ForAllLink
+                 VariableNode "$X"
+                 ImplicationLink 
+                        InheritanceLink "$X" noun_instance
+                        AndLink
+                            ** links involving "dog@13456" **
+\end{verbatim}
+
+{\bf 模糊情态动词：}模糊情态动词后处理类似于量词后处理，我们在应用相关的RelEx2Logic规则期间使用相应的记号来标记模糊情态动词。例如，对于句子“Maybe dogs like fish.”，在应用Maybe RelEx2Logic规则后生成下列表示：
+
+\begin{verbatim}
+           EvaluationLink
+                  PredicateNode "maybemarker"
+                  ListLink
+                        PredicateNode "like@9768"
+\end{verbatim}
+
+然后，用于后处理的$maybemarker$帮助器函数将查找所有包含“like@9768”的根链路，并将置信度从默认的0.99调整为0.5。
+
+{\bf 冗余实例清理：}因为不想在句子转换成抽象语义表示期间丢失任何来自句法层面的信息，我们在后处理阶段设立“实例清理”步骤。在当前方法中，我们为句子中每个非组合单词创建一个单独的实例节点。但是，在很多情况中，这会生成许多不必要的实例节点。例如，在句子“Dogs like yummy meat.”中，无需创建诸如$yummy@1765$和$dog@2593$的实例节点，因为这个句子没有指定特定的“dog”和特殊的“yummy”。所以只创建类似以下的链路就已足够：
+
+\begin{verbatim}
+         InheritanceLink 
+                  ConceptNode   "meat@3976" 
+                  ConceptNode   "yummy"
+
+         EvaluationLink 
+                  PredicateNode "like"
+                  ListLink
+                       ConceptNode "dog"
+                       ConceptNode "meat@3976"
+\end{verbatim}
+
+但是，一个诸如“meat@3976”的实例节点更加有用。因为在这个句子中，它仅陈述“Dogs like ’YUMMY’ meat”，而并非一般的“meat”。
+
+要想知道哪些单词真正需要实例节点，必须在一定程度上理解句子的结构。当前，我们使用一些常识性的规则开始这个过程。确切地讲，如果一个单词没有被修改（名词被形容词修改或者动词被副词修改），或者没有被定冠词限定，或者使用代词，那么此单词的实例节点为“冗余”。清理实例的后处理进行以下工作：
+
+\begin{itemize}
+\item 在Atomspace中（或者仅在RelEx2Logic规则的本地输出中）检查是否存在任何此名字的原子为“冗余”。
+\item 如果找到冗余原子，那么将其删除并将它的链路移至其父概念。
+\end{itemize}
+%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{实验结果}{Examples and Analysis}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本节中给出更多例子来解释我们的语言理解的理解管道，包含前面阐述的所有部分：Link Parser、RelEx和RelEx2Logic。在后面的章节中，这些特定例子用来阐述PLN对语言理解管道输出的推断。
+
+XXX添加一些解释和这些句子的RelEx2Logic输出（以及相关的原子类型解释？）XXX
+
+\noindent {\bf 例子1: }Socrates is a man.
+
+\includegraphics[width=12cm]{figures/Socrates_1.png}
+
+\begin{verbatim}
+依赖关系:
+
+    _obj(be, man)
+    _subj(be, Socrates)
+
+属性:
+
+    tense(be, present)
+    subscript-TAG(be, .v)
+    pos(be, verb)
+    pos(., punctuation)
+    subscript-TAG(man, .n)
+    pos(man, noun)
+    noun_number(man, singular)
+    definite-FLAG(Socrates, T)
+    pos(Socrates, noun)
+    noun_number(Socrates, singular)
+    pos(a, det)
+
+\end{verbatim}
+
+\noindent {\bf 例子2: } Men breathe air.
+
+\includegraphics[width=12cm]{figures/Socrates_2.png}
+
+\begin{verbatim}
+
+依赖关系:
+
+    _obj(breathe, air)
+    _subj(breathe, man)
+
+属性:
+
+    tense(breathe, present)
+    subscript-TAG(breathe, .v)
+    pos(breathe, verb)
+    pos(., punctuation)
+    subscript-TAG(air, .n-u)
+    pos(air, noun)
+    noun_number(air, uncountable)
+    subscript-TAG(man, .p)
+    pos(man, noun)
+    noun_number(man, plural)
+
+\end{verbatim}
+
+\noindent {\bf 例子3: }  Socrates breathes air.
+
+\includegraphics[width=12cm]{figures/Socrates_3.png}
+
+\begin{verbatim}
+
+依赖关系:
+
+    _obj(breathe, air)
+    _subj(breathe, Socrates)
+
+属性:
+
+    tense(breathe, present)
+    subscript-TAG(breathe, .v)
+    pos(breathe, verb)
+    pos(., punctuation)
+    subscript-TAG(air, .n-u)
+    pos(air, noun)
+    noun_number(air, uncountable)
+    definite-FLAG(Socrates, T)
+    pos(Socrates, noun)
+    noun_number(Socrates, singular)
+
+\end{verbatim}
+
+\noindent {\bf 例子4: }  I think Socrates is a man.
+
+\includegraphics[width=12cm]{figures/Socrates_4.png}
+
+\begin{verbatim}
+
+依赖关系:
+
+    _obj(be, man)
+    _subj(be, Socrates)
+    _rep(think, be)
+    _subj(think, I)
+
+属性:
+
+    definite-FLAG(Socrates, T)
+    pos(Socrates, noun)
+    noun_number(Socrates, singular)
+    pos(., punctuation)
+    subscript-TAG(man, .n)
+    pos(man, noun)
+    noun_number(man, singular)
+    pos(a, det)
+    tense(be, present)
+    HYP(be, T)
+    subscript-TAG(be, .v)
+    pos(be, verb)
+    tense(think, present)
+    subscript-TAG(think, .v)
+    pos(think, verb)
+    pronoun-FLAG(I, T)
+    gender(I, person)
+    definite-FLAG(I, T)
+    subscript-TAG(I, .p)
+    pos(I, noun)
+    noun_number(I, singular)
+
+\end{verbatim}
+
+\noindent {\bf 例子5: }  Bob thinks Socrates is a woman.
+
+\includegraphics[width=12cm]{figures/Socrates_5.png}
+
+\begin{verbatim}
+
+依赖关系:
+
+    _obj(be, woman)
+    _subj(be, Socrates)
+    _rep(think, be)
+    _subj(think, Bob)
+
+属性:
+
+    definite-FLAG(Socrates, T)
+    pos(Socrates, noun)
+    noun_number(Socrates, singular)
+    pos(., punctuation)
+    subscript-TAG(woman, .n)
+    pos(woman, noun)
+    noun_number(woman, singular)
+    pos(a, det)
+    tense(be, present)
+    HYP(be, T)
+    subscript-TAG(be, .v)
+    pos(be, verb)
+    tense(think, present)
+    subscript-TAG(think, .v)
+    pos(think, verb)
+    gender(Bob, masculine)
+    definite-FLAG(Bob, T)
+    person-FLAG(Bob, T)
+    subscript-TAG(Bob, .m)
+    pos(Bob, noun)
+    noun_number(Bob, singular)
+
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{比较级的处理：实例分析}{Comparative: A Case Study}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+比较级提供了从表层形式映射到我们设计和实现的逻辑表示的有趣例子。
+
+关于正确处理英语和其它语言中的比较级，理论上的语言学从来没有达成一致。一些理论家假定一种省略理论，建议从句子的表层结构得出比较级语法，忽略深层结构中存在的某些单词\cite{lechner2004ellipsis} \cite{Bhatt2011}。另外一些理论家假定一种移动理论\cite{Margaret2013} \cite{Roumyana1995}，这种理论更多地由传统的生成语法启示，假设比较级语法包含一个重新排列深层结构的表层结构。
+
+链路语法框架从根本上回避了这种问题：不管省略理论还是移动理论，都由链路语法词典中的某些对称性表示，但是这些对称性不需要被链路分析器本身显式地识别或使用（虽然这些对称性可以指导人类或AI系统创建链路语法词典）。从目前的经验上讲，链路分析器对比较级的处理相当好，但是相关的词典条目有点混乱并且实际上并不完全对称。这说明两种可能：
+
+\begin{enumerate}
+\item 英语比较级的语法“复杂”而混乱，不适用任何可用的理论。并且/或者
+\item 链路语法词典可以在比较级方面进行极大的改进
+\end{enumerate}
+
+我们猜测事实是两者兼而有之。但是请注意，将链路语法作为用于理解复杂句子（包含比较级）的实际管道的一部分而部署时，我们不需要决定这个问题。
+
+我们通过一个例子说明我们的框架如何处理比较级。RelEx2Logic的一个用于比较级的规则，其简短形式如下：
+
+ {\tt\begin{small}\begin{lstlisting}
+than(w1, w2)
+_comparative(ad, w)
+==>
+
+TruthValueGreaterThanLink
+    InheritanceLink w1 ad
+    InheritanceLink w2 ad
+\end{lstlisting}\end{small}}
+
+图\ref{fig:comparativeRule}给出了完整形式。
+
+\begin{figure*}
+\begin{centering}
+\includegraphics[width=15cm]{figures/comparativeRule.png}
+\protect\caption{\label{fig:comparativeRule}Full RelEx2Logic rule for parsing one type of comparative sentence.}
+\end{centering}
+\end{figure*}
+
+使用这个规则的一个简单例子是：
+
+{\tt\begin{small}\begin{lstlisting}
+Pumpkin is cuter than the white dog.
+==>
+_predadj(cute, Pumpkin)
+than(Pumpkin, dog)
+_comparative(cute, Pumpkin)
+_amod(dog, white)
+==>
+AndLink
+   InheritanceLink dog_11 white
+   InheritanceLink dog_11 dog
+   TruthValueGreaterThanLink
+       InheritanceLink Pumpkin cute
+       InheritanceLink dog_11 cute
+\end{lstlisting}\end{small}}
+
+另一方面，为了处理诸如“Amen is more intelligent than insane”这样的句子，我们使用一个不同的规则，这个规则的简短形式如下：
+
+{\tt\begin{small}\begin{lstlisting}
+_predadj(adj1, W)
+than(adj1, adj2)
+_comparative(adj1, W)
+==>
+TruthValueGreaterThanLink
+    InheritanceLink W adj1
+    InheritanceLink W adj2
+ \end{lstlisting}\end{small}}
+ 
+结果输出如下：
+
+ {\tt\begin{small}\begin{lstlisting}
+_predadj(intelligent, Amen)
+than(intelligent, insane)
+_comparative(intelligent, Amen)
+==>
+TruthValueGreaterThanLink
+     InheritanceLink Amen intelligent
+     InheritanceLink Amen insane
+ \end{lstlisting}\end{small}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{本章小结}{Summary of Accomplishments and Future Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本章主要介绍我们的自然语言理解系统中的各个模块的工作原理和实现方法，并深入讨论了该系统如何将英文句子转换成超图表示的逻辑形式，以达到能使自然语言参与到逻辑推理的过程中。该自然语言理解系统已经被应用在游戏角色控制和人形机器人等领域。
+
+该自然语言理解系统使用了一些现有的开源语法分析器，本章也讨论对这些开源工具做出的各种改进，还讨论了我们实现的全新的将依存关系转换成语义逻辑表示的系统RelEx2Logic，总的来说，本章的贡献有：
+
+\begin{itemize}
+\item 改进了链语法分析器的词典，使其能够处理更复杂的语言现象，以及能识别句子的中心词从而改进了链语法对复句的分析能力。
+\item 改进了RelEx使其能处理目前语法分析器难以处理的比较级和量词等复杂的语言现象。
+\item 设计并实现了RelEx2Logic系统，使其能将RelEx输出的依存关系转换成以超图表示的逻辑形式
+\item 设计并实现了RelEx2Logic中所使用的转换规则及相应的规则引擎。
+\end{itemize}
+
+总的来说，本章搭建的自然语言理解系统已经能被用在一些用户定义的实际应用中，但仍然有很多遗留问题有待解决。在接下来的工作中，我们会在我们的自然语言理解系统中引入概率逻辑推理引擎PLN，这样不仅可以通过一些基本常识推理来改进语法分析中的结果，还可用于指导对语法分析器产生的多种结果进行排序，以及用于指导各种歧义消除和指代消解等方面。除此之外，我们还致力通过无监督的机器学习方法从大型文本语料学习相关的语法规则，来替代当前系统中使用的人工编写的规则库，本文会在第\ref{chap:learning}章中对此做更深入的讨论。
 
 
 参考文献：
