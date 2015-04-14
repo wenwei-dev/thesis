@@ -1,33 +1,34 @@
-﻿\chapter{智能会话系统}{Toward Intelligent Dialogue}
+﻿\chapter{智能会话系统}{Toward Intelligent Dialgoue}
 
-本文研究的其中一个长远目标便是结合前文提到的各项自然语言处理和逻辑推理技术，构建一个能较好地与人交流沟通的智能会话系统，此系统将通过将接收到的人类话语转化成逻辑表达形式，并且结合系统本身的动机和情感状态，经过一定的解析和逻辑推理，从而得到想表达的内容的逻辑表达形式，最后将这些逻辑表达式再转化成自然语言回应给谈话对象。
-
-本章将重点介绍这样的智能会话系统（以下简称“CogDial”）的系统架构，该系统基于前面章节描述的自然语言理解和自然语言生成的相关技术，并通过OpenCog的核心子系统（主要是PLN和OpenPsi）来控制其对话结构和表达方式。该CogDial系统能够灵活地理解和处理具有不同程度的复杂性和智能性的人类言语行为。创建一个完全符合人类标准的人工智能对话系统无疑是一个精彩的挑战，但似乎在当前的科学技术水平下，也无疑是一个非常困难的研究项目。
-
-相对于目前主流的基于规则或者基于统计的对话系统，我们这里提出的CogDial架构引入目标驱动的逻辑推理和情感控制等，显然表现更智能些，但还不足以完全达到符合人类智能标准。这样一个介于目前相关研究水平和完全人类水平之间的对话系统可以看做是朝构建更人性化的会话系统的一个重要步骤，或者看做是使用更可行的研究方法在人机对话系统集成更多的功能，而不是一味地去盲目追求达到人类水平的目标。本着这样的理念，说的更具体点，我们CogDial的目标不是精确类似人类的对话，而是具备通用认知能力、情感表达能力、能合理结合语用和经验的智能会话系统。
-
-CogDial的初步预期目标主要是实现面向游戏角色和人性机器人的对话系统，但同样的研究思路也完全能应用在基于文本的对话系统，例如智能对话搜索接口。我们分阶段来实现这样的系统，从一个相对小而简单的系统为起点，通过不断改进和完善，以及系统本身的自学习和认知能力，最终实现一个在一定程度上接近人类水平的系统。目前，我们的系统还没有达到最终的水平，但基本框架已经到位。除此之外，我们构建了一个基于超图匹配的问答系统的原型，该问答系统使用前文提到的自然语言处理将自然语言转换成以超图表达的语义逻辑形式，利用基于超图匹配的动态编程算法，从而在问答语料库中找到最适合问题的答案来响应用户查询。
+       本文研究的其中一个长远目标便是结合前文提到的各项自然语言处理和逻辑推理技术，构建一个能较好地与人交流沟通的智能会话系统，此系统将通过将接收到的人类话语转化成逻辑表达形式，并且结合系统本身的动机和情感状态，经过一定的解析和逻辑推理，从而得到想表达的内容的逻辑表达形式，最后将这些逻辑表达式再转化成自然语言回应给谈话对象。
+       本章将重点介绍这样的智能会话系统（以下简称“CogDial”）的系统架构，该系统基于前面章节描述的自然语言理解和自然语言生成的相关技术，并通过OpenCog的核心子系统（主要是PLN和OpenPsi）来控制其对话结构和表达方式。该CogDial系统能够灵活地理解和处理具有不同程度的复杂性和智能性的人类言语行为。创建一个完全符合人类标准的人工智能对话系统无疑是一个精彩的挑战，但似乎在当前的科学技术水平下，也无疑是一个非常困难的研究项目。 相对于目前主流的基于规则或者基于统计的对话系统，我们这里提出的CogDial架构引入目标驱动的逻辑推理和情感控制等，显然表现更智能些，但还不足以完全达到符合人类智能标准。这样一个介于目前相关研究水平和完全人类水平之间的对话系统可以看做是朝构建更人性化的会话系统的一个重要步骤，或者看做是使用更可行的研究方法在人机对话系统集成更多的功能，而不是一味地去盲目追求达到人类水平的目标。本着这样的理念，说的更具体点，我们CogDial的目标不是精确类似人类的对话，而是具备通用认知能力、情感表达能力、能合理结合语用和经验的智能会话系统。
+         CogDial的初步预期目标主要是实现面向游戏角色和人性机器人的对话系统，但同样的研究思路也完全能应用在基于文本的对话系统，例如智能对话搜索接口。我们分阶段来实现这样的系统，从一个相对小而简单的系统为起点，通过不断改进和完善，以及系统本身的自学习和认知能力，最终实现一个在一定程度上接近人类水平的系统。目前，我们的系统还没有达到最终的水平，但基本框架已经到位。除此之外，我们构建了一个基于超图匹配的问答系统的原型，该问答系统使用前文提到的自然语言处理将自然语言转换成以超图表达的语义逻辑形式，利用基于超图匹配的动态编程算法，从而在问答语料库中找到最适合问题的答案来响应用户查询。
 
 \section{基于Psi的对话控制}{Applying the Psi model to Dialogue Control}
 构建一个完整能运作的智能对话系统，除了需要前文提到的各项关键技术， 宏观规划（以下称为“Marcoplanning”）也是必不可少的部分。从言语行为理论来看，宏观规划可以看成是一个可以规划以下两点的工具：1）在哪个时间点发生哪些言语行为，2）使用哪些内容去封装这些言语行为。宏观规划更多的是从语用和推理方面出发，淡化语义或语法（或者音韵词汇等）的限制。
       CogDial智能对话系统中的宏观规划涉及到了OpenCog中的情感动机计算模型OpenPsi，因此，在本节我们会首先给出OpenPsi的高度概括，侧重于介绍其在自然语言会话系统中应用的可行性。
 
 \subsection{Psi模型中的动机行为}{The Psi Model of Motivated Action}
-为了更好的解释OpenPsi，我们需要从Psi和MicroPsi谈起，Psi是由德国心理学家Dietric Dorner提出的情感认知动机理论模型[XXX]，将情感与智能体的需求和动机相联系。MicroPsi[XXX]是一个基于Psi理论的一个开源的智能认知体系结构，实现了Psi理论中的动机、情感以及智能的关联模型，并在一些实用控制应用以及简单虚拟世界里的智能体上进行测试。MicroPsi在全面性以及神经科学和心理学依据方面做得非常出色，但是该认知体系结构在可扩展性上存在不少问题，[XXX] 中，有人认为，MicroPsi目前使用的算法在学习和推理上不大可能被扩展或规模化。
+       为了更好的解释OpenPsi，我们需要从Psi和MicroPsi谈起，Psi是由德国心理学家Dietric Dorner提出的情感认知动机理论模型 \cite{Dorner2002}，将情感与智能体的需求和动机相联系。{\bf MicroPsi} \cite{Bach2009},是一个基于Psi理论的一个开源的智能认知体系结构，实现了Psi理论中的动机、情感以及智能的关联模型，并在一些实用控制应用以及简单虚拟世界里的智能体上进行测试。MicroPsi在全面性以及神经科学和心理学依据方面做得非常出色，但是该认知体系结构在可扩展性上存在不少问题， \cite{EGI1}中，有人认为，MicroPsi目前使用的算法在学习和推理上不大可能被扩展或规模化。
        OpenCog受Psi理论中的动机和情感模型的启发，借鉴了很多MicroPsi的基本实现方法，实现了类似的情感动机模型OpenPsi。虽然OpenPsi和MicroPsi在一定程度上很相似，但两者 还是存在着很大的不同。比如，两者使用了完全不同的知识表达方式， MicroPsi则使用了类似神经元的“quad”来表示知识，每一个quad包括5个神经元，其中一个是核心神经元，其他4个描述与核心神经元的“前/后”或者“部分/整体”等关系。OpenPsi使用了本文第三章中介绍的OpenCog的基于超图的知识表示，显然是一种更灵活和通用的知识表示方式。 MicroPsi目前还是注重底层的智能的实现，还未开始着手高层的智能处理，如自然语言处理和抽象逻辑推理。
        
 在本节对Psi和MicroPsi的概述中，我们主要介绍其在OpenCog被应用的部分，主要是处理动机、行为和目标的框架模型。
 
-Psi理论中的动机机制可参考图XX，从下往上看，不难发现Psi的动机机制从能激发智能体的需求出发。对于动物来说，该需求可以是食物、水、保护自己的孩子、社交需求、求新等等；对于智能机器人来说，该需求可能是电源、 完整性(保护身体完整Integrity)、确定性（了解和熟悉环境的需求Certainty）、认知需求、心里成长等等；对于智能对话系统来说，该需求可以包括收集相关信息、取悦谈话对象、使会话保持新颖不枯燥等。
+Psi理论中的动机机制可参考图\ref{fig:Psi}，从下往上看，不难发现Psi的动机机制从能激发智能体的需求出发。对于动物来说，该需求可以是食物、水、保护自己的孩子、社交需求、求新等等；对于智能机器人来说，该需求可能是电源、 完整性(保护身体完整Integrity)、确定性（了解和熟悉环境的需求Certainty）、认知需求、心里成长等等；对于智能对话系统来说，该需求可以包括收集相关信息、取悦谈话对象、使会话保持新颖不枯燥等。
 
 Psi理论特别指出了两种相当抽象的需求，并认为他们是心理学上的最基本需求[见图XX]
+
 
 \begin{itemize}
 \item 能力需求(Competence)：智能体能有效实现某种强烈欲望的需求
 \item 确定性需求（Certainty）：智能体了解和熟悉环境的需求
 \end{itemize}
 
-每种需求都有一定的偏好范围或目标范围，随着时间和环境(包括智能体自身)的不断变化，智能体的需求也在不断地变化。 当需求水平落在相应的目标范围时，称作该需求被满足，否则需求不被满足。我们可以将智能体视为一个目标驱动的系统，其主要任务就是尽可能让所有这些需求都被满足。而当某一需求不被满足时，智能体会有一种试图将该需求水平恢复到偏好范围内的愿望，这种愿望便构成了动机。
+每种需求都有一定的偏好范围或目标范围，随着时间和环境(包括智能体自身)的不断变化，智能体的需求也在不断地变化。 当需求水平落在相应的目标范围时，
+称作该需求被满足，否则需求不被满足。我们可以将智能体视为一个目标驱动的
+系统，其主要任务就是尽可能让所有这些需求都被满足。而当某一需求不被满足
+时，智能体会有一种试图将该需求水平恢复到偏好范围内的愿望，这种愿望便构
+成了动机。
 
 \begin{figure}[htb]
 \centering
@@ -36,16 +37,71 @@ Psi理论特别指出了两种相当抽象的需求，并认为他们是心理�
 \label{fig:Psi}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Emotion and Personality in the Psi Model}{Emotion and Personality in the Psi Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Emotion and Personality in the Psi Model}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{OpenPsi：OpenCog中的基于Psi的情感计算模型}{OpenPsi: Psi-Based Motivated Action in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Psi in OpenCog}{}
+We now describe how Psi-based structures and dynamics are integrated into OpenCog, to provide a framework for motivated action that supplies the macroplanning component of our CogDial dialogue system.
 
-\subsubsection{Goals in OpenCog}{}
+本节将介绍如何在OpenCog中集成基于Psi的
 
-\subsubsection{Execution Management}{Execution Management}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Action Selection in OpenCog}{Action Selection in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The CogDial Dialogue System Architecture}{}
+As Stan Franklin likes to point out \cite{Franklin1995}, the essence of an intelligent {\it agent} is that it does things; it takes {\it actions}.  The particular mechanisms of action selection in OpenCog are a bit involved and are described in depth in \cite{EGI2}; in this chapter we will give the basic idea of the action selection mechanism and then explain how a variant of the Psi model is used to handle {\it motivation} (emotions,  drives, goals, etc.) in OpenCog, including the guidance of action selection.
+
+The crux of OpenCog's action selection mechanism  is  as follows
+
+\begin{itemize}
+\item the action selector chooses procedures that seem likely to help achieve important goals in the current context
+\begin{itemize}
+\item {\it Example:} If a highly important, current goal is to please the conversation partner, and the conversation partner has asked a question, then answering the question may be a procedure estimated as highly likely to achieve the "please the conversation partner" goal
+\end{itemize}
+\item to support the action selector, the system builds implications of the form $Context \& Procedure \rightarrow Goal$, where Context is a predicate evaluated based on the agent's situation
+\begin{itemize}
+\item {\it Example:} If Bob has asked the agent (the dialogue system) to compose a certain kind of paragraph, and it knows that Bob is very insistent on being obeyed, then  implications such as
+ \begin{itemize}
+ \item ``Bob instructed to do X''  and ``do X''  $\rightarrow$ ``please Bob''  $<.9,.9>$
+ \end{itemize}
+ will be utilized
+\item {\it Example:} If the agent wants to make its conversation partner believe a statement X, then implications such as
+ \begin{itemize}
+ \item ``tell Bob the key reasons why I believe X is true''  and ``I want to convince Bob that X is true''  $\rightarrow$ ``satisfaction''  $<.9,.9>$
+ \end{itemize}
+ will be utilized 
+\end{itemize}
+\item the truth values of these implications are evaluated based on experience and  inference
+\begin{itemize}
+\item {\it Example:} The first example could be evaluated based on experience, by assessing it against remembered episodes involving Bob giving instructions
+\item {\it Example:} The same example could be evaluated based on inference, using analogy to experiences with instructions from other individuals similar to Bob; or using things Bob has explicitly said, combined with knowledge that Bob's self-descriptions tend to be reasonably accurate
+\end{itemize}
+\item Importance values are propagated between goals using economic attention allocation (and, inference is used to learn subgoals from existing goals).  This is an aspect we have not yet explored in practice in CogDial, but we believe it will be helpful for achievement of more sophisticated dialogue behavior.
+\begin{itemize}
+\item {\it Example:} If Bob has told the agent to do X, and the agent has then derived (from the goal of pleasing Bob) the goal of doing X, then the ``please Bob''  goal will direct some of its currency to the ``do X''  goal (which the latter goal can then pass to its subgoals, or spend on executing procedures)
+\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Psi in OpenCog}{Psi in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Goals in OpenCog}{Goals in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Execution Management}{Execution Management}
+\label{Execution Management}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The CogDial Dialogue System Architecture}{The CogDial Dialogue System Architecture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 下面我们来介绍基于上述的目标控制体系的智能会话系统CogDial的系统框架。目前该系统只能处理英文对话，接下来章节中的对话的例子基本按照英文的习惯举的例子，可能不太适合中文的习惯，但是该系统的所采用的技术和理论基础都是完全适合中文的。CogDial主要采用了以下技术：
 
@@ -61,7 +117,9 @@ Psi理论特别指出了两种相当抽象的需求，并认为他们是心理�
 \end{itemize}
 \end{itemize}
 
-\subsubsection{针对对话控制的OpenPsi的配置}{Configuring OpenPsi for Dialogue Control}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{针对对话控制的OpenPsi的配置}{Configuring OpenPsi for Dialogue Control}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 基于Psi的基本框架，我们选择了以下的具体需求用来指导我们的对话系统的行为：
 \begin{itemize}
@@ -80,7 +138,7 @@ CogDial中的对话控制主要通过不同的需求来选择相应的言语行�
 \item 当系统正与多个人或智能体进行会话时，该需求被满足的程度提升；
 \item  当该系统的会话内容都属于积极向上的时候（通过情感分析技术实现），该需求被满足的程度达到最高。
 \end{itemize}
-\item 能力需求（Competence）：此项需求需要通过OpenCog来评估。简单来说，对每一个目标，OpenCog记录着会话系统在过去完成该项目标的程度，然后根据当前的不同目标所占的权重，我们可以通过以下公式估算该需求被满足的程度（XXX公式描述XXX 首先针对每一个目标，计算目标权重*能达到该目标的概率，然后求总）。当然计算目标被完成的程度，还应该考虑实现目标的语境等因素，目前我们的系统更注重构建一个智能会话系统框架，因此在语境无关的假设下来衡量目标被实现的程度。
+\item 能力需求（Competence）：此项需求需要通过OpenCog来评估。简单来说，对每一个目标，OpenCog记录着会话系统在过去完成该项目标的程度，然后根据当前的不同目标所占的权重，我们可以通过以下公式估算该需求被满足的程度（首先针对每一个目标，计算目标权重*能达到该目标的概率，然后求总）。当然计算目标被完成的程度，还应该考虑实现目标的语境等因素，目前我们的系统更注重构建一个智能会话系统框架，因此在语境无关的假设下来衡量目标被实现的程度。
 \item 确定性需求（Certainty）：如果会话系统正在和一个陌生人对话，或者系统无法理解大量被提及的单词或概念，那么当前的确定性需求被满足的程度就会降低。如果系统获取了新的可靠知识，那么该需求被满足的程度就会增加。
 \item 新颖性需求（Novelty）：我们定义了以下几种方式来增加智能绘画系统对新鲜度需求的满足程度值：
 \begin{itemize}
@@ -95,16 +153,16 @@ CogDial中的对话控制主要通过不同的需求来选择相应的言语行�
 \item 制定一组能被特定目标需求激活的对话控制程序
 \item 建立目标和相应去实现目标的行为之间的关联，可通过相关规则来实现，也可以通过强化学习来实现，我们系统框架采用两种结合的方法，但目前的系统还是以规则关联为主。
 \end{itemize}
-
+  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection {言语行为规划器}{Speech Act Schema}
+\subsection {言语行为规划器}{Speech Act Schema}
 \label{sec:SAS}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 “言语行为规划器”（Speech Act Schema）是CogDial的一个核心设计， 每个言语行为规划器里包含一种特定的言语行为（Speech Act），以及与该言语行为对应的特定的认知行为（Cognitive Procedure）。每种言语行为规划器都能在不同情况下被激发调用。对于言语行为规划器的选择，我们采用OpenCog中的OpenPsi的动机驱动模块来执行。
 
-CogDial的总体规划是针对本文第2章综述里提到的42种SWBD-DAMSL言语行为[XXX]，实现相应的言语行为规划器。 CogDial目前只实现了42种中的部分言语行为对应的言语行为规划器。另一方面，CogDial中的言语行为规划器的设计也绝不局限于这42种言语行为，CogDial实现了一些言语行为规划器能对应这42种中的某两种或多种言语行为，比如我们利用真值回答规划器（TRUTH VALUE ANSWER schema）来同时关联其中的YES QUESTION和NO QUESTION，从而可以将一般疑问句的回答根据真值的大小延伸到“可能”“不确定”“可能不”等，而不仅仅是局限于回答“是”或者“不是”。CogDial还根据智能体的具体情况拆分了这42种中的某些言语行为，例如，我们针对言语行为“STATEMENT” 实现了两个不同的言语行为规划器：回应声明以及智能体自发的用于表达其自身状态和想法等的声明。
+    CogDial的总体规划是针对本文第 \ref{chap:litreview}章综述里提到的42种SWBD-DAMSL言语行为 \cite{Twitchell2004}，实现相应的言语行为规划器。 CogDial目前只实现了42种中的部分言语行为对应的言语行为规划器。另一方面，CogDial中的言语行为规划器的设计也绝不局限于这42种言语行为，CogDial实现了一些言语行为规划器能对应这42种中的某两种或多种言语行为，比如我们利用真值回答规划器（TRUTH VALUE ANSWER schema）来同时关联其中的YES QUESTION和NO QUESTION，从而可以将一般疑问句的回答根据真值的大小延伸到“可能”“不确定”“可能不”等，而不仅仅是局限于回答“是”或者“不是”。CogDial还根据智能体的具体情况拆分了这42种中的某些言语行为，例如，我们针对言语行为“STATEMENT” 实现了两个不同的言语行为规划器：回应声明以及智能体自发的用于表达其自身状态和想法等的声明。
 
 总的来说，本文虽然没有完全照搬SWBD-DAMSL的言语行为分类，但是，该分类体系是来源于对大量人类会话的进行具体分析后的实验结果，也在具体的会话分析和抽象的言语行为理论之间架起了桥梁，使得抽象的言语行为理论在机器上实现变得可行，因此，SWBD-DAMSL的言语行为分类体系还是很有借鉴价值的。
 
@@ -128,7 +186,7 @@ CogDial: I am fine
 \end{verbatim}
 这个简单的对话可用以下的Atoms来表示：
 
-\begin{verbatim}
+{\tt\begin{small}\begin{lstlisting}
 
 MemberLink
 	UtteranceNode [555]
@@ -209,27 +267,27 @@ ExecutionLink
 		DialogueNode [123]
 	UtteranceNode [666]
 
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 其中的命题也可以有多种选择，例如：
 
-\begin{verbatim}
+{\tt\begin{small}\begin{lstlisting}
 EvaluationLink
 	PredicateNode "Conversation Partner"
 	DialogueNode $D
 	$X
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 该命题为真，当且仅当，$X是$D其中一个话语的发言人。
 
 
-\subsection{Initial Speech Act Schema and their Linkage to Goals and Contexts}{}
+\section{Initial Speech Act Schema and their Linkage to Goals and Contexts}{Initial Speech Act Schema and their Linkage to Goals and Contexts}
 
-在 \cite{Twitchell2004}, 中，Twitchell和Nunamaker根据Searl的言语行为理论的经典分类，在对大量的人类会话进行经验分析后，将言语行为细分为42种。虽然此分类体系很有理论研究价值，但在实验过程中，考虑到实用智能会话系统的语境等因素，我们对这42种言语行为做了稍微调整，同时也在CogDial中添加了一些SWBD-DAMSL研究中没有出现言语行为。
+在\cite{Twitchell2004}, 中，Twitchell和Nunamaker根据Searl的言语行为理论的经典分类，在对大量的人类会话进行经验分析后，将言语行为细分为42种。虽然此分类体系很有理论研究价值，但在实验过程中，考虑到实用智能会话系统的语境等因素，我们对这42种言语行为做了稍微调整，同时也在CogDial中添加了一些SWBD-DAMSL研究中没有出现言语行为。
 
 即使在有明确的言语行为类型的情况下，仍然有很多种方法去构建一个智能会话系统。CogDial根据多个广泛的可扩展目标制定一些特定的设计决策，在这些决策基础上，系统能通过自适应学习方法自动改进，为能跳出传统的对话系统的研究方法搭建一个基础平台。为了搭建这样的系统，需要考虑的第一点是，对于每一个言语行为，都有相应的固定形式的认知内容被触发，也有相应的习惯性表达方式来表达该认知内容。
 
-如果在类似的言语行为类型分类基础上构建一个简单的“聊天机器人”，一般通过更简单，不用加入很多认知处理，针对每个言语行为类型，输出直接的具体的话语，也同样能达到类似的效果。例如，对于言语行为类型Agree，可以编写简单的程序使智能体输出“同意（Agree）”或者“是的，我同意（Yes, I agree)”。目前，“聊天机器人”的概念很模糊。我们这里提到的“聊天机器人”范围也很广，可以是完全基于模板匹配的聊天机器人ELIZA[XXX]，也可以是具有一些推理能力但是基本忽略语义理解的Siri[XXX]。但关键的一点是，我们设计的CogDial系统，是本着该系统能“理解”自己在说什么的理念，也就是说，该系统所产生的话语来自于内部的语义关系图，且该语义关系图和系统知识库中的其他语义关系图之间有着丰富的语义关系。我们希望系统能在一定程度上更深地“理解”自己在说什么，而不是只生成它不理解的字符串。在某些情况下，在不理解的情况下破口而出一些话语，尤其是习惯用语，也是可以接受的（其实人类有时候也会无意识地这么做），但这并不是大部分情况。
+如果在类似的言语行为类型分类基础上构建一个简单的“聊天机器人”，一般通过更简单，不用加入很多认知处理，针对每个言语行为类型，输出直接的具体的话语，也同样能达到类似的效果。例如，对于言语行为类型Agree，可以编写简单的程序使智能体输出“同意（Agree）”或者“是的，我同意（Yes, I agree)”。目前，“聊天机器人”的概念很模糊。我们这里提到的“聊天机器人”范围也很广，可以是完全基于模板匹配的聊天机器人ELIZA\cite{Weizenbaum1966}，也可以是具有一些推理能力但是基本忽略语义理解的众所周知的Siri。但关键的一点是，我们设计的CogDial系统，是本着该系统能“理解”自己在说什么的理念，也就是说，该系统所产生的话语来自于内部的语义关系图，且该语义关系图和系统知识库中的其他语义关系图之间有着丰富的语义关系。我们希望系统能在一定程度上更深地“理解”自己在说什么，而不是只生成它不理解的字符串。在某些情况下，在不理解的情况下破口而出一些话语，尤其是习惯用语，也是可以接受的（其实人类有时候也会无意识地这么做），但这并不是大部分情况。
 
 在CogDial系统的设计中，每一个言语行为都需要下列几项内容与之相应：
 \begin{itemize}
@@ -241,14 +299,14 @@ EvaluationLink
 
 这样一来，通过编写一些抽象的语义形式和特定的会话习惯之间的匹配模式，便能构建出一个具有一定合理功能的智能会话系统，当系统学习了用不同的更复杂的表达方式去实现抽象的语义形式后，也就能在更大程度上“理解”会话内容。此外，这些抽象的语义形式除了与言语行为和目标需求相关联，还和其他不同的认知内容相关联，因此，系统会随着经验的增长而趋向成熟。
 假设任何言语行为被触发都能增加下面表达式中的EvaluationLink的真值：
-\begin{verbatim}
+ {\tt\begin{small}\begin{lstlisting}
 EvaluationLink
 	PredicateNode "Currently Having Conversation"
 	TimeNode T
-\end{verbatim}
+\end{lstlisting}\end{small}}
     其中，“T”表示当前时间。又假设上面表达式中的EvaluationLink和系统中多个顶层目标有关联（该假设对于某些应用也不总为真，那么在这样的情况下，这些不为真的关联的链的权重会根据具体情况被调为适当的值），也就是说，该系统能看到会话行为带来的价值。 因为每个言语行为都蕴含着这个EvaluationLink，所以每个言语行为都会影响系统的目标实现。一些言语行为会通过持续进行对话从而超标完成某个系统目标。这样的言语行为会在后面章节详述。
     下面会给出一些具体的例子进一步解析前面几段提到的Atoms。
-\begin{verbatim}
+ {\tt\begin{small}\begin{lstlisting}
 ImplicationLink <.5>
 	EvaluationLink
 		PredicateNode "Currently Having Conversation"
@@ -256,9 +314,9 @@ ImplicationLink <.5>
 	EvaluationLink
 		PredicateNode "Increase Knowledge"
 		TimeNode $T
-\end{verbatim}
+\end{lstlisting}\end{small}}
 上述超图片段表明，维持对话能在一定程度上满足系统目标“增长知识”，ImplicationLink的初始权重设为0.5，表明“当前有会话”蕴含系统目标“增长知识”只有0.5的概率。这个权重会随着系统的经验而改变，也会通过其关联的其他节点和链的具体情况推算得来。例如：
-\begin{verbatim}
+ {\tt\begin{small}\begin{lstlisting}
 ImplicationLink <.1>
 	ANDLink
 		EvaluationLink
@@ -274,10 +332,10 @@ ImplicationLink <.1>
 	EvaluationLink
 		PredicateNode "Increase Knowledge"
 		TimeNode $T
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 上面的超图片段表明，当进行对话的对象是Bob的时候，只有0.1的概率能实现系统目标“增长知识”。
-\begin{verbatim}
+{\tt\begin{small}\begin{lstlisting}
 ImplicationLink <1>
 	ExistsLink $G, $S, $O, $U, $D
 		ANDLink
@@ -305,19 +363,19 @@ ImplicationLink <1>
 		EvaluationLink
 			PredicateNode "Currently Having Conversation"
 			TimeNode $T
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 上面的例子说明，如果一个言语行为规划器被执行，当前的对话节点（DialogueNode）$D$会关联一个谓词“当前活跃”，表明$D$出于活跃状态， 那么“当前有会话”的目标被实现。
 
-\begin{verbatim}
+ {\tt\begin{small}\begin{lstlisting}
 MemberLink
 	GroundedSchemaNode "answer_yes.scm"
 	ConceptNode "Speech Act Schema"
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 接下来的例子演示了言语行为如何与目标关联：
 
-\begin{verbatim}
+ {\tt\begin{small}\begin{lstlisting}
 ImplicationLink <.8>
 	ExistsLink $S, $O, $U, $D
 		ANDLink
@@ -342,7 +400,7 @@ ImplicationLink <.8>
 		EvaluationLink
 			PredicateNode "Please Conversation Partner"
 			TimeNode $T
-\end{verbatim}
+\end{lstlisting}\end{small}}
 
 上面的例子表明言语行为规划器“肯定回答”（”Answer Yes”schemma）可以用于增加实现“取悦谈话对象”目标的幅度值，超越了谈话对象因单纯继续对话而被取悦的程度。
 
@@ -356,5 +414,51 @@ ImplicationLink <.8>
 \item OpenPsi中的顶层目标
 \item 不同的言语行为所引发的不同认知过程。目前这些过程是在与GroundedSchemaNode绑定的相应Scheme或者Python代码中被实现。这些认知过程也可以在OpenCog的知识库Atomspace里被实现（如下文中的Question-answering schema）。
 \end{itemize}
-本章接下来的部分将进一步阐述CogDial使用的一系列言语行为规划器以及解释它们在CogDial中的实现机制，这些言语行为规划器大部分从SWBD-DAMSL中借鉴。当然这些特殊的言语行为规划器的集合并非一成不变，在以后对系统的不断改进和完善过程中，无疑会导致对该集合一定程度的延伸和细化。但我们相信这是一个好的开始，需要重申的是这些言语行为规划器分类是大量人类对话的实证分析的结果。目前，我们的研究工作重点在问答式规划器（Question-answering schema），将会在\ref{sec:QA} 中进一步阐述。
+本章接下来的部分将进一步阐述CogDial使用的一系列言语行为规划器以及解释它们在CogDial中的实现机制，这些言语行为规划器大部分从SWBD-DAMSL中借鉴。当然这些特殊的言语行为规划器的集合并非一成不变，在以后对系统的不断改进和完善过程中，无疑会导致对该集合一定程度的延伸和细化。但我们相信这是一个好的开始，需要重申的是这些言语行为规划器分类是大量人类对话的实证分析的结果。目前，我们的研究工作重点在问答式规划器（Question-answering schema），将会在\ref{sec:QA}中进一步阐述。
+
+\subsection{谈话开场白、结束谈话和转移话题}{Opening, Closing and Transitioning}
+
+\begin{itemize}
+\item 被放弃或转移、结束
+\begin{itemize}
+  \item 举例：「所以，嗯…」(”So, hmmmm....”)
+  \item 相关目的、语境：当前谈话不尽能达到智能体的目的；但其中一些与谈话对象的对话，似乎仍有达到智能体目的合理程度上的可能性。或者，智能体无法想到任何与谈话对象所讲之相关的答复。当持续对话被断定为可达到智能体的某些目的，然而其他言语行为似乎无法在显着程度上充分达到智能体之目的；或当言语行为极有可能达到智能体的目标，然而看似与先前的对话失去连结性，在这样的情况下，这就会被使用（因此，某些言语标志对于划定新的谈话阶段之界线，是很恰当的）。
+  \item 程序：在此情况下，待给予的语意内容往往会是「或许我们该来谈点别的」(”Perhaps we should talk about something else”)丶或「现在来谈谈别的吧。」(”Let us now talk about someone else”) 这样的语意内容会搭配清晰的咬字，也涉及社交上常见的言辞，比如「嗯…这个嘛…」(”Hmmmm... welll...”)。
+\end{itemize}
+\item 常见谈话开场白
+  \begin{itemize}
+  \item 举例：「最近过得怎样？」(”How’s it going?”)
+  \item 相关目的、语境：一名潜在交谈对象在现场，经断定，与该对象交谈将能达到系统的目标。
+  \item 程序：「常见谈话开场白」的性质，会以表示问候丶欲进行交谈的一种社会成规作为开端。有些常见的谈话开场白非常普通，例如「嗨。」(”Hi.”) 而其他较有语意内涵的，比如「现况如何？」(”What is your current state?”)丶「最近经历了哪些事？」(”What have been your recent experiences?”)丶「在想些什么？」(”What are you thinking about?”)丶「目前在从事些什么？」(”What are you involved with currently?”) 这样的语意内容会搭配清晰的咬字，也涉及社交上常见的言辞，比如「最近怎样？」(”What’s up?”)丶「有什么新鲜事？」(”What’s new?”)丶「生活怎么样？」(”How’s it going?”) 等。同样地，也可能会明白地问丶或通过惯用语表达「我想和你谈谈」(”I would like to talk to you”) 或「想聊天吗？」(”Would you like to chat?”) 等语意内容。 
+  \end{itemize}
+\item 结束谈话
+  \begin{itemize}
+  \item 举例：「那好吧…今天跟你聊天很开心。」(”Alrighty then... it’s been good to chat with you.”)
+  \item 相关目的、语境：如结束谈话会是达成系统目标的最佳方式，这样的话语是很适当的。若确定谈话对象欲结束谈话，在这种情况下，结束谈话会是达成系统目标取悦谈话对象最好的办法。在任何情况下，比起唐突结束，用言辞结束谈话反而是达成取悦人类的目标最佳的方式。
+  \item 程序：结束谈话的语意内容会有「这次谈话我很尽兴」(”I have enjoyed the conversation”)丶「谢谢你给我这么有意义的谈话」(”Thanks you for the good conversation”)丶「希望下次还能再跟你聊天」(”I hope to talk to you again”) 等，并且是以直接或惯用性言辞表达。
+  \end{itemize}
+\end{itemize}
+
+\subsection{实质性对话开场白}{Substantive Openings}
+
+在 CogDial 系统的语境中，有许多种对话开场白往往很实用，但这并没有在 SWBD-DAMSL 研究中被提出讨论。例如：
+
+\begin{itemize}
+\item 意识流陈述性开场白
+\begin{itemize}
+\item 举例：「我常在想，有些人总在谈些同样的事。」(”I’ve been thinking there are some people who always talk about the same things.”)
+\item 相关目的丶语境：为取悦谈话对象丶或达到令人出奇的目标，就会通过此等开场白达成。
+\item 程序：在此开场白的程序，会先从 AttentionalFocus 截取一组 Atom，再将之供给微规划程序进行发音。
+\end{itemize}
+\item 个人化开场白
+\begin{itemize}
+\item 举例：「我对下届的总统大选有些看法。」(”I have some thoughts about who’s going to win the next Presidential election.”) [向时常谈论政治的人说]
+\item 相关目的丶语境：与意识流陈述性开场白相同，但更着重于取悦谈话对象和增进联系。 
+\item 程序：对代表谈话对象的 Atom 予以高度的重视值（在 OpenCog 术语中的 ShortTermImportance），接着在其散播到 AtomSpace 一段时间后，从 AttentionalFocus 中选择一组 Atom，再将之供给微规划程序进行发音。
+\end{itemize}
+\end{itemize}
+
+从某种意义上来看，这些言辞只是陈述句；但事实上，它们被用作对话开场白，使之增添了些许不同于平常的韵味。不同的认知程序经常会被用在选择哪些语句该作为对话开场白。 
+
+在有些相关言语行为中，问句会被用作对话开场白。例如：「谁会赢得下届的总统大选？」(”Who’s going to win the next Presidential election?”) 这些都可为如下探讨的任何问句形式。但演算出该问什么来开始一段对话，与演算出该用何种语句来作对话开场白的程序，会有高度的相同性。
 
