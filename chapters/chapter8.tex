@@ -709,3 +709,106 @@ ImplicationLink <.8>
 
 \end{itemize}
 
+
+\subsection{陈述}{Statements}
+
+\begin{itemize}
+\item 非意见式陈述
+\begin{itemize}
+\item 举例：「猫不冬眠。」(”Cats don’t hibernate.”)
+\item 相关目的丶语境：这部分的关键语境有二：
+\begin{enumerate}
+\item 谈话对象对智能体问了一个非真伪值的疑问句，而智能体欲给予回答。在此情况下，取悦谈话对象的目标相当强烈。
+\item 智能体在其 AttentionalFocus 中有些具高度重要性的 Atom，并想明确地表达出。在此情况下，取悦谈话对象的目标较不那么强烈。若智能体欲获取涉及 Atom 的一般知识，这时对获取知识的目标会有强烈的连结；而如果智能体发现新奇感往往是通过发问这些 Atom、或相似 Atom 而产生，对新奇感的目标则有强烈的连结。
+\end{enumerate}
+\item 程序：将问题中的 Atom 传送至微规划系统进行言语表达即可。
+\end{itemize}
+
+
+\item 意见式陈述
+\begin{itemize}
+\item 举例：「我不认为希拉里•克林顿会当选总统。」(”I don’t think Hillary Clinton will be elected President.”) 
+\item 相关目的丶语境：除了牵涉的 Atom 具有较低的置信度，或智能体怀疑谈话对象强烈不认同智能体的真伪值评估之情况，其他情形与「非意见式陈述」相同。
+\item 程序：语意内容为「我认为 X」(“I think X”) 或「我不认为X」(“I don’t think X”)。这般言辞可直接或以惯用语方式传达。
+\end{itemize}
+
+\end{itemize}
+
+\subsection{自描述}{Self-Descriptions}
+
+\begin{itemize}
+
+\item 提议、选择、承诺
+\begin{itemize}
+\item 举例：「我会考虑的。」(”I’ll think about it”)
+\item 相关目的丶语境：谈话对象要求智能体做某事。智能体必须决定自己是否愿意做这件事。这部分一般目的是取悦谈话对象。
+\item 程序：语意内容为「我会试着 X」(”I will try to do X”)（若智能体不确定是否会成功）、「我会 X」(”I will do X”)（若相当肯定会成功）、「我不想 X」(”I don’t want to do X”)、「我会试着X，但我不确定是否能成功」(”I will try do to X, but am not sure I can succeed”)（若智能体认为成功的机会很低）、「我会想想我是否能够 X」(”I will think about whether I can do X”)、或「我会思考我是否想要 X」(”I will think about whether I want to do X”)。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+
+\item 自我对话
+\begin{itemize}
+\item 举例：「嗯…我想知道…」(”Hmmm, well I wonder....”)
+\item 相关目的丶语境：一组 Atom 在智能体的 AttentionalFocus 中产生高度的重要性，并且与当前对话中产生之 Atom 有合理、紧密的关联性。这些 Atom 可代表某陈述句或问句（后者的情况为这组 Atom 具有虚悬不定、无约束的 VariableNode；或者其不具有 VariableNode、但置信度低的情况）。这里的主要目标为取悦谈话对象和求知。 
+\item 程序：语意内容为「我在思考 X」(”I am thinking X”)（针对某陈述）、「我很好奇是否 X」(”I am wondering if X”)（针对置信度低的陈述 X）、「我在想 X」(”I am wondering X”)（针对某非真伪值的疑问，例如某 X 带有虚悬不定的 VariableNode）。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+\end{itemize}
+
+\subsection{后设话语}{Meta-Utterances}
+
+\begin{itemize}
+\item 模棱话
+\begin{itemize}
+\item 举例：「我不太确定我的背景经历是否足以回答这问题，但…」(”I’m not so sure I have the background to really answer that, but ...”)
+\item 相关目的丶语境：在此的语境条件，在于智能体欲做出陈述，但对该语句仅持有较低的置信度。
+\item 程序：语意内容为「我对接下来要将的话较没有把握，但：S」(”I have relatively low con- fidence in the following statement, but: S”)、或「我对接下来要将的话约有三分的把握，但：S」(”My confidence in the following statement is roughly .3, but: S”)。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+\item 答复、同意前的保留
+\begin{itemize}
+\item 举例：「等等…让我想一下」(”Wait ... give me a minute....”)
+\item 相关目的丶语境：在此的语境条件，在于智能体正为接下来所要说的话做内部处理，而这个程序耗费的时间超出了某「可接受的对话迟滞」参数值（可根据某特定谈话语句之间的平均迟滞时间、或与相同谈话对象其他对谈语句之间的平均迟滞时间、或者其他类似方式的谈话等情况设置之默认值改编）。 
+\item 程序：
+\end{itemize}
+
+
+\item 不理解的信号
+\begin{itemize}
+\item 举例：「你在说什么鬼话呀？讨厌的家伙！」(”What in frick’s sake are you talking about, pesky human??!”)
+\item 相关目的丶语境：在此的主要目标为获取知识，取悦谈话对象的动机较弱。语境条件在于谈话对象说了某些智能体认为荒谬的话。另一较不重要的语境条件，在于谈话对象说了某些对智能体而言错误至极的话。
+\item 程序：语意内容为「我不明白你说的 X」(”I don’t understand what you mean by X”)，所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+\end{itemize}
+
+\subsection{命令句、建议}{Imperatives / Suggestions}
+
+\begin{itemize}
+\item 动作指令
+\begin{itemize}
+\item 举例：「告诉我他说了什么！」(”Tell me what he said!”)
+\item 相关目的丶语境：在单纯的对话系统语境中，切题的语境条件在于智能体欲获得某些其高度重视的信息，而这些信息是智能体认为谈话对象所具备的。另一相关语境，在于智能体已向谈话对象询问某特定问题，然而谈话对象的答复似乎不是该问题的正确解答。在某个应用程序中，CogDial 被搭配一个能够执行非言语行为之成体运作，该程序中也有这样的语境；智能体希望谈话对象执行某个动作（因谈话对象做了这个动作会使智能体更完善达成目标），而相信智能体有能力做这个动作，是有原因的。 
+\item 程序：语意内容为「我要你告诉我 X」(”I want you to tell me X”) 或 「我希望你 X」(”I want you to do X”)，这般言辞可明确或以惯用语方式表达。
+\end{itemize}
+
+
+\item 第三人称谈话
+\begin{itemize}
+\item 举例：「说真的，鲍勃，你是这么认为的吗？」(”Really, Bob, do you feel that way?”)
+\item 相关目的丶语境：此处的相关目标为取悦谈话对象，完全在于情感上的关系管理。导致这类话语的语境条件有许多种，其中几种可能为： 
+\begin{enumerate}
+\item 谈话对象回答了某问题，其答案看似与多数人、或多数与谈话对象普遍相似的人回答的答案有所分歧。
+\item 智能体问谈话对象一个问题，智能体怀疑谈话对象的回答会与多数人、或大部分与谈话对象普遍相似的人会回答的答案有所分歧。 
+\item 问的问题被判断为「私人」，例如一般亲密的友人或家人才会问的问题。
+\item 做出了有关谈话对象的陈述，就谈话对象的观点来说，是「私人」的陈述。 
+\end{enumerate}
+\item 程序：最好将此视为可穿插到多种其他言语行为之言语现象，而非个别的言语行为。在另一言语行为制造出一组待传入微规划系统的 Atom 后，将会调用「可能插入第三方谈话」的规划器，此采用的准则包含前述的相关语境，根据这些准则，决定是否将谈话对象的名字引入到微规划系统被予以处理的一组 Atom 中（将名字给予此组 Atom，会导致表面生成器最终产生出「第三人称谈话」的例句）。
+
+\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{问题答复规划器}{Question-Answering Schema}
+\label{sec:QA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
