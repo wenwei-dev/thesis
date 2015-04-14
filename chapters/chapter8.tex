@@ -555,3 +555,157 @@ ImplicationLink <.8>
 \end{itemize}
 \end{itemize}
 
+\subsection{回答}{Answers}
+
+\begin{itemize}
+
+
+\item 肯定回答
+\begin{itemize}
+\item 举例：「是的，没错。」(”Yes, that’s right”)
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案为肯定。目标是取悦谈话对象。
+\item 程序：语意内容为「是」(”Yes”)，措辞表达的方式有很多种。
+\end{itemize}
+
+
+\item 否定回答
+\begin{itemize}
+\item 举例：「不，恐怕不是这样。」 (”No, I’m afraid not.”)
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案为否定。目标是取悦谈话对象（虽然在此情况下，达到目标的程度一般会比「肯定回答」来得稍微低些– 比起否定的答复，多数人更想听到的是肯定回答，但这显然还是依特定情况而定）。 
+\item 程序：语意内容为「否」(”No”)，措辞表达的方式有很多种。
+\end{itemize}
+
+
+\item 拒绝
+\begin{itemize}
+\item 举例：「呃…不，我做不到。」(”Uh... no I can’t do that.”)
+\item 相关目的丶语境：语境条件在于谈话对象提出了建议，而智能体认为这建议有误（若为陈述句）、不值得做或不可能办得到（若为命令句）。在拒绝某命令的情况下，此举是关系到所有智能体的目标，但仍取悦谈话对象和达成联系 – 因为一般来说，若智能体拒绝了某要求，是因从事智能体所想做的，会比从事谈话对象所请求的更能够帮助其达成其他目标。
+\item 程序：语意内容为「我不认同 X」(”I don’t agree with X”) 或「我不想从事 X」(”I don’t intend to do X”)；措辞表达的方式有很多种，而 X 可被取代为「那个」或其他照应语。
+\end{itemize}
+
+
+\item 肯定的委婉回答
+\begin{itemize}
+\item 举例：「对啊，她是这样。」(”Yes she did.”)
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案为肯定。目标是取悦谈话对象。对此规划器应有成见的情况，在于智能体对问题的重视、或者谈话对象看似对该问题有特定程度的重视，正如这类回答带有特别的强调语气。 
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同「我同意 F」(”I agree with F”)、或「F 是对的」(”F is true”) 等措辞。
+\end{itemize}
+
+
+\item 否定的委婉回答
+\begin{itemize}
+\item 举例：「这个嘛，我不认为…」(”Well I think not...”)
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案为否定。目标是取悦谈话对象（虽然在此情况下，达到目标的程度一般会比「肯定回答」来得稍微低些）。对此规划器应有成见的情况，在于：问句或其答案看似有特别高度的重要性（OpenCog 中的 STI），正如这类回答带有特别的强调语气；或者，智能体对问题的重视、或谈话对象看似对该问题有高度的重视。
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同「我不赞同 F」(”I disagree with F”)、或「F 并不是对的」(”F is not true”) 等措辞。
+\end{itemize}
+
+
+\item 也许、部分接受
+\begin{itemize}
+\item 举例：「是啊 – 好像是吧。」(”Yeah – kind of.”)
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案具有不太接近 1、也不太接近 0 的真伪值。目标是取悦谈话对象。 
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同「我部分同意 F」 (”I partly agree with F”)、「我认为 F 可能是对的」(”I think F is possibly true”) 或「F 有部分是对的」(”F is possibly true.”) 等措辞。智能体会使用特定的惯用语表达特定程度的估计真实性，比如「我认为 F 也许是对的」(”I think F is probably true”) 或「我觉得 F 有令人信服的真实度」(”I think F is conceivably true”) 等。较动摇不定的讲法如「我估计 F 的可能性约为 6，带有 8 的置信水平」(”I estimate the probability of F at approximately 6 with confidence level. 8”)（或被给予的任何数值）。
+\end{itemize}
+
+
+\item 其他回答
+\begin{itemize}
+\item 举例：「我不知道。」 (”I haven’t a clue.”) 
+\item 相关目的丶语境：语境条件在于谈话对象问了个是非问句，而智能体认为答案为肯定。目标是取悦谈话对象以及聚集知识。特定的语境条件，在于谈话对象问了个问题，而智能体也不知道答案、或对问题有其他反应，或问题的评估对智能体而言比该答案还要重要。
+\item 程序：此程序为对该问句识别出主观上的重要反应或评估。语意内容为「我有反应 R」(”I have reaction R”) 或「我对问题 Q 有 反应 R」(”I have reaction R to question Q.”) 例如「我不知道」(”I have no idea”)、「我不知道是谁杀了 J.R.」或「我真的很讨厌思考为什么人们如此邪恶」(”I really hate thinking about why people are so evil.”)。
+\end{itemize}
+
+
+\item 不合意的回答
+\begin{itemize}
+\item 举例：「那其实不是我所想的。」(”That’s not really what comes to mind.”) 
+\item 相关目的丶语境：语境条件在于谈话对象回答了一个问题，但智能体认为答案虽行得通，但并不是最好的答案。目标是取悦谈话对象以及聚集知识。
+\item 程序：语意内容为「我认为 X 并不是 Q 最好的答案。」”I think X is not the best answer to Q.”，措辞表达的方式有很多种。
+\end{itemize}
+
+
+\end{itemize}
+
+\subsection{问句}{Questions}
+
+\begin{itemize}
+
+
+\item 是非问句（稍微延伸 SWBD-DAMSL；广义来说，如考量到答案为分等、而非是、否之二元真伪值的情况，则可将之视为真伪值疑问。）
+\begin{itemize}
+\item 举例：「你有给我编程吗？」(”Did you program me?”)
+\item 相关目的丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件为：
+\begin{enumerate}
+\item 智能体或许某程度上重要的 Atom，但置信度低；因此欲针对此 Atom 的真伪值提问。
+\item 谈话对象或许提及了一特定的概念 C，而 C 有几个层面是智能体知识较不足的；这可被确切阐述为真伪值疑问句。在此情况下，取悦谈话对象会是主要目标。
+\end{enumerate}
+\item 程序：将「Atom C 的真伪值为何」(”What is the truth value of Atom C”) 转换为一个句子，一般会从多种惯用语表达方式之中取一种。例如，智能体绝不应这么问：「猫吃老鼠的真伪值为何？」(”What is the truth value of cats eating mice?”)，取而代之，应这么问：「猫吃老鼠吗？」(”Do cats eat mice?”)；也不应这么说：「猪很笨的真伪值为何？」(”What is the truth value of pigs being stupid”)，取而代之，应这么说：「猪很笨吗？」(”Are pigs stupid?”)
+\end{itemize}
+
+
+\item 特殊疑问句 (Wh-Question)
+\begin{itemize}
+\item 举例：「谁创造了第一台电脑？」(”Who built the first computer?”)
+\item 相关目的丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为次要的目标。基本语境条件为：
+\begin{enumerate}
+\item 智能体或许带有可变因素的 Atom，并且不知道此 Atom 的任何置信满意度，因此欲提问了解。 
+\item 谈话对象或许提及了一特定的概念 C，而 C 有几个层面是智能体知识较不足的；这可轻易被阐述为真伪值疑问句。在此情况下，取悦谈话对象会是主要目标。
+\end{enumerate}
+\item 程序：
+\end{itemize}
+
+
+\item 陈述式是非问句（真伪值疑问句）
+\begin{itemize}
+\item 举例：「所以你今天完全是走路去工作吗？」(”So you walked all the way to work today?”)
+\item 相关目的丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件与一般真伪值疑问相同；但若智能体对问题的正确答案相当肯定（虽然并不是完全肯定），采用这个形式较为适当。 
+\item 程序：语意内容为「X 是正确的吗？」(”Is it correct that X?”)，但一般而言会以惯用语的方式表达。
+\end{itemize}
+
+
+\item 疑问句形式的衬托型反馈
+\begin{itemize}
+\item 举例：「你确定？」(”Are you sure?”)
+\item 相关目的丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件，在于谈话对象说了某些事 S，而智能体认为 S 可能有误、或觉得 S 非常令人惊讶。
+\item 程序：语意内容为「你非常肯定 S 吗？」(”Are you highly certain that S?”) 但一般而言会以惯用语的方式表达。
+\end{itemize}
+
+
+\item 开放式问句
+\begin{itemize}
+\item 举例：「对于他的前途你有什么看法？」(”What do you think about his prospects?”)
+\item 相关目的丶语境：
+\begin{enumerate}
+\item 基本语境条件，在于智能体欲获得某些话题 C 的更多信息。在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。
+\item 另一种语境情况，为智能体知道谈话对象欲谈论话题 C，因此智能体决定针对 C 发问、或提出与 C 相关的问题。若是这样的情况，取悦谈话对象会是主要目标，而获取知识或新奇感则是其次。 
+\end{enumerate}
+\item 程序：语意内容为「你对 C 有何看法？」(”What do you think about C?”)、「C 的真伪值为何？」(”What is the truth value of C?”)、或「关于 C 你知道些什么？」，但这些疑问会以惯用语的方式表达。
+\end{itemize}
+
+
+\item 附加问句
+\begin{itemize}
+\item 举例：「对吧？」(”Right?”)
+\item 相关目的丶语境：这部分的关键语境条件，在于智能体欲对谈话对象发问，而智能体几乎肯定该问题的正确答案 – 但智能体欲确定谈话对象也认同。在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。 
+\item 程序：此程序为通过确切阐述为连续的问题（「X，那你同意 X 吗？」”X. Do you agree with X?”），提出「你同意 X 吗？」(”Do you agree with X?”) 的问题。以惯用语表达而言，在连续问题中的第二个部分，“X“ 通常会被去除，措辞表达的方式有很多种。
+\end{itemize}
+
+
+\item 陈述性特殊疑问句 (Declarative Wh-question)
+\begin{itemize}
+\item 举例：「你跟他们说了什么？」(”You told them what?”)
+\item 相关目的丶语境：在此的关键目标，一般为获取知识和新奇感；而取悦谈话对象为其次。引起此等阐述的关键语境，似乎是在 VariableNode 的重要性比问句中的其他字词还要高的情况；因为这类阐述更强调了疑问词。
+\item 程序：这部分的语意内容纯粹只是个疑问句；必须指示微规划系统以陈述性的问句形式来表达疑问。
+\end{itemize}
+
+
+\item 选择式问句\footnote{这部分并不包含在 SWBD-DAMSL 中，但这显然是有别于其他的问句形式，值得提出论述}
+\begin{itemize}
+\item 举例：「你认为谁最有可能当选：希拉里、杰布•布什还是迈提•毛斯」(”Who do you think is more likely to get elected: Hillary, Jeb Bush or Mighty Mouse?”)
+\item 相关目的丶语境：在此的关键目标为获取知识和新奇感；取悦谈话对象为其次。关键语境在于智能体欲从谈话对象获得某问题的答案，而智能体认为该问题仅有相当少数的可能答案。另一种语境，在于智能体想要的问题答案是以反意的形式（OrLink 或 XORLink）出现在 Atomspace 中。
+\item 程序：语意内容出于「问题：候选回答 1，…，或候选回答 K。」(”Question: Candidate Answer 1, ..., or Candidate Answer k.”) 之形式。这般言辞可直接或以惯用语方式传达。
+\end{itemize}
+
+
+\end{itemize}
+
