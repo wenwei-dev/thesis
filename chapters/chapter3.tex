@@ -1,4 +1,4 @@
-﻿\chapter{OpenCog AGI框架}{The OpenCog Artificial General Intelligence Architecture}
+\chapter{OpenCog AGI框架}{The OpenCog Artificial General Intelligence Architecture}
 
 在本章我们将介绍通用人工智能体系结构OpenCog的一些关键技术。OpenCog是一个由多个子系统组成的庞大智能认知体系结构。更多有关此系统的技术，可以参考这本一千多页的书籍【XX】。在此我们只列出与本文研究紧密联系的几个关键的子系统，这样有助于理解本文的研究内容，包括前文中提到的自然语言理解、自然语言生成、逻辑推理以及智能会话系统建模等。
 \section{ConPrime设计}{The CogPrime Design}
@@ -33,10 +33,11 @@ OpenCog是一个开源的软件框架，以CogPrime架构的“OpenCogPrime”�
 \end{itemize}
 
 受游戏“我的世界”的启发，目前OpenCog正在将对虚拟狗的控制工作扩展到使用OpenCog控制游戏中的虚拟主体。这些主体最初被特别设定了各自在游戏世界中要达成的目标，为了完成这些目标，他们需要通过搬运“砖块”和使用简单的英语交流。这些任务可以是：
+
 \begin{itemize}
 \item 学习建造台阶或梯子来拿到高处的物体；
 \item 学习建造掩体来躲避入侵者；
-\item（？Learning to build structures resembling structures that its shown）
+\item 学习建造环境中存在的类似结构物体
 \item 学习建造桥梁以跨越峡谷。
 \end{itemize}
 
@@ -86,3 +87,456 @@ CogPrime并没非直接由这些哲学规则产生；它最初通过合并人类
 图1描述了CogPrime的高阶架构。一个关键的潜在原则是：与多种类型的记忆相联系的多认知过程的运用，将会使得一个智能主体执行它认为在当前环境下对完成目标最有利的过程。例如，在机器人学龄前阶段的条件下，最高层的目标将会是日常的事物，如取悦老师、学习新的知识和技能、保护机器人的身体。
 
 将这些图表与人类的认知结构图表进行对比是有趣的[？]，它将概述目前所理解的人类认知结构。主要的区别在于，CogPrime的图表
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{OpenCog 中AtomSpace的表示形式}{OpenCog AtomSpace Representation}
+\label{sec:atoms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+XXXX备用：其基本的存储单元称为“原子”(Atom)。每一个Atom携带的值(Value)的结
+构为(STI，LTI，TruthValue，Confidence，Content)。STI(Short Term Importance)
+和LTI(Long Term Importance)可以用来模拟短期记忆(Short Term Memory)和长期
+记忆(Long Term Memory)。XXXX
+
+正如上述所言，Atomspace是OpenCog中所使用统一且通用的知识库，它使用包含特定类型的节点（Node）和链接（Link）的加权有向超图结构来表示知识，主要用作表示叙述性的知识，同时亦间接地表示其它类型的知识。这些特定类型的节点和链接是经过包括语义层面的细心挑选，以满足OpenCog在认知过程的需要。由于OpenCog的Atomspace表示形式是本文的核心，在这里我们会详细列出几个简单的示例予以说明。
+
+以下是一个以OpenCog常用的表示方法去表示OpenCog中的链接的例子：
+ 
+ \begin{verbatim}
+InheritanceLink Lian_Ruiting animal <.99>
+\end{verbatim}
+
+\noindent 或更明确地：
+
+ \begin{verbatim}
+InheritanceLink <.99>
+	ConceptNode "Lian_Ruiting"
+	ConceptNode "animal "
+\end{verbatim}
+
+以及：
+
+\begin{verbatim}
+EvaluationLink <.7>
+	chase 
+	ListLink
+		cat
+		mouse
+\end{verbatim}
+
+\noindent 或更明确地：
+
+\begin{verbatim}
+EvaluationLink <.7>
+	PredicateNode "chase" 
+	ListLink
+		ConceptNode "cat"
+		ConceptNode "mouse"
+\end{verbatim}
+
+\noindent 正如上述示例所示，节点通常具有名称，而链接则没有，但链接可以连接一个或多个的目标，而这些目标可以是节点或链接。
+
+综合来说，Atomspace是一个“带标记的通用超图“，这些标记可以是节点的名称或其真值等等。“超图“与一般“图“的其中一个主要不同之处在于其链接，例如ListLink或SetLink，它是可以连结两个以上的参数，而其通用性也允许这些链接与其他的链接相连，而不只局限于节点。
+
+另一个值得注意的地方是这些节点的名称，虽然在这些示例中它们都是以英语来表示，但实际上OpenCog会在日常操作中透过自主学习去创造一些新的节点，而这些节点往往都不会和我们的语言概念相对应。
+
+更重要的一点是， AtomSpace的知识表示形式的主要功能是提供一个灵活的方式去紧凑地表达多种相关形式的知识，并允许它们之间有交互操作。其中的“交互操作“是指，例如，一组的陈述性的知识可以跟另一组的注意力相关或程序性相关的知识相互连结，或一组在一个类别的知识可以跟另一组在其他类别的知识重叠在一起（同一链接同时有著一个陈述性相关的真值和一个注意力相关的重要值）。总而言之，只要有任何表示形式能够提供足够的灵活性来：
+
+\begin{itemize}
+\item 紧凑地表达所有在人类记忆中扮演著主导角色关键类别
+\item 灵活地创建特定的副表示形式去表达在上述这些关键类别中的知识，同时又能够被迅速地改动或操纵这些知识
+\item 重叠和连结不同种类的知识，包括上述这些特定的副表示形式
+\end{itemize}
+
+\noindent 以上几项都符合OpenCog的整体要求。而这些Atom的表示形式已能满足此计设的总体要求，并从软件的角度来看已证明是可行的。
+
+\subsection{基本的Atom种类}{Basic Atom Types}
+
+在OpenCog中最基本而且经常会用到的Atom种类中的节点是:
+
+\begin{itemize}
+\item ConceptNode -- 表达任何的单元，具体或抽象但又不能以其他特定的节点种类来表达的概念
+\item PredicateNode  -- 表达一个为Atom产生真值的程序（以下会有详细说明）
+\item SchemaNode -- 表达一个以一个Atom产生另一个Atom的程序，或产生一些其他效果
+\end{itemize}
+
+和以下的链接：
+
+\begin{itemize}
+\item MemberLink -- 连结一个通用种类的Atom和一个ConceptNode，并拥有一个模糊真值
+\item InheritanceLink -- 连结两个ConceptNodes，并拥有一个概率真值
+\item SimilarityLink -- 连结两个ConceptNodes，并拥有一个概率真值
+\item EvaluationLink -- 连结一个PredicateNode以及其参数
+\item ExecutionLink -- 连结一个SchemaNode、其需要的参数以及其产生的输出
+\begin{itemize}
+\item ExecutionOutputLink -- 连结一个SchemaNode以及其输入，当遇到特定的认知程序时才会产生输出
+\end{itemize}
+\end{itemize}
+
+
+\subsection{绑定程序的节点}{Grounded Procedure Nodes}
+
+SchemaNode和PredicateNode有两种形态：已绑定和未绑定。未绑定是指系统尚未知道应该如何评定该方案，或系统将会以一连串的ExecutionOutputLinks来绑定该方案。而已绑定的会有一个特定程序的名称（目前该程序可以是C++，Scheme或Python语言编写的程序）来执行该方案。例如:
+
+\begin{verbatim}
+ExecutionOutputLink
+	GroundedSchemaNode "plus.py"
+	ListLink
+		NumberNode "2"
+		NumberNode "3"
+\end{verbatim}
+
+\noindent 当执行时，会调用Python函数“plus“来把“2“和“3“加起来，然后产生一个名为“5“的NumberNode作为其输出。
+
+\subsection{內涵与外延的关系}{Intensional and Extensional Relationships}
+
+
+OpenCog的链接类型中亦有多种拥有继承和相似性质的链接，例如IntensionalInheritanceLink和ExtensionalInheritanceLink，其细节将会在\cite{PLN}中详述，但简而言之，以下链接的真值：
+
+\begin{verbatim}
+ExtensionalInheritanceLink A B
+\end{verbatim}
+
+\noindent 同时亦可被表示为：
+
+\begin{verbatim}
+SubsetLink A B
+\end{verbatim}
+
+\noindent 是一个条件概率$P(B|A)$。另一方面，以下链接的真值：
+
+\begin{verbatim}
+ExtensionalInheritanceLink A B
+\end{verbatim}
+
+\noindent 是一个条件概率$P(prop(B)|prop(A))$，当中$prop(X)$表示在PLN推理系统中定义的模糊集合X的属性。
+
+\subsection{SatisfyingSet}{SatisfyingSet}
+SatisfyingSet的算符能够表达一个集合关系的概念，而当中每一位成员都是乎合同一个述语的元素，并用Member的关係形式，以一个模糊数值（而非概率数值）来表达该元素属于一个概念的真确性。
+
+举例来说，假设现在有“FriendOfBob“这个述语和三个元素“Jack“、“John“和“Jill“：
+
+\begin{verbatim}
+Evaluation <.7>
+	FriendOfBob
+	Jack
+
+Evaluation <.6>
+	FriendOfBob
+	John
+
+Evaluation <.8>
+	FriendOfBob
+	Jill
+\end{verbatim}
+
+根据SatisfyingSet算符的定义，我们会得出以下的Member：
+
+\begin{verbatim}
+Member <.7>
+	Jack
+	SatisfyingSet
+		FriendOfBob
+
+Member <.6>
+	John
+	SatisfyingSet
+		FriendOfBob
+
+Member <.8>
+	Jill
+	SatisfyingSet
+		FriendOfBob
+\end{verbatim}
+
+\subsection{等效式与启示式}{Equivalence and Implication}
+
+现在我们可以为述语定义等效式与启示式，如同为概念定义相似式和继承式一样：
+
+\begin{verbatim}
+Equivalence
+        A
+        B
+\end{verbatim}
+
+是等同于：
+
+\begin{verbatim}
+Similarity
+        SatisfyingSet(A)
+        SatisfyingSet(B)
+\end{verbatim}
+
+以及：
+
+\begin{verbatim}
+Implication
+        A
+        B
+\end{verbatim}
+
+是等同于：
+
+\begin{verbatim}
+Inheritance
+        SatisfyingSet(A)
+        SatisfyingSet(B)
+\end{verbatim}
+
+以上是混合了等效式与启示式的表达形式。内涵与外延的表达形式都是以类似的方式去表达，以下是一个ExtensionalEquivalence的例子：
+
+\begin{verbatim}
+ExtensionalEquivalence
+        A
+        B
+\end{verbatim}
+
+是等同于：
+
+\begin{verbatim}
+ExtensionalSimilarity
+        SatisfyingSet(A)
+        SatisfyingSet(B)
+\end{verbatim}
+
+\subsection{Boolean链接}{Boolean Links}
+
+Boolean链接是用来表达一些常用操作的概率：ANDLink、OrLink、NOTLink和XORLink。
+
+同时，就像其他编程语言般，Atomspace亦有“IfElseLink“以作为一个判断选择的条件简写：
+
+\begin{verbatim}
+ElseLink
+	R
+		A
+		B
+	C
+\end{verbatim}
+
+是等同于：
+
+\begin{verbatim}
+AND
+	R
+		A
+		B
+	R
+		NotLink
+			A
+		C
+\end{verbatim}
+
+\noindent 这个设计能有效防止产生过多的链接种类，例如IfImplicationElse、IfExtensionalImplicationElse、IfIntensionalImplicationElse、IfInheritanceElse等等。
+	
+		
+\subsection{真值}{Truth Values}
+\label{真值}
+
+一个Atom的真值是用来表示一个Atom的\textit{真确性}，在某程度上是取决于Atom的类型。这个数值是以一个TruthValue物件的形式跟Atom链接在一起。一般来说我们会在Atom的表示式后以\ensuremath{<}\ensuremath{>}及一个数字来显示其真值，例如：
+
+\begin{verbatim}
+A <.4>
+\end{verbatim}
+
+來表示一個名稱为“A“的Atom的真值为.4。同样地：
+
+\begin{verbatim}
+IntensionalInheritanceLink Ben monster <.5,.9>
+\end{verbatim}
+
+\noindent 来表示一个连接著“Ben“和“monster“的IntensionalInheritance关係中有著一个.5的强度和.9确信情度。总而言之，\ensuremath{<}tv\ensuremath{>}表示著一个平均值为tv的概率分佈。这些概念和语义将会在\cite{PLN}中作详细展述。
+
+\subsection{量词}{Quantiﬁers}  
+
+在不明确逻辑理论中，量化过程是一个比较细微的事项。PLN包含了标準的ForAll和ThereExists的量词（使用高阶概率定义的概率真值），在处理量化过程时主要会用AverageQuantifier来建构，例如：
+
+\begin{verbatim}
+AverageQuantifier $X
+        F($X)
+\end{verbatim}
+
+的真值为F(\$X)的真值的加权平均值，即是以下的总和：
+
+\begin{verbatim}
+w($X) F($X) / N
+\end{verbatim}
+
+\subsection{总结——语言相关的Atom类型}{Summary of Language-Relevant Atom Types}
+
+接下来将会描述一些用来表达具体语言概念的Atom类型。
+
+原则上，要处理从ASCII编译的语言资料，除了需要CogPrime结构外就只有以下两个节点类型和一个链接类型：
+
+\begin{itemize}
+\item CharacterNode
+\item CharacterInstanceNode
+\item ListLink
+\end{itemize}
+
+\noindent 因而字串就可以以列表或拼接的方式来表达，例如“pig“可以以列表$(\#p, \#i, \#g)$来表达。
+
+然而，实际上定义特定的語言Atom类型也很有帮助的，例如:
+
+\begin{itemize}
+\item	MorphemeNode/ MorphemeInstanceNode
+\item		WordNode/WordInstanceNode
+\item		PhraseNode/PhraseInstanceNode
+\item		SentenceNode/ SentenceInstanceNode
+\item		UtteranceNode/ UtteranceInstanceNode
+\end{itemize}
+
+
+
+
+
+\subsection{基于类型理论的Atomspace形式化表示}{A Formal Type System for OpenCog’s Atomspace}
+
+引入Atomspace的形式化表示能容许我们在不用关注输入是否完全正确的情况下精密地应用Atomspace，并能在某些情况下减少制造混乱的同时又提高系统的精确度。为实现这目的，我们建立了一个基于类型理论的形式化表示机制，具体来说，我们采用了Haskell的泛代数数据类型 \cite{Haskell2014}对Atomspace形式化如下：
+
+\begin{verbatim}
+data TV = SimpleTV Float Float
+
+data ConceptName = ConceptName String
+
+data VariableName = VariableName String
+
+data Atom a where
+	-- TV
+	TV :: TV -> Atom TV
+	TVAnd :: Atom TV -> Atom TV -> Atom TV
+	TVOr :: Atom TV -> Atom TV -> Atom TV
+	TVGetTV :: Atom a -> Atom TV
+
+	-- Predicate
+	Predicate :: (Atom a -> TV) -> Atom (Atom a -> TV)
+	PredicateAnd :: (a ~ (Atom b -> TV)) => Atom a -> Atom a -> Atom a
+	PredicateOr :: (a ~ (Atom b -> TV)) => Atom a -> Atom a -> Atom a
+	Implication :: (a ~ (Atom b -> TV)) => Atom a -> Atom a -> Atom TV
+	Equivalence :: (a ~ (Atom b -> TV)) => Atom a -> Atom a -> Atom TV
+	Evaluation :: (Atom (Atom a -> TV)) -> Atom a -> Atom TV
+
+	-- Concept
+	Concept :: ConceptName -> Atom ConceptName
+	ConceptAnd :: Atom ConceptName -> Atom ConceptName -> Atom ConceptName
+	ConceptOr :: Atom ConceptName -> Atom ConceptName -> Atom ConceptName
+	Inheritance :: Atom ConceptName -> Atom ConceptName -> Atom TV
+	Similarity :: Atom ConceptName -> Atom ConceptName -> Atom TV
+	Member :: Atom a -> Atom ConceptName -> Atom TV
+	SatisfyingSet :: Atom (Atom a -> TV) -> Atom ConceptName
+	
+	-- Variable
+	PredicateVariable :: VariableName -> Atom (Atom a -> TV)
+	ConceptVariable :: VariableName -> Atom ConceptName
+	TVVariable :: VariableName -> Atom TV
+	Variable :: VariableName -> Atom a
+
+	-- Binding
+	Bind :: Atom a -> Atom TV -> Atom (Atom a -> TV)
+
+	-- Quantifier
+	ForAll :: Atom a -> Atom TV -> Atom TV
+	Exists :: Atom a -> Atom TV -> Atom TV
+
+	-- number
+	Number :: (Num a) => a -> Atom a
+
+	-- Schema
+	Schema :: (a ~ (Atom b -> Atom c)) => a -> Atom a
+	ExecutionOutput :: (a ~ (Atom b -> Atom c)) => Atom a -> Atom b -> Atom c
+
+	-- List
+	List :: [Atom a] -> Atom [Atom a]
+\end{verbatim}	
+
+以下是一些使用该形式化机制表示Atomspace超图的例子：
+
+\begin{verbatim}
+-- Functions from Atom to TV to build predicates
+is_bottom :: Atom a -> TV
+is_bottom = undefined
+is_top :: Atom a -> TV
+is_top = undefined
+is_car :: Atom a -> TV
+is_car = undefined
+
+-- And/Or hypergraph of concepts
+a = Concept (ConceptName "A")
+b = Concept (ConceptName "B")
+c = Concept (ConceptName "C")
+h1 = ConceptOr (ConceptAnd a b) c
+
+-- And/Or hypergraph of predicates
+h2 = PredicateOr (PredicateAnd (Predicate is_top) (Predicate is_car)) (Predicate is_bottom)
+
+-- Apply Evaluation to predicate h2
+tv3 = Evaluation h2 (List [Concept (ConceptName "BMW")])
+
+-- Build a Schema
+add :: (Atom [Atom Float]) -> Atom Float
+add (List [Number x, Number y]) = Number (x + y)
+add _ = undefined
+h4 = Schema add -- :: Atom (Atom [Atom Float] -> Atom Float)
+
+-- Apply a Schema
+h5 = ExecutionOutput h4 (List [Number 3, Number 4]) -- h5 :: Atom Float
+
+-- Test GetTVLink
+tv1 = TVGetTV h1
+tv2 = TVGetTV h2
+
+-- Test AndLink with TV
+tv4 = TVAnd tv1 tv3
+\end{verbatim}	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{OpenCog的模式匹配器Patter Matcher}{The OpenCog Pattern Matcher}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+其中一个在OpenCog语言处理中最常使用的工具是一个模式匹配器。OpenCog的模式匹配器是一个查询引擎或变数配对者，主要功用是在Atomspace中寻找特定的模式，或是一些Atom相关排列或“模板“。在轮入一个等定的Atom排列（即一个超图）后，模式匹配器会从Atomspace中寻找所有合乎条件的超图。同时一些“空白位置“，即“变数“在一个超图的位置，亦可存在于该输入的超图当中，而模式匹配器则会“填补“这些“空白位置“。例如：“John threw a \_\_\_\_).“亦可以被判断为“John threw a ball.“，前提是在查询前该句子要存在于Atomspace里，而在这个例子中“ball“就是被配对的一个答案。输入的超图中可以在不同的地方拥有多过一个的“空白位置“，同时亦可以有多过一个的答案。在这过程中，BindLink提供了一个便利的API去达到这目的，接下来会有更多的技术层面说明。
+
+模式匹配器是一个变数配对者，是在传统计算机科学中“统一“的概念，因为这是它的功能之一。它同时亦是一个查询引擎，因为这个变数配对过程某情度上是等同于用SQL在关联数据库中进行查询。当中主要的分别在于在OpenCog中概念是以超图的形式表示，所以它亦可以被形容为一个超图查询语言HQL（Hypergraph Query Language）。但这些都只是以不同的名称去表示同一个程序。
+
+这个模式匹配器亦是结构精密应用的一个重要组件，同时亦是建立前向和后向链接的一个重要基础。它拥有C++和Scheme的接口以供不同的应用。
+
+模式匹配器是由数个不同的组件连接在一起，组成一个基础前向链接或超图重写的工具。在其核心是一个能比较和配对不同超图以及其变数的组件，而这个组件跟另一个“找寻器“一同使用便能寻找整个Atomspace中的合乎条件的超图。最后一个组件是一个“编写器“，主要功用是当有一个配对成功产生后建立一个或以上在ImplicationLink后半部列明的超图。
+
+这个模式匹配器接受有指定“规则“的BindLinks，再把这些“规则“应用到Atomspace里。每一个“规则“是一个ImplicationLink，以“if P then Q“的形式表达，当中P和Q分别代表不同的超图。如果P被实现了，那么便能得到Q。Q可以是任何种类的超图，但如果Q是一个ExecutionLink，这便意味著当P被实现了，系统便将会实行其他程序，这在整体来说可以是一个十分强大的功能，因为在一般情况下很多程序都可以以ExecutionLink来执行。
+
+模式匹配器不会更改任何超图中的真值（Truth Value）或关注值（Attention Value），有需要时使用者亦可以自行编写和执行相关的程序。
+
+在默认的回调函数中模式匹配器会搜索整个Atomspace，因此亦有需要编写特定的回调函数以限制其搜索范围，例如只寻找和接受拥有某程度短期重要性的Atom，以只获取相对重要的资讯。
+
+以下是一个使用模式匹配器的示例：
+
+\begin{verbatim}
+(define find-animals
+  (BindLink
+    ;; The variable to be bound
+    (VariableNode "$var")
+    (ImplicationLink
+      ;; The pattern to be searched for
+      (InheritanceLink
+         (VariableNode "$var")
+         (ConceptNode "animal")
+      )
+ 
+      ;; The value to be returned.
+      (VariableNode "$var")
+    )
+  )
+)
+ \end{verbatim}
+ 
+只要在OpenCog Scheme shell中输入以下指令便能执行以上的模式匹配器以找出在Atomspace中所有继承“animal“的概念：
+
+\begin{verbatim}
+(cog-bind find-animals)
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{概率逻辑网络PLN}{Probabilistic Logic Networks}
+\label{sec:pln}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
