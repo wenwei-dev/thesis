@@ -38,7 +38,7 @@
 
 本小节主要介绍链语法的基本原理和方法，并分析了和语言形式主义的不同，同时指出其中的问题以及我们对其进行的一些改进。
 
-链语法（Link Grammar）在1991年由 Daniel Sleator和Davy Temperley共同提出[XXX]。它和被广泛应用的依存语法类似，但两者也有很大的不同，比如链语法中两个单词的连接是无序的，而依存语法中有依存和被依存关系。链语法允许句子中的链接有环状结构，而依存语法是不允许环的存在的。链语法更倾向于语法理伦的词汇主义。
+链语法（Link Grammar）在1991年由 Daniel Sleator和Davy Temperley共同提出 \cite{Sleator1993}。它和被广泛应用的依存语法类似，但两者也有很大的不同，比如链语法中两个单词的连接是无序的，而依存语法中有依存和被依存关系。链语法允许句子中的链接有环状结构，而依存语法是不允许环的存在的。链语法更倾向于语法理伦的词汇主义。
 
 链语法的核心是链语法词典（Link Dictionary），词典中的每一个词都记录着一些特点的链接要求，这些链接要求通过一系列具有特定逻辑排序的链接子（connector）组合成的公式（Formula）收录在词典的相应词条里，链接子包含名称和后缀（“+”或“-”），后缀表示该链接子的指向方向,“+”表示该链接子指向右，“-”表示该链接子。如果两个词需要合法连接，则要求两个词首先有相同名称的链接子，且左边单词的链接子的连接方向必须指向右，右边单词的链接子的连接方向必须指向左。
 
@@ -98,12 +98,22 @@ Chased & S- \& O+ \\ \hline
 
 \subsection{链语法与短语结构语法}{Link Grammar vs. Phrase Structure Grammar}
 
-讨论各种语法的优缺点不是本文的重点，本节只将链语法和典型的短语结构语法做个简单的对比来讨论它们的潜在联系。一般来说，依存语法和短语句法也有相应的联系[参见图XX]，但不同的依存语法使用不同依存关系集合，也有不同的属性，分析起来会比较复杂，也不是本文的研究内容，所以我们这里不做详细阐述。
-图XX：依存句法分析和短语句法分析对比
+讨论各种语法的优缺点不是本文的重点，本节只将链语法和典型的短语结构语法做个简单的对比来讨论它们的潜在联系。一般来说，依存语法和短语句法也有相应的联系（参见图\ref{fig:Dependency-and-Phrase-Structure}），但不同的依存语法使用不同依存关系集合，也有不同的属性，分析起来会比较复杂，也不是本文的研究内容，所以我们这里不做详细阐述。
+
+\begin{figure}
+
+\begin{centering}
+\includegraphics[width=12cm]{figures/schneiderFigure1} 
+\par\end{centering}
+
+\caption{依存句法分析和短语句法分析对比\label{fig:Dependency-and-Phrase-Structure}}
 A comparison of dependency (above) and phrase-structure (below) parses.
 In general, one can be converted to the other (algorithmically); dependency
 grammars tend to be easier understand.
-图片来自[XXX]
+(图片来自G. Schneider, ``Learning to Disambiguate Syntactic
+Relations''  Linguistik online 17, 5/03)\\
+ \rule[0.5ex]{1\columnwidth}{1pt} 
+\end{figure}
 
 简单起见，这里只列出两条有用的观察结果，基于这些观察结果，我们不难发现，在链语法中也隐形存在短语结构。这是有一定道理的，但由于自然语言的复杂性，某些情况下可能也不是那么简单。
 
@@ -127,7 +137,7 @@ grammars tend to be easier understand.
 
 为了读者对如何修改链语法词典有个大致的思路，本小节就其中的改进“识别句子的中心词”展开讨论。
 
-对于“识别句子的中心词”的改进，我们的出发点是使链语法分析结构（Link Parse）能转换成一颗类似的依存句法树。改进后，我们能直接通过追溯“WV”链找到句子的中心词，或者通过追溯“CV”链找到子句的中心词。找到中心词后，可以将其定为树的根节点，然后依次遍历各个链，最终能得到一颗句法树（见图XXX）。具有这样的转换能力有以下优点：
+对于“识别句子的中心词”的改进，我们的出发点是使链语法分析结构（Link Parse）能转换成一颗类似的依存句法树。改进后，我们能直接通过追溯“WV”链找到句子的中心词，或者通过追溯“CV”链找到子句的中心词。找到中心词后，可以将其定为树的根节点，然后依次遍历各个链，最终能得到一颗句法树。具有这样的转换能力有以下优点：
 
 \begin{itemize}
 \item 能使用很多能用在树结构上的机器学习方法来改进链语法分析器，比如频繁子树挖掘(Frequent Subtree Mining)\cite{Chi2005}
@@ -286,11 +296,20 @@ RelEx首先对句子中的每个词创建一个特征节点（FeatureNode），�
 \item F\_R[node]: 指向表示该链接右边的词的节点
 \end{itemize}
 
-\includegraphics[width=12cm]{figures/featureStructure.png}
+\begin{figure}
 
-不难发现，RelEx中的使用特征结构图非常复杂，为了能更形象地理解特征结构图，本文截取了上述例句的特征结构图的部分来进一步解释（参见图XXX）。
+\begin{centering}
+\includegraphics[width=12cm]{figures/featureStructure.png} 
+\par\end{centering}
+
+\caption{初始特征结构图\label{fig:featureStructure}}
+
+
+\end{figure}
+
+不难发现，RelEx中的使用特征结构图非常复杂，为了能更形象地理解特征结构图，本文截取了上述例句的特征结构图的部分来进一步解释（参见图\ref{fig:featureStructure}）。
  
-  图XXX中，带\$的节点可以表示代表句子中的某个词的特征节点，通过特征str指向词的内容；也可以表示代表某个链接的特征节点，通过特征LAB指向链接名称。从上图我们可以看出，“cat”和“snake”通过链接Ss相连。例句中的第二个个词节点的特征str表示该词的内容“cat”，特征NEXT指向表示下一个词的特征节点（即str为“chased”的节点），特征F\_L表示该词是链接“Ss”的左右的词。“LinkR0”表示它指向的链接Ss是从该词“cat”出发指向右边的链接。以此类推，不难从上图中找出例句中第三个词节点的一系列相关特征。
+  图\ref{fig:featureStructure}中，带\$的节点可以表示代表句子中的某个词的特征节点，通过特征str指向词的内容；也可以表示代表某个链接的特征节点，通过特征LAB指向链接名称。从上图我们可以看出，“cat”和“snake”通过链接Ss相连。例句中的第二个个词节点的特征str表示该词的内容“cat”，特征NEXT指向表示下一个词的特征节点（即str为“chased”的节点），特征F\_L表示该词是链接“Ss”的左右的词。“LinkR0”表示它指向的链接Ss是从该词“cat”出发指向右边的链接。以此类推，不难从上图中找出例句中第三个词节点的一系列相关特征。
 
 \noindent {\bf 步骤2： 执行包含一系列句子算法的句子算法应用器（Sentence Algorithm Applier），对步骤1中得到的特征结构图进行相应的改写操作。}
 
@@ -333,11 +352,17 @@ SPECIAL-ADJ
 
 这些操作可被解释如下：第一行的操作表示该链接的右边的词所在的特征节点的obj特征会被清空。清空后，紧接着将该链接左边的词所在的特征节点的sub特征值赋给它。最后，将该链接的左边的词所在的特征节点的ADJ-OBJ-FLAG特征值设为T（真）。
 
-我们接着用上面的例句“The cat chased a snake.”，接下来两个图是图XXX的节选特征结构图，更直观地解释了，通过执行相关的句子算法后，被修改的结构特征图。  
+我们接着用上面的例句“The cat chased a snake.”，接下来两个图是图\ref{fig:revisedFeatureStructure}的节选特征结构图，更直观地解释了，通过执行相关的句子算法后，被修改的结构特征图。  
+\begin{figure}
+\begin{centering}
+\includegraphics[width=12cm]{figures/revisedFeatureStructure.png} 
+\par\end{centering}
 
-\includegraphics[width=12cm]{figures/revisedFeatureStructure.png}
+\caption{修改过的特征结构图\label{fig:revisedFeatureStructure}}
+\end{figure}
 
-图XXX中虚线部分是执行了下面的句子算法后特征结构图被修改的部分：
+
+图\ref{fig:revisedFeatureStructure}中虚线部分是执行了下面的句子算法后特征结构图被修改的部分：
 
 \begin{verbatim}
 #TemplateActionAlg
@@ -349,22 +374,135 @@ BASIC_REF
 
 根据上面的句子算法，当模板“<str> = \$string”被匹配时，会执行操作“<ref name>=<str>”，也就是，把该词的内容赋值给通过路径<ref, name>找到的节点。
 
+\begin{figure}
+\begin{centering}
+\includegraphics[width=12cm]{figures/revisedFeatureStructure_1.png} 
+\par\end{centering}
 
-\includegraphics[width=12cm]{figures/revisedFeatureStructure_1.png}
+\caption{修改过的特征结构图\label{fig:revisedFeatureStructure_1}}
+\end{figure}
 
-如图XXX，同样虚线部分表示执行相应的句子算法后特征结构图被修改的部分。
+图\ref{fig:revisedFeatureStructure_1}中，同样地，虚线部分表示执行相应的句子算法后特征结构图被修改的部分。
+
+
+XXXXX
+
+The dashed parts of the above graph show the executions of the following sentence algorithms in order:
+
+\begin{verbatim}
+#TemplateActionAlg
+STANDARD_SUBJ
+<LAB> = \S\.*|\SX\.*|\Mg\.*|\MX\.*
+<LAB> != \MX.[rj]\.*
+<LAB> != MX|MXs|MXp
+=
+<IS_SUBJ_LINK> = T
+
+\noindent If we found the subject link, then create the subj dependency.
+#TemplateActionAlg
+MAKE_STANDARD_SUBJ
+<IS_SUBJ_LINK> = T
+<F_L conj> = %
+=
+<F_R subj> += <F_L ref>
+\end{verbatim}
+
+The first sentence algorithm, when it finds the node whose "LAB" satisfies the regular expression \verb§\S\.*|\SX\.*|\Mg\.*|\MX\.*§ (which is the case for the uppermost feature node, as its "LAB" is $Ss$), it will generate a new feature IS\_SUBJ\_LINK and set the value as "T" (Truth).  IS\_SUBJ\_LINK is a temporary feature, which will be used in the second sentence algorithm listed above. Similarly, after applying the first sentence algorithm, the uppermost feature node can apply the second sentence algorithm, as it matches the templates of the second algorithm -- so it will execute the action "\textless F\_R subj\textgreater += \textless F\_L ref\textgreater, which means it will append the path target of \textless F\_L ref\textgreater to the value of the feature node that is achieved by the path \textless F\_R subj\textgreater, which is shown by the bottom dash arrow in the above graph. Note that the action operator "+=" means Append -- so the algorithm appends the path target to the feature node's value.
+
+XXX
+
 
 \noindent {\bf 步骤3： 遍历最后得到的特征结构图，输出最终的RelEx关系集合。}
 
-当所有的句子算法都被遍历过后，会得到一个精简的用于生成RelEx关系集合的特征结构图。
+XXX
+The node representing the left-wall (see \ref{sec:linkGrammar}) is conveniently also used to collect pointers to the nodes representing RelEx's final representation. The head feature points to the target(s) of the ref feature from the main clause(s) of the sentence and all subclauses. The background feature points to other relationships, such as those derived from adjective and adverb modification, which don't show in the sample sentence. The features used to generate the final representation may be thought of as a subset of the entire feature structure, which can be extracted with a feature name filter while traversing the FeatureNodes(feature structure) representing the words in the sentence. For each one, it follows the ref link, then follows subsequent links to build up a dependency relation representation. 
+
+Regarding the above sample sentence "The cat chased a snake.", after filtering the temporary features, it generates the following final feature structure, which can be easily traversed to generate the final RelEx dependency relationships.
+
+\includegraphics[width=12cm]{figures/finalFeatureStructure.png}
+
+\noindent From FeatureNodes representing referents (The word properties we use are listed in Appendix \ref{app:XX}):
+\begin{itemize}
+\item name: points to a string value for the name of the refent.
+\item pos: points to a string value for the Part Of Speech of the refent.
+\item tense: if the referent is a verb/event, points to a string value representing a tense
+\item definite-FLAG: if the referent is a noun, points to a string with value ``T'' iff the noun is restricted with quantification definite determiner, such as "the" "it".
+\item noun\_number: if the referent is a noun/thing, points to a string value representing a noun number
+\item links: points to a a feature node, with features representing the dependency relations in which this referent is the first argument.
+\end{itemize}
+
+\noindent From FeatureNodes representing a collection of links (The dependency relation types are listed in Appendix \ref{app:XX}):
+\begin{itemize}
+\item \_subj: points to the second argument of a \_subj relation. 
+\item \_obj: points to the second argument of a \_obj relation.
+\end{itemize}
+
 XXX
 
-\subsection{RelEx关系的形式化}{RelEx Relationship Formalization}
+当所有的句子算法都被遍历过后，会得到一个精简的用于生成RelEx关系集合的特征结构图。
 
+\begin{figure}
+\begin{centering}
+\includegraphics[width=12cm]{figures/finalFeatureStructure.png} 
+\par\end{centering}
+
+\caption{最终特征结构图\label{fig:finalFeatureStructure}}
+
+
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RelEx关系的形式化}{RelEx Relationship Formalization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+RelEx relationships reflect the semantic relationships that connect pairs of words or phrases, such as subject, object, modifier, possessive relations, etc. Thus, for example, in the sentence "John threw the ball", "John" is the subject who is doing the throwing, and "the ball" is the object being thrown. Besides that, RelEx also tags individual words in a sentence with many different possible properties or features, such as tense, part of speech, number, etc. To make it easier to explain here, we use BNF (Backus Normal Form or Backus Naur Form)  to formalize the grammar of RelEx relationships as follows. 
+
+ {\tt\begin{scriptsize}\begin{lstlisting}
+<RelEx-rel>::== <dependency-rel> | <property-rel>
+<dependency-rel>::== <dependency-type> "(" <word-instance> ", " <word-instance>")"
+<property-rel> ::== <property-type> "(" <word-instance> ", "<property-value> ")"
+<word-instance> ::== <word> <instance> | <word>
+  \end{lstlisting}\end{scriptsize}}
+
+This formal representation can be interpreted as,
+
+\begin{itemize}
+\item A RelEx-rel (RelEx relationship) is either a dependency relationship, which shows the RelEx semantic relationship between two different words;
+  or a property relationship, which specify the property of the word in the context of the sentence. 
+\item A dependency-rel (dependency relationship, also know as binary relations) consists of the dependency relation type, followed by a pair of word or phrase instances. For more details, the dependency relation types are listed in Appendix \ref{app:XX}
+\item A property-rel (properties, or features) consists of the property name, followed by a word and the value of the property or feature for the word. For more references, the properties we use are listed in Appendix \ref{app:XX}
+\item A word-instance is either a word, or a word with an integer instance number (the latter being useful if  there are repetitive words in a sentence). 
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{基于涉身的指代消解}{Standard and Embodiment-Based Anaphor Resolution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+RelEx contains code carrying out anaphor resolution using  the classical Hobbs algorithm\cite{Hobbs1978}. Basically, when a pronoun (it, he, she, they and so on) is identified in a sentence, the Hobbs algorithm searches through recent sentences to find the nouns that fit this pronoun according to number, gender and other characteristics. The Hobbs algorithm is used to create a ranking of candidate nouns, ordered by recency.
+
+An alternate anaphor resolution algorithm has recently been implemented in the OpenCog Atomspace, utilizing a similar logic but based on a more flexible representation that is capable of incorporating semantic linkages as well.   As an example of the value of this more general approach to anaphor resolution, consider an application pursued in 2009, in which an OpenCog controlled agent lives in a world with many objects, each one with their own characteristics.   This example is depicted in the video available at \url{https://www.youtube.com/watch?v=ii-qdubNsx0}, and was carried out using an earlier version of the current Atomspace-based anaphor resolution system.
+
+For example, in such a game world we can have multiple balls, with varying colors and sizes. We represent this in the OpenCog Atomspace via using multiple nodes: a single ConceptNode to represent the concept "ball", a WordNode associated with the word "ball", and numerous ConceptNodes representing particular balls.   There may of course also be ConceptNodes representing ball-related ideas not summarized in any natural language word, e.g. "big fat squishy balls," "balls that can usefully be hit with a bat", etc.
+
+As the agent interacts with the world, it acquires information about the objects it finds, through perceptions.  The perceptions associated with a given object are stored as other nodes linked to the node representing the specific object instance. All this information is represented in the Atomspace using RelEx2Logic (exemplified in the next section).
+
+When the user says, e.g., "Grab the red ball", the agent needs to figure out which specific ball the user is referring to -- i.e. it needs to invoke the Reference Resolution (RR) process. RR uses the information in the sentence to select instances and also a few heuristic rules.  Broadly speaking, Reference Resolution maps nouns in the user's sentences to actual objects in the virtual world, based on world-knowledge obtained by the agent through perceptions.
+
+In this example, first the brain selects the ConceptNodes related to the word "ball". Then it examines all individual instances associated with these concepts, using the determiners in the sentence along with other appropriate restrictions (in this example the determiner is the adjective "red"; and since the verb is "grab" it also looks for objects that can be fetched). If it finds more than one "fetchable red ball", an heuristic is used to select one (in this case, it chooses the nearest instance).
+
+The agent also needs to map pronouns in the sentences to actual objects in the virtual world. For example, if the user says "I like the red ball. Grab it," the agent must map the pronoun "it" to a specific red ball. This process is done in two stages: first using anaphor resolution to associate the pronoun "it" with the previously heard noun "ball"; then using reference resolution to associate the noun "ball" with the actual object.  
+
+In this context, we can improve the Hobbs algorithm results by using the agent's world-knowledge to help choose the best candidate noun. Suppose the agent heard the sentences:
+
+\begin{verbatim}
+"The ball is red."
+"The stick is brown."
+\end{verbatim}
+
+\noindent and then it receives a third sentence
+
+\begin{verbatim}
+"Grab it.".
+\end{verbatim}
 
 
 XXXXXX
@@ -376,10 +514,10 @@ XXXXXX
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{RelEx2Logic：把语言依赖关系转换成逻辑关系}{RelEx2Logic: Translating Linguistic Dependency Relations into Logical Relations}
+\section{RelEx2Logic：逻辑关系抽取}{RelEx2Logic: Translating Linguistic Dependency Relations into Logical Relations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-现在解释我们的自然语言理解管道中最后的纯语言学阶段，这称为RelEx2Logic。RelEx2Logic是我们本论题所做工作的一个关键组成部分，用于将RelEx生成的句法-语义语言分析结果转换成PLN和其它OpenCog认知组件可以使用的逻辑表示，从而使得我们的自然语言理解管道可以与逻辑推理系统（例如PLN）、控制系统（例如OpenPsi）和OpenCog的其它组件进行有效交互。
+现在解释我们的自然语言理解系统中最后的纯语言学阶段，这称为RelEx2Logic。RelEx2Logic是我们本论题所做工作的一个关键组成部分，用于将RelEx生成的句法-语义语言分析结果转换成PLN和其它OpenCog认知组件可以使用的逻辑表示，从而使得我们的自然语言理解管道可以与逻辑推理系统（例如PLN）、控制系统（例如OpenPsi）和OpenCog的其它组件进行有效交互。
 
 \subsection{RelEx2Logic}{RelEx2Logic}
 
@@ -433,7 +571,44 @@ EvaluationLink
 这些“基本输出”仅仅是这个句子解释后Atomspace中所创建的完整原子（Atom）集合的一小部分。一个更完整的列表是
 
 {\tt\begin{small}\begin{lstlisting}
-XXX paste in full output for the sample sentence "The cat chased a snake." XXX
+((ReferenceLink
+   (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
+   (SetLink
+      (ImplicationLink
+         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (PredicateNode "chase" (ptv 1 0 1))
+      )
+      (InheritanceLink
+         (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
+         (ConceptNode "cat" (ptv 1 0 1))
+      )
+      (InheritanceLink
+         (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
+         (ConceptNode "snake" (ptv 1 0 1))
+      )
+      (EvaluationLink
+         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (ListLink
+            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
+            (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
+         )
+      )
+      (InheritanceLink
+         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (ConceptNode "past")
+      )
+      (InheritanceLink
+         (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
+         (ConceptNode "DeclarativeSpeechAct")
+      )
+      (EvaluationLink
+         (PredicateNode "definite")
+         (ListLink
+            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
+         )
+      )
+   )
+)
 \end{lstlisting}\end{small}}
 
 本节最后会给出更多映射例子以及所涉及原子（Atom）类型的解释。
