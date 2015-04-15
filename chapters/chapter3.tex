@@ -583,3 +583,71 @@ tv4 = TVAnd tv1 tv3
 \section{概率逻辑网络PLN}{Probabilistic Logic Networks}
 \label{sec:pln}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+概率逻辑网络PLN是OpenCog的一个很特殊的方面，在此文中它讲被重点提出，尤其在第\ref{chap:inference}章，PLN是一个独特的推理系统，它嵌入了预测逻辑和传统逻辑的组合。PLN在\cite{Goertzel2008, RWR}中被详细介绍。在此我们给出一个高阶的概述。
+
+PLN是一个数学和软件框架，用于非确定推理、操作CogPrime软件框架、使概率真值与泛化逻辑推理规则的整合成为可能。具体来说，PLN包含：
+
+\begin{itemize}
+\item 一系列推理规则（例如，演绎、贝叶斯规则、变量归一化、演绎推理，等等），每一项都有一个或多个逻辑关系或词项（以CogPrime的原子来表征）作为输入，并计算输出；
+\item 特定的数学方程，基于合适的背景前提假设的概率值，计算结论的概率值。
+\end{itemize}
+PLN还涉及一条特殊的功能，评估概率值的置信度（证据的分量，或二阶的不确定性）。最后，PLN在软件中的实现需要重要的抉择，要求考虑推理规则的结构化表征、“推理控制”——这种策略要求，在每个特定的实际情况中，判断以何种顺序做何种推理。
+
+\subsection{PLN的一个简单概述}{A Simple Overview of PLN}
+
+PLN的关键因素是它的规则和方程式。总的来说，一个PLN规则有：
+
+\begin{itemize}
+\item 输入：一个原子元组（它必须满足某些要求，视规则而定）
+\item 输出：一个原子元组
+\end{itemize}
+
+实际上，几乎在所有情况下，输出都是一个单一的原子，而输入则是一个单一的原子或者是一对原子。
+
+特定的原形例子是演绎规则，它的输入是这样的：
+
+{\tt\begin{small}\begin{lstlisting}
+X_Link A B
+X_Link B C
+\end{lstlisting}\end{small}}
+
+而它的输出应该是这样的：
+
+{\tt\begin{small}\begin{lstlisting}
+X_Link A C
+\end{lstlisting}\end{small}}
+
+在这里，X\_Link可以是继承性链接、子集链接、按时链接或延伸按时链接的。
+
+一个PLN方程与一条PLN规则同时存在，它表示了输出的非确定性真值，基于输入的非确定真值。例如，如果我们有：
+
+{\tt\begin{small}\begin{lstlisting}
+X_Link A B <sAB>
+X_Link B C <sBC>
+\end{lstlisting}\end{small}}
+
+
+
+那么标准的PLN演绎方程告诉我们
+
+{\tt\begin{small}\begin{lstlisting}
+X_Link A C <sAC>
+\end{lstlisting}\end{small}}
+
+其中： 
+
+$$
+s_{AC}=s_{AB}s_{BC}+\frac{\left(1-s_{AB}\right)\left(s_C-s_Bs_{BC}\right)}{1-s_B}
+$$, $s_A$表示节点$A$的真值强度。
+
+在这个例子中，每一个院子的非确定真值通过一个“强度”数值来给出。总的来说，PLN中的非确定真值可以有多种形式，比如：
+
+\begin{itemize}
+\item 单一的强度值，比如0.8，这表示概率或模糊真值，取决于具体的原子类型
+\item （强度，置信度）对，比如（0.8，0.4）
+\item （强度，数量）对，如（0.8，15）
+\item 非确定的概率值，如（0.6，0.9， 0.95），这表示概率间的相互评分
+\end{itemize}
+
+\subsection{前向和后向链}{Forward and Backward Chaining}
