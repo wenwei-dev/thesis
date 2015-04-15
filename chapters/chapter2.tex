@@ -459,8 +459,13 @@ Tursing（图灵）曾在其1950年的论文中阐述了他对终极NLP应用的
 \label{fig:Searle}
 \end{figure}
 
-1.6.2 CogDial架构
+\subsubsection{CogDial架构}{The CogDial Architecture}
 
-在第？？章的图？？中，我们粗略地介绍了我们自己的对话架构。按照我们的方法，对话管理是通过一个通用动机认知模型来实施的，我们称之为“OpenPsi”。“知识”从我们的NL理解系统中分配到OpenCog的Atomspace知识存储中，然后OpenPsi会根据某一特定时间点的系统目标，从大量“言语行为模式”中选择一个，并用它来指导其余的宏观计划过程。随后，被选中的“言语行为模式”利用PLN推理和其它工具，实施认知处理，并收集知识组（例如：Atomspace中的原子、节点和链接），再将其分配到NL生成子系统中，以转换为英语。这个复杂的架构代表了人工编码和学习模块的融合。
+在第\ref{chap:dialogue}章的图\ref{fig:cogdial}中，我们粗略地介绍了我们自己的对话架构。按照我们的方法，对话管理是通过一个通用动机认知模型来实施的，我们称之为“OpenPsi”。“知识”从我们的NL理解系统中分配到OpenCog的Atomspace知识存储中，然后OpenPsi会根据某一特定时间点的系统目标，从大量“言语行为模式”中选择一个，并用它来指导其余的宏观计划过程。随后，被选中的“言语行为模式”利用PLN推理和其它工具，实施认知处理，并收集知识组（例如：Atomspace中的原子、节点和链接），再将其分配到NL生成子系统中，以转换为英语。这个复杂的架构代表了人工编码和学习模块的融合。
  
-（24和25页都是不需要翻译的图表）
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/cogdial.png}
+\caption{ Our CogDial dialogue system architecture }
+\label{fig:cogdial}
+\end{figure}
