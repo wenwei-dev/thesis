@@ -422,30 +422,42 @@ Tursing（图灵）曾在其1950年的论文中阐述了他对终极NLP应用的
 \label{sec:speechAct}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-分析“对话系统”需要生成的各类话语的一个方法是：使用由Austin[?] 和 Searle [?] 开创，又经他人进一步完善的“言语行为论”。本文所阐述的对话研究中使用的正是这种方法。我们在这里先回顾非常基本的言语行为论，然后介绍言语行为论的具体变化。在研究过程中，我们发现这个理论是极有用的。
+分析“对话系统”需要生成的各类话语的一个方法是：使用由Austin\cite{Austin2005}和Searle\cite{Searle1969} 开创，又经他人进一步完善的“言语行为论”。本文所阐述的对话研究中使用的正是这种方法。我们在这里先回顾非常基本的言语行为论，然后介绍言语行为论的具体变化。在研究过程中，我们发现这个理论是极有用的。
 
 言语行为论的核心概念是：分析不连续言语行为的语言学行为，以实现特定的目标。在OpenCog环境下，这是一种使用方便的理论方法，因为它促使我们像对待OPenCog系统实施的其它行为一样对待言语行为，并推动我们通过标准的OpenCog行为选择机制来处理言语行为。
-（图8）
-“言语行为论”探讨那些可以通过言语来表现的行为类型。
-	言表意的行为：某句话的外在表现，例如：真实言语和它的表面含义。
-	言外行为：言语的“言外之力”，例如它的目标含义（作为社交层面的有效言语行为）。（按照Searle的使用方法，“言语行为”有时仅仅指的是言外行为。我们不用这个方法。）
-	言后行为：它的实际效果，例如：说服、劝说、吓唬、启发、激励，或者让某人做或实现某个事项，不论是有意或无意的。在Searle看来，说话人通过他们的言语，只能获得5类言外之力，分别是：
 
-	断言类：说话人自己承诺事情是真的。
-The sky is blue （天是蓝色的）
+\begin{itemize}
+\item {\bf 言语行为论}：探讨那些可以通过言语来表现的行为类型。
+\item {\bf 言表意的行为}：某句话的外在表现，例如：真实言语和它的表面含义。
+\item {\bf 言外行为}：言语的“言外之力”，例如它的目标含义（作为社交层面的有效言语行为）。（按照Searle的使用方法，“言语行为”有时仅仅指的是言外行为。我们不用这个方法。）
+\item {\bf 言后行为}：它的实际效果，例如：说服、劝说、吓唬、启发、激励，或者让某人做或实现某个事项，不论是有意或无意的。
+\end{itemize}
 
-	指令类：说话人试图让受话人做某事。
-Clean your room! （打扫你的房间！）
+在Searle看来，说话人通过他们的言语，只能获得5类言外之力，分别是：
 
+\begin{itemize}
+\item 断言类：说话人自己承诺事情是真的。The sky is blue （天是蓝色的）
+\item 指令类：说话人试图让受话人做某事。Clean your room! （打扫你的房间！）
+\item 承诺类：说话人对未来的行为做出承诺。I will do it (我将会做这件事)
+\item 表达类：说话者表达了某些心理状态。I’m Sorry (对不起)。
+\item 声明类：说话人带来了不同的状况。The meeting is adjourned.（这个会议休会了）。
+\end{itemize} 
 
-	承诺类：说话人对未来的行为做出承诺。
-I will do it (我将会做这件事)
-	表达类：说话者表达了某些心理状态。
-I’m Sorry (对不起)。
-	声明类：说话人带来了不同的状况
-The meeting is adjourned.（这个会议休会了）。
+受这个本体论的启发，Twitchell 和 Nunamake在他们2004年的论文（标题为：言语行为归档：分析持续谈话和其参与者的概率统计法。\cite{Twitchell2004}）中提出了更加精细的“42种言语行为”本体论，叫做SWBD-DAMSL (DAMSL = Dialogue Act Markup in Several Layers）。尽管有少量不符合Searle的观点，并被分类为“其它”，但几乎他们所有的42种言语行为类型都能够被映射到Searle的5个高级类别之一。图\ref{fig:DAMSL}和\ref{fig:Searle}描述了这42种行为和它们与Searle分类之间的关系。我们已经利用了这个Searle解析法，它给我们正在进行的自然语言对话研究带来了灵感。
 
-受这个本体论的启发，Twitchell 和 Nunamake在他们2004年的论文（标题为：言语行为归档：分析持续谈话和其参与者的概率统计法。[?]）中提出了更加精细的“42种言语行为”本体论，叫做SWBD-DAMSL (DAMSL = Dialogue Act Markup in Several Layers）。尽管有少量不符合Searle的观点，并被分类为“其它”，但几乎他们所有的42种言语行为类型都能够被映射到Searle的5个高级类别之一。图？？和？？描述了这42种行为和它们与Searle分类之间的关系。我们已经利用了这个Searle解析法，它给我们正在进行的自然语言对话研究带来了灵感。
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/DAMSL.png}
+\caption{ The 42 speech acts presented in the SWBD-DAMSL study}
+\label{fig:DAMSL}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/Searle.png}
+\caption{ Correlation of the 42 SWBD-DAMSL speech acts with Searle's high-level speech act categories }
+\label{fig:Searle}
+\end{figure}
 
 1.6.2 CogDial架构
 
