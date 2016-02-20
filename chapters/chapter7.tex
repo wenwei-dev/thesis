@@ -87,10 +87,10 @@ SimilarityLink
 假设我们需要完成的推理如下：
 
 \begin{verbatim}
-Socrates is a man.
-Men breath air.
+Socrates is a man.（苏格拉底是人）
+Men breath air.（人呼吸空气）
 |- 
-Socrates breath air.
+Socrates breath air.（苏格拉底呼吸空气）
 \end{verbatim}
 
 对于此例，推理前提在Atomspace中可表示如下：
@@ -114,7 +114,7 @@ Concepts
 
 (ConceptNode "present") ; [227]
 
-Tuple that satisfies breathe(x,y)
+满足breathe(x,y)的多元组可表示如下：
 
 (ListLink (stv 1.000000 0.000000)
   (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
@@ -131,14 +131,14 @@ breathe(x,y)
   ) ; [295]
 ) ; [296]
 
-Socrates IS-A man
+"Socrates IS-A man"（“苏格拉底是人”）可表示如下：
 
 (InheritanceLink (stv 1.000000 1.000000)
   (ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
   (ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1") ; [220]
 ) ; [223]
 
-Instance inherits from generic concept
+具体实例继承于泛化概念：
 
 (InheritanceLink (stv 1.000000 0.990000)
   (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
@@ -161,7 +161,6 @@ Instance inherits from generic concept
 
 {\tt\begin{small}\begin{lstlisting}
 1) 成员变量泛化规则（GeneralEvaluationToMemberRule）
-
 输入：
 (EvaluationLink (stv 1.000000 1.000000)
   (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
@@ -170,7 +169,6 @@ Instance inherits from generic concept
     (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
   ) ; [358]
 ) ; [359]
-
 
 输出：(以及ListLink中其他变量被泛化后的3个其他变体）
 (MemberLink (stv 1.000000 1.000000)
@@ -205,9 +203,8 @@ Instance inherits from generic concept
   ) ; [445]
 ) ; [6107]
 
-3) AbductionRule
-Input
-
+3) 溯因推理规则（AbductionRule）
+输入：
 (InheritanceLink (stv 1.000000 0.990000)
   (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
   (ConceptNode "man") ; [284]
@@ -218,32 +215,29 @@ Input
   (ConceptNode "man") ; [284]
 ) ; [285]
 
-Output
-
+输出：
 (InheritanceLink (stv 1.000000 0.988901)
   (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
   (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
 ) ; [609]
 
-4) DeductionRule
-Input is previous ouput and
-
+4) 演绎推理规则（DeductionRule）
+输入：上一条输出以及下面的原子集合
 (InheritanceLink (stv 1.000000 1.000000)
   (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
   (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
 ) ; [286]
 
-Output
-
+输出：
 (InheritanceLink (stv 1.000000 0.991755)
   (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
   (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
 ) ; [777]
 
-5) DeductionRule
-Input is previous output and output from 2)
-Output
+5) 演绎推理规则（DeductionRule）
+输入：步骤2）和步骤4）的输出
 
+输出：
 (InheritanceLink (stv 1.000000 0.986333)
   (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
   (SatisfyingSetLink (stv 1.000000 0.000000)
@@ -258,10 +252,10 @@ Output
   ) ; [8605]
 ) ; [12317]
 
-6) InheritanceToMemberRule
-Input is previous output
-Output
+6) 成员变量继承规则（InheritanceToMemberRule）
+输入：上一条规则的输出
 
+输出：
 (MemberLink (stv 1.000000 0.989841)
   (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [217]
   (SatisfyingSetLink (stv 1.000000 1.000000)
@@ -276,10 +270,10 @@ Output
   ) ; [389]
 ) ; [6375]
 
-7) MemberToEvaluationRule
-Input is previous output
-Final output
+7) 成员变量赋值规则（MemberToEvaluationRule）
+输入：上一条规则的输出
 
+最终推理结论：
 (EvaluationLink (stv 1.000000 0.989841)
   (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
   (ListLink (stv 1.000000 0.000000)
@@ -290,7 +284,6 @@ Final output
  \end{lstlisting}\end{small}}
 
 \noindent 需要说明的是，上述提供的从前提到结论的推理路径中，只显示了在推理过程中提供有用信息的推理步骤。在推理过程中，PLN的后向推理链尝试并放弃大量其他的可能推理步骤。
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
