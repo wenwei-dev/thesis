@@ -1,0 +1,386 @@
+\documentclass[11pt]{article}
+
+% Any additional packages needed should be included after jagi.
+% Note that jagi.sty includes epsfig, amssymb, natbib and graphicx,
+% and defines many common macros, such as 'proof' and 'example'.
+%
+% It also sets the bibliographystyle to agi; for more information on
+% natbib citation styles, see the natbib documentation
+
+%\usepackage{jagi}
+
+% Definitions of handy macros can go here
+
+\newcommand{\dataset}{{\cal D}}
+\newcommand{\fracpartial}[2]{\frac{\partial \#1}{\partial  \#2}}
+
+% Heading arguments are {volume}{year}{pages}{submitted}{published}{author-full-names}
+
+%\jagiheading{0}{20??}{1-?}{2008-05-31}{2008-06-19}{Jesus Satan Cocksucker et al.}
+
+% Short headings should be running head and authors last names
+
+%\ShortHeadings{Cognitive Synergy}{Goertzel}
+%\firstpageno{1}
+
+\usepackage{amsmath,amsthm, amssymb}
+\usepackage[all]{xy}
+\usepackage{graphicx}
+\newtheorem{thm}{Theorem}
+\newtheorem{mydef}{Definition}
+\usepackage{url}
+\usepackage{braket}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{scalefnt}
+\usepackage{ifthen}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{placeins}
+
+
+
+%\editor{Mephistopheles}
+
+\begin{document}
+
+\section{Performance Evaluation of Comprehension Pipeline on Simple Sentences}
+
+We performed an evaluation of the current version of the OpenCog NLP comprehension pipeline, including improvements to the link parser and RelEx rule-bases that we made during work on this thesis, along with the RelEx1Logic rules that were created as part of this thesis.   For evaluation, we made a simple test corpus of 100 randomly chosen sentences of length 8 or less drawn from the Reuters corpus.  These sentences are given in Appendix \ref{app}.   The use of short sentences was motivated by a desire to test the ability of the system to interpret basic relationships between words, rather than complex inter-clausal syntactic phenomena.
+
+Results of the evaluation are given in the following tables:
+
+\FloatBarrier
+
+\begin{table}
+\center
+\begin{tabular}{|r|r|r||c|}
+\hline
+ & Link Parser\\
+\hline
+Correct & 96   \\
+Almost Correct & 2    \\
+Incorrect & 2       \\
+
+\hline
+\end{tabular}
+\caption{Link Parser performance on 100-short-sentence corpus, after our modifications.  The ``almost correct'' cases involved one or two words being omitted in the parse.}
+\label{table:settings}
+\end{table}
+
+
+\begin{table}
+\center
+\begin{tabular}{|r|r|r||c|}
+\hline
+ & RelEx\\
+\hline
+Correct & 80    \\
+Almost Correct & 15     \\
+Incorrect & 1     \\
+
+\hline
+\end{tabular}
+\caption{RelEx performance on the 96-sentence subset of 100-short-sentence corpus, on which link parser performed correctly.   The ``almost correct'' cases involved individual missing semantic relations.}
+\label{table:settings}
+\end{table}
+
+\begin{table}
+\center
+\begin{tabular}{|r|r|r||c|}
+\hline
+ & RelEx2Logic\\
+\hline
+Correct & 68    \\
+Almost Correct & 12     \\
+Incorrect & 0     \\
+
+\hline
+\end{tabular}
+\caption{RelEx2Logic performance on the 80-sentence subset of 100-short-sentence corpus, on which link parser and RelExperformed correctly.  The ``almost correct'' cases involved individual missing semantic relations, e.g. the relations for ``but'' or ``those.''}
+\label{table:settings}
+\end{table}
+
+\FloatBarrier
+
+The only sentence in our test corpus on which the link parser failed utterly was
+
+\begin{verbatim}
+But can one, really?
+\end{verbatim}
+
+\noindent Other minor link parser failures were mainly due to misunderstanding of idioms, e.g.
+
+ \begin{verbatim}
+It has held them at bay.
+ \end{verbatim}
+
+\noindent (where it doesn't understand ``at bay'').
+
+RelEx also dramatically failed only once, on the sentence 
+
+ \begin{verbatim}
+Part of it is, of course
+ \end{verbatim}
+ 
+ \noindent where the dependency relations output leave an argument dangling:
+ 
+
+ \begin{verbatim}
+Error: No target! rel=_pobj and src=of
+    _advmod(be, of_course)
+    _subj(be, it)
+    _quantity(it, part)
+    _det(it, part)
+    _advmod(part, of)
+ \end{verbatim}'
+ 
+\noindent  But there are other cases where it omits important relationships, e.g. the RelEx interpretation of
+
+
+The expression has become quite a cliche.
+
+has only the dependencies
+
+ \begin{verbatim}
+   _obj(become, cliche)
+    _subj(become, expression)
+   \end{verbatim}'
+     
+although it also notes
+
+ \begin{verbatim}
+    pos(quite_a, det)
+    idiom-FLAG(quite_a, T)
+   \end{verbatim}'
+     
+\noindent In this case, it  fails to connect the idiomatic construction ``quite a'' with the word "cliche'.;;
+
+ 
+ Similarly, on this corpus, RelEx2Logic almost gives sensible output when RelEx does.   But sometimes its output is incomplete.   In interpreting the sentence
+ 
+  \begin{verbatim}
+ But there is also compassion. 
+    \end{verbatim}'
+ 
+ \noindent it does not produce a relation for ``but'' because at this time no ``but'' rule has been coded.   Similarly in
+ 
+  \begin{verbatim}
+ These men are not callous.
+    \end{verbatim}'
+ 
+ \noindent it produces no relation for ``those'' as no such rule has been coded yet.
+ 
+ Overall the results on this simple corpus are encouraging.  They show the comprehension pipeline making few mistakes on simple sentences, and those mistakes that are there would nearly all be fixable by adding a handful of additional rules.   Of course, the nature of a rule-based system is that one can always improve performance by adding more and more rules, which is what we hope to work around via learning rules via corpus analysis as described in Chapter \ref{chap:learning}.   However, it is also interesting to see how far one can go with hand-coded rules of what obscurity and complexity.
+ 
+ 
+ 
+ \section*{Appendix 1: Short Sentences Corpus}
+ 
+Will the danger increase or decrease?
+ Readiness exercises  are almost continuous. 
+
+Each could be the real thing. 
+
+These men are not callous. 
+
+That's the law. 
+
+He makes the momentous decision. 
+
+In a word, plenty.
+
+The answer is a cryptographic secret. 
+
+Their heads were in the air sniffing. 
+
+They were chasing a rain cloud. 
+
+Sometimes it was to skirt a gully. 
+
+They ran for three hours. 
+
+They were studying the ground. 
+
+Part of it is, of course. 
+
+Such stretches have an inhuman moonlike quality. 
+
+No one came. 
+
+The white men died. 
+
+And countless others like them have died. 
+
+The aborigine is not deceived.
+
+
+Damned right , he said. 
+
+He was right. 
+
+The landscape kept repeating itself. 
+
+No one patted the dog. 
+
+It was not a pet. 
+
+It was a worker. 
+
+The man was leaning against the rock. 
+
+His legs were narrow and very long. 
+
+A cigarette would taste particularly good. 
+
+I really didn't know what he meant. 
+
+It was a nice day, granted. 
+
+It is a splendid structure. 
+
+It is a great spectacle. 
+
+Yes, the Maestro assented. 
+
+What did he do for relaxation?
+
+You might have failed. 
+
+The Frenchman was astonished. 
+
+Tobacco Road is dead. 
+
+Long live Tobacco Road. 
+
+In 1950 it had become 47.1\% urban. 
+
+The list is, obviously, endless. 
+
+But these sources have not been tapped. 
+
+It bewilders and befuddles him. 
+
+The concept remains subjective. 
+
+The system works as an impersonal mechanism. 
+
+But the metamorphosis must come first. 
+
+Events occur without apparent reason. 
+
+Each performance may be different. 
+
+Then the choreographer must arbitrate. 
+
+One wonders about its applicability to people. 
+
+The range of our voice ignores distance. 
+
+
+Perhaps things were even worse then. 
+
+A meteor could fall on San Francisco. 
+
+Yet we no longer feel uneasy. 
+
+
+He was waiting. 
+
+They find deep pessimism in them. 
+
+Nevertheless I was curious. 
+
+Beckett's appearance is rough-hewn Irish. 
+
+The confusion is not my invention. 
+
+I am not a philosopher. 
+
+It has held them at bay. 
+
+And why not?
+
+Beckett's own work is an example. 
+
+The form and the chaos remain separate. 
+
+Isn't all art ambiguous?
+
+Not this. 
+
+This is clear. 
+
+With classical art, all is settled. 
+
+But it is different at Chartres. 
+
+Yes. 
+
+That is the play. 
+
+I have no religious feeling. 
+
+Once I had a religious emotion. 
+
+It was at my first Communion. 
+
+No more. 
+
+My mother was deeply religious. 
+
+So was my brother. 
+
+My father had none. 
+
+But there is also compassion. 
+
+That is reserved for the squares. 
+
+It is sacred. 
+
+They are non-conformists on principle. 
+
+There is nothing holy in wedlock. 
+
+Boredom is death. 
+
+What one actually remembers is its greenness. 
+
+Another had ended before it began. 
+
+Time in the sum is nothing. 
+
+It was mother who planted the verbenas. 
+
+He collapses, and dies. 
+
+His rage assumes a religious form.
+
+The image of God has simply disappeared. 
+
+The expression has become quite a cliche.
+
+How do we define it ?
+
+Circumstances alter cases. 
+
+Who is involved willy nilly?
+
+Complicity is an embarrassing word. 
+
+Who is the owner?
+
+Pay him !
+
+But can one, really?
+
+But that was a long time ago.
+
+The New England conscience became desensitized.
+
+\end{document}
+

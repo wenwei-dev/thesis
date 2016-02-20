@@ -1,0 +1,636 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{基于概率逻辑推理的问答系统的设计和实现}{Implementaion: A Question Answering System Based on Probabilistic Logic Reasoning}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+XXXX
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{基于超图模糊匹配的问答系统}{Question-Answering Via Hypergraph Fuzzy Matching}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+为了实现我们的智能对话系统的框架以及设计思路，我们构建了一个基于超图匹配的问答系统的原型，该问答系统使用前文提到的自然语言理解技术将自然语言转换成以超图表示的语义逻辑形式，利用基于超图匹配的动态编程算法，从而在问答语料库中找到最适合问题的答案来响应用户查询。
+
+本节我们将阐述这个基于超图的模糊匹配的启发式的问答系统的设计思路和实现方法，该系统主要针对信息查询。其基本算法很简单：给定一个查询Q，通过我们的自然语言理解流水线将其转换成Atomspace里的超图形式，然后在知识库Atomspace 里找出与其相似的表示陈述句的超图。这里我们做了一个合理的猜测，认为这些相似的超图中的其中一个包含了Q的答案。
+
+如果给定一个很大的超图H，在H的所有子图中找到与目标超图Q部分匹配的子超图是一个非常困难的计算问题。我们使用了启发式在一定程度上解决了计算难度，虽然这不能保证找到问题的正确答案，但实验发现该方法通常能找到一个很好的答案。我们的启发式涉及下面两个阶段：
+
+\begin{itemize}
+\item {\bf 第一阶段：}使用一个基于超图的模糊匹配器Pattern Matcher，搜索能正确回答查询Q的答案。在此搜索过程中，保存所有与查询Q近似匹配的子超图。
+\item {\bf 第二阶段：}对第一阶段中的所有部分匹配的子超图，使用基于超图匹配的动态规划来计算它们的匹配程度，然后根据匹配程度进行排序。
+\end{itemize}
+基于超图匹配的动态规划是对 \cite{Zass2008}中的算法一个新的改进。正如基于动态规划的字符串匹配，获得高性能的一个重要因素是从源到目标的路径转换过程中合理地分配具体的操作成本。我们对此使用的启发式如下：修改（可以是添加、删除或替换）一个稀有词对应的节点比修改一个常用词对应的节点的成本高；修改一个稀有词节点对应的链比修改一个常用词节点对应的链的成本高。这里的“稀有程度”通过词频或者该词所关联的WordNode, ConceptNode或者PredicateNode的真值来衡量。
+
+假设所需的查询是“Who bought a glockenspiel at the store?”(谁在商店买了一个钟琴？)，那么如果将“glockenspiel”替换成其他词的时候，那其成本就比将“store”替换成其他词要高，因为“glockenspiel”比“store”更稀有。因此“Bob bought a glockenspiel with his friend.”（Bob和他朋友一起买了钟琴。）和查询的匹配程度要高于“Jim bought a thimble at the store.”（Jim在商店买了一个针箍。）。
+
+这种基于频率的启发式相当于实例化OpenCog里经常使用的一个一般原则：信息含量往往通过概率化的惊讶度来衡量。发现句子里的“glockenspiel”比发现“store”的惊讶度更高，因此，我们断定，在此查询中，“glockenspiel”含有的信息量更大，所以当修改“glockenspiel”的时候会被分配很高的成分，因为做这样的修改就相当于删除了查询中的较多的信息。这样的信息论原则也给OpenCog中的Pattern Mining\cite{ONeill2012} 奠定了基础, Pattern Mining在OpenCog的动机机制中充当了重要的角色，可以用来满足我们前面提到的OpenPsi里的“新颖性”（Novelty）的目标需求。一个更智能更复杂的匹配方法可以根据总体惊讶值来惩罚修改序列，但目前的做法依然是只针对查询的各个部分的惊讶度单独作为指标，待系统逐步改善后，会考虑实现更复杂的匹配算法。
+为了简化操作，在做查询匹配的过程中，我们忽略了表示查询的超图中很多不重要的Atoms，仅表明语义关系的核心部分用于匹配。对于例句“Who bought a glockenspiel at the store?”，仅有下面这些Atoms参与超图匹配：
+
+ {\tt\begin{tiny}\begin{lstlisting}
+((ReferenceLink
+   (InterpretationNode "sentence@ae443d59-33e3-453f-b77e-2c46723f584a_parse_0_interpretation_$X")
+   (SetLink
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (PredicateNode "buy" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "glockenspiel@bf4ad4a0-d48b-4c21-b817-a361757a951d" (stv 0.001 0.99000001))
+         (ConceptNode "glockenspiel" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+         (ConceptNode "store" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (VariableNode "$rIrXGzhMvgVEaXQEaFYaXhMvzNQ5RL0m32kZ" (stv 0.001 0.99000001))
+            (ConceptNode "glockenspiel@bf4ad4a0-d48b-4c21-b817-a361757a951d" (stv 0.001 0.99000001))
+            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (ConceptNode "at" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SatisfyingSetLink (stv 0.99000001 0.99000001)
+            (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         )
+         (ConceptNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (ConceptNode "past" (stv 0.001 0.99000001))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "definite" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+         )
+      )
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (PredicateNode "at" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.001 0.99000001)
+         (InterpretationNode "sentence@ae443d59-33e3-453f-b77e-2c46723f584a_parse_0_interpretation_$X")
+         (ConceptNode "InterrogativeSpeechAct" (stv 0.001 0.99000001))
+      )
+   )
+)
+)
+
+\end{lstlisting}\end{tiny}}
+
+类似地，我们使用简化过的表示“Bob mauled a glockenspiel with his friend.”的超图：
+
+ {\tt\begin{tiny}\begin{lstlisting}
+((ReferenceLink
+   (InterpretationNode "sentence@47794171-b923-41e5-a03a-7fc22eb583fb_parse_0_interpretation_$X")
+   (SetLink
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (PredicateNode "maul" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (ConceptNode "Bob" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "glockenspiel@b1288105-63bc-4630-bf0b-e35a585647ee" (stv 0.001 0.99000001))
+         (ConceptNode "glockenspiel" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+         (ConceptNode "friend" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+            (ConceptNode "glockenspiel@b1288105-63bc-4630-bf0b-e35a585647ee" (stv 0.001 0.99000001))
+            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (ConceptNode "with" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SatisfyingSetLink (stv 0.99000001 0.99000001)
+            (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         )
+         (ConceptNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (ConceptNode "past" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.001 0.99000001)
+         (InterpretationNode "sentence@47794171-b923-41e5-a03a-7fc22eb583fb_parse_0_interpretation_$X")
+         (ConceptNode "DeclarativeSpeechAct" (stv 0.001 0.99000001))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "definite" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "his@3011b147-3e39-446d-8dee-b0b6fe67a2bf" (stv 0.001 0.99000001))
+         (ConceptNode "his" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "possession" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+            (ConceptNode "his@3011b147-3e39-446d-8dee-b0b6fe67a2bf" (stv 0.001 0.99000001))
+         )
+      )
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (PredicateNode "with" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SpecificEntityNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (ConceptNode "male" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SpecificEntityNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (ConceptNode "Bob" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "definite" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         )
+      )
+   )
+)
+)
+
+\end{lstlisting}\end{tiny}}
+
+和表示”Jim bought a thimble at the store.”的超图
+
+ {\tt\begin{tiny}\begin{lstlisting}
+((ReferenceLink
+   (InterpretationNode "sentence@d92a6c1d-bc69-4501-8ea9-e4430fc56296_parse_0_interpretation_$X")
+   (SetLink
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (PredicateNode "buy" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (ConceptNode "Jill" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "thimble@8a32736f-7344-44ad-b4a4-df34553954bc" (stv 0.001 0.99000001))
+         (ConceptNode "thimble" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+         (ConceptNode "store" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+            (ConceptNode "thimble@8a32736f-7344-44ad-b4a4-df34553954bc" (stv 0.001 0.99000001))
+            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (ConceptNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (ConceptNode "at" (ptv 0.001 0.99000001 1))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SatisfyingSetLink (stv 0.99000001 0.99000001)
+            (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         )
+         (ConceptNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (ConceptNode "past" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.001 0.99000001)
+         (InterpretationNode "sentence@d92a6c1d-bc69-4501-8ea9-e4430fc56296_parse_0_interpretation_$X")
+         (ConceptNode "DeclarativeSpeechAct" (stv 0.001 0.99000001))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "definite" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+         )
+      )
+      (ImplicationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (PredicateNode "at" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+         )
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SpecificEntityNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (ConceptNode "female" (stv 0.001 0.99000001))
+      )
+      (InheritanceLink (stv 0.99000001 0.99000001)
+         (SpecificEntityNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (ConceptNode "Jill" (ptv 0.001 0.99000001 1))
+      )
+      (EvaluationLink (stv 0.99000001 0.99000001)
+         (PredicateNode "definite" (stv 0.001 0.99000001))
+         (ListLink (stv 0.99000001 0.99000001)
+            (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         )
+      )
+   )
+)
+)
+
+\end{lstlisting}\end{tiny}}
+
+我们的下一步研究会将逻辑推理也加入成本计算的过程，从而进一步改进上述针对查询处理的超图匹配。假如知识库中代表下面这个句子的超图表示“Jim bought a musical instrument at the store.”(Jim 在商店买了一个乐器。)，那么如果该查询系统能做出以下推理：
+
+\begin{verbatim}
+InheritanceLink
+	ConceptNode "glockenspiel"
+	ConceptNode "musical instrument"
+\end{verbatim}
+
+得到“钟琴”是一种“乐器”，那么会对“钟琴”改为“乐器”的修改操作赋值一个较低的成本值。基于这样的简单推理，系统会认为“Jim bought a musical instrument at the store.”比“ Jim bought a power tool at the store.” （Jim在商店买了一个电源工具）更符合上述查询。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{基于后向推理的问答系统}{Question-Answering via Backward Chaining Reasoning}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+上一节中介绍的基于超图匹配的问答虽然能回答不少的查询，但是随着知识库Atomspace的不断变大，搜索匹配的工作会变得越来越复杂，也越来越耗时。而且基于超图匹配的方法只是一个粗糙的启发式搜索过程，不足以用于这些情况：对查询时间要求高、知识库数据不足或者在知识库中的答案需要经过一定推理才能找到等。例如，该方法无法将查询“Who bought a glockenspiel?”（谁买了钟琴？）从下面的句子中找到近似匹配，但是这些句子都在一定程度上暗示了此查询的答案。
+
+\begin{itemize}
+\item Bob brought his new instrument home from the mall and played it for his kids.
+\item Ling-ling's house is like a museum of obscure musical instruments.
+\item Jack always buys whatever he sees in a magazine. ... On the flight back from Guilin, there was nothing for Jack to read but a catalog of weird musical instruments.
+\end{itemize}
+
+从另一方面来说，经过在适当的知识库上推理，也不难从上面的句子中找出适合此查询的答案。例如，如果想从第二个句子“Ling-ling's house is like a museum of obscure musical instruments.”中找出符合查询的答案，我们可通过如下推理得到：
+
+\begin{verbatim}
+Ling-ling's house is like a museum of obscure musical instruments
+
+The glockenspiel is obscure, and the glockenspiel is a musical instrument
+
+A museum of entities of type X, contains many instances of X
+
+If X is in Y's house, then often Y has bought X
+
+|-
+
+It is non-trivially probable that Ling-ling has bought a glockenspiel
+\end{verbatim}
+
+在Atomspace中，这样的定性推理可以通过不同很多方式进行。下面我们将解释其中一种方式的推理过程。推理的前提可表示如下
+Ling-ling's house is like a museum of obscure musical instruments:
+
+\begin{verbatim}
+
+Ling-ling's house is like a museum of obscure musical instruments:
+
+InheritanceLink
+	ConceptNode "house_123"
+	ConceptNode "house"
+	
+EvaluationLink
+	PredicateNode "own"
+	ConceptNode "Ling-ling"
+	ConceptNode "house_123"
+
+SimilarityLink
+	ConceptNode "house_123"
+	ConceptNode "museum_55"
+	
+InheritanceLink
+	ConceptNode "museum_55"
+	ConceptNode "museum"
+
+EvaluationLink
+	PredicateNode "of"
+	ConceptNode "museum_55"
+	ConceptNode "instruments_12"
+	
+InheritanceLink
+	ConceptNode "instruments_12"
+	ConceptNode "obscure"
+	
+InheritanceLink
+	ConceptNode "instruments_12"
+	ConceptNode "musical"	
+	
+InheritanceLink
+	ConceptNode "instrument_16"
+	ConceptNode "instrument"	
+	
+The glockenspiel is obscure, and the glockenspiel is a musical instrument:
+
+InheritanceLink
+	ConceptNode "glockenspiel"
+	ConceptNode "obscure"
+	
+InheritanceLink
+	ConceptNode "glockenspiel"
+	ConceptNode "instrument_15"
+	
+InheritanceLink
+	ConceptNode "instrument_15"
+	ConceptNode "musical"
+	
+InheritanceLink
+	ConceptNode "instrument_15"
+	ConceptNode "obscure"	
+	
+InheritanceLink
+	ConceptNode "instrument_15"
+	ConceptNode "instrument"		
+
+A museum of entities of type X, contains many instances of X:
+
+ImplicationLink  <.95,.99>
+	ANDLink
+		InheritanceLink
+			$X
+			ConceptNode "museum"
+		EvaluationLink
+			PredicateNode "of"
+			$X
+			$Z
+	EvaluationLink
+		PredicateNode "many"
+		SatisfyingSetLink
+			ANDLink
+				InheritanceLink
+					$A
+					$Z
+				EvaluationLink
+					PredicateNode "in"
+					$A
+					X
+
+If X is in Y's house, then often Y has bought X:
+
+ImplicationLink <.8,.9>
+	ANDLink
+		EvaluationLink
+			PredicateNode "in"
+			ListLink
+				$X
+				$Z
+		InheritanceLink
+			$Z
+			ConceptNode "house"
+		EvaluationLink
+			PredicateNode "own"
+			ListLink
+				$Y
+				$Z
+	EvaluationLink
+		PredicateNode "buy"
+		ListLink
+			$Y
+			$X
+
+\end{verbatim}
+
+根据上面的逻辑前提，PLN可以推理得到下面的结论：
+
+\begin{verbatim}
+EvaluationLink <s,c>
+	PredicateNode "buy"
+	ConceptNode "Ling-ling"
+	ConceptNode "glockenspiel"
+\end{verbatim}
+
+真值$<s,c>$的大小不仅取决于推理过程中的使用到的推理规则的具体参数，还取决于节点本身的概率大小（ “glockenspiel”节点的概率值用于表示钟琴在这世界上有多常见，这有助于估算钟琴是稀有乐器的概率）。因此，即使推理的前提给出很高的强度和置信度的真值如$<1,.95>$，推断得出的结论的真值也可能很低如$<.05,.6>$。不过由于推理的不确定性，得到的这样的低真值结论也是合理的。
+上面例子给出的前提是简化过的，比如，没有给出这样的事实：“博物馆通常有稀少的东西”，可表示如下：
+
+\begin{verbatim}
+ImplicationLink <.3,.8>
+	ANDLink
+		InheritanceLink
+			$X
+			ConceptNode "museum"
+		EvaluationLink
+			PredicateNode "in"
+			$X
+			$Z
+	InheritanceLink
+		$Z
+		ConceptNode "obscure"
+\end{verbatim}
+
+对该事实的考虑将在一定程度上增加结论的强度。
+总的来说，在推理链中不同阶段选择不同的前提，导致可以通过很多不同推理路径得到一个推理结论。每一条推理规则的执行是精确的，但对于选择哪条推理链则是一个非常模糊的问题，需要知识库Atomspace中的具体知识来指导。目前我们的逻辑系统PLN能完成上面的推理，但使用自然语言输入来进行这样的推理还存在一些问题。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{一个综合的问答规划器}{A Composite Question-Answering Schema}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+综合上述对问答规划的讨论，面向CogDial的一个合理的问答规划器可以实现如下：
+
+X XX下面这段需要翻译
+\begin{verbatim}
+Composite Information-Finding QA Schema:
+
+Given an information-finding question Q, and the motivation
+to answer it, and time T available to find an answer
+
+If T is large, try to answer Q using inference
+    If this succeeds, send the answer obtained to
+            the microplanner for articulation
+    If this fails, try to answer Q using fuzzy matching
+          If this succeeds, use the answer obtained from
+                   fuzzy matching  as a seed for further
+                   inference, and try to answer Q using
+                   inference again
+              If this succeeds, send the answer obtained
+                       to the microplanner for articulation
+	     If this fails, send answer obtained using
+                       fuzzy matching to the microplanner
+                       for articulation
+          If this fails, invoke StumpedByQuestion schema	
+
+If T is small:
+       Try to answer Q using quick, shallow inference
+            If this succeeds, send the answer obtained to
+                   the microplanner for articulation
+            If this fails, try to answer Q using fuzzy matching
+		If this succeeds, send the answer obtained to the
+                           microplanner for articulation
+		If this fails, invoke StumpedByQuestion schema
+\end{verbatim}
+
+\noindent 其中，StumpedByQuestion Schema可规划如下：
+
+\begin{verbatim}
+StumpedByQuestion Schema:
+
+Given a question Q (which the dialogue system has tried
+and failed to answer):
+
+If the importance attached to Q is low,
+      Invoke ExpressIgnorance schema
+				
+If the importance attached to Q is sufficiently high,
+      Use the PLN backward chainer to find P so that
+                     P ==> Q, where P is relatively simple
+                     and the truth value of the implication
+                     is sufficiently large
+		If a suitable P is found, send P to the
+                            microplanner as a question
+		If no suitable P is found, then invoke
+                            ExpressIgnorance schema
+
+\end{verbatim}
+
+\noindent 其中，ExpressIgnorance schema可规划如下：
+
+\begin{verbatim}
+ExpressIgnorance Schema:
+
+Send Atoms representing "I don't know"  or
+        "I don't know the answer to Q"
+	to the microplanner for articulation
+\end{verbatim}
+
+上面例子说明了CogDial方法的本质，我们可以将自适应的语篇管理能力分为下面三个阶段：
+
+\begin{enumerate}
+\item 用Scheme或者Python编写相应语篇管理行为代码，然后绑定在GroundedSchemaNodes里。OpenPsi可以在适当的时候调用这些语篇管理行为。
+\item 用OpenCog中统一的知识表示形式Atom来表示语篇管理行为，通过“硬编码”设置规划器参数，使其调用特定的认知处理程序（如微观规划器Microplanner或者后向推理工具Backward Chainer等）。
+\item 根据经验，通过强化学习和模仿等方法来自动学习语篇管理行为。
+\end{enumerate}
+
+\noindent 很显然，第三种方法是我们最终想要的能进行智能灵活对话的智能会话系统，但也无疑是最难的一种。我们CogDial首先实现第一种方法，然后在此基础上第二和第三种方法。这种增量的开发方式使我们能逐步实现智能的对话处理。使用硬编码的对话管理规划器，能使我们一种很直接的方式不断改进自然语言理解、生成和推理系统中与对话相关的处理，而不是一开始就将这些可能不能处理复杂对话的自然语言处理和推理系统集成到复杂的自动学习对话管理中。当这些模块逐渐完善后，我们将会使用自动学习得到的对话管理规则来替换我们目前使用的手工编写的对话管理规划器。
+
+对于真值和选择的查询，可用下面的类似方法来处理：
+
+\begin{verbatim}
+Composite Truth-value QA Schema:
+
+Given a truth-value query Q, and the motivation to answer it, and time T available to find an answer
+
+Try to answer Q using inference
+	If this succeeds, send the answer obtained to the microplanner for articulation
+	If this fails, try to answer Q using fuzzy matching
+		If this succeeds, use the answer obtained from fuzzy matching
+					as a seed for further inference, and try to answer Q using
+					inference again
+			If this succeeds, send the answer obtained to the microplanner for articulation
+		 	If this fails, invoke StumpedByQuestion schema	
+\end{verbatim}	
+
+\begin{verbatim}
+Composite Choice QA Schema:
+
+Given a choice query Q involving choices C1-Ck,
+and the motivation to answer it, and time T available to find an answer
+
+Repeat until T worth of processing time has been used up, or
+			an adequately confident answer has been found:
+
+ 	Evaluate, in parallel, k different truth-value queries corresponding to "Ci is an answer to Q"
+				-- assigning resources r_i to the i'th query
+				
+	Ongoingly recalculate the resource allocations r_i via treating the process
+				as a multi-armed bandit problem			
+
+	If an adequately confident answer has been found, send the answer obtained
+				to the microplanner for articulation
+
+If the loop completes without finding an adequately confident answer,
+			 invoke the StumpedByQuestion schema	
+\end{verbatim}	
+			
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{实例分析}{Example Dialogues}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+该智能会话系统目前还处于非常初步的阶段，并没有完全实现我们前面章节列出的所有言语规划器和对话控制机制。目前还无法被用做一个很实用的对话系统，但我们认为，在上述的理论分析研究基础上，在完整实现不同的对话控制机制和言语规划器后，CogDial的潜在推理和学习能力能使其成为一个有实用价值的智能会话系统。在本文撰写时，该系统还主要集中在问答机制的实现。本小节给出了一些目前已经实现的简单的对话结果。
+\begin{itemize}
+
+\item {\bf CogDial:} Hi there
+\begin{itemize}
+\item 所使用的言语规划器：开场白（Conventional-Opening）
+\end{itemize}
+
+\item {\bf Ruiting:} Hi
+
+\item {\bf CogDial:} What do you want to talk about today?
+\begin{itemize}
+\item 所使用的言语规划器：开放问题（Open-Question）
+\end{itemize}
+
+\item {\bf Ruiting:} What do YOU want to talk about today?
+
+\item {\bf CogDial:} I'm thinking.
+\begin{itemize}
+\item 所使用的言语规划器：自言自语（Self-talk）
+\end{itemize}
+
+\item {\bf Ruiting:} Do people really seek happiness?
+
+\item {\bf CogDial:} Do you seek happiness?
+\begin{itemize}
+\item 所使用的言语规划器：是非问答（Yes-No Question）
+\end{itemize}
+
+\item {\bf Ruiting:} Sometimes...
+
+\item {\bf CogDial:} Hmmm...
+\begin{itemize}
+\item 所使用的言语规划器：转移话题（Turn-Exit）
+\end{itemize}
+
+\item {\bf Ruiting:} Do you have any questions?
+
+\item {\bf CogDial:} I'm tired of asking quesitons.
+\begin{itemize}
+\item 所使用的言语规划器：是非问答（Yes-No Question）
+\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{深层语义解析的挑战}{The Challenge of Deep Semantic Understanding for Natural Language}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXX需要翻译
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{本章小结}{Summary of Accomplishments and Future Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+XXX语言需要调整修改
+
+本章主要提出了一个合理有效的智能会话系统的设计模型CogDial，该模型充分利用我们的研究成果，将第\ref{chap:comprehension}章中讨论的自然语言理解系统、第\ref{chap:generation}章中讨论的自然语言生成系统，以及\ref{sec:pln}中讨论的PLN推理系统，以认知模型OpenPsi中的动机机制来实现对话管理。本章还对基于此设计模型构建的原型系统（即结合超图匹配和逻辑推理的自然语言问题系统）展开了讨论。
+
+下一步工作将进一步完善本章描述的40多种言语行为规划器和不同的对话控制机制的实现，从而使CogDial的实用性更强，并最终运用到机器人或者其他智能体软件系统上。
+

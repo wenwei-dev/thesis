@@ -2,4 +2,4 @@
 *.log
 *.eoc
 *.out
-
+.DS_Store

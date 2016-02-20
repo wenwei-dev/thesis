@@ -1,0 +1,297 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{基于语言理解的逻辑推理}{Reasoning on the Output of Language Comprehension}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本章阐述如何对第\ref{chap:intro}章中的提到的假设2展开研究。基于此假设，我们认为，借助由超图转换表示的推理规则和基于超图表示的知识库，使用简单的逻辑推理，在上述自然语言理解框架输出的逻辑表达式上实现基本的常识推理，是可行的。基于自然语言的逻辑推理在很广泛的应用领域都是非常重要的，其中也包括本文第 \ref{chap:dialogue}章将介绍的智能会话系统。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{有关比较级的推理}{Reasoning About Comparatives}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+首先，紧接着上一章中对比较级的句法分析的讨论，我们这里通过几个例子来展示，在我们的自然语言系统输出的有关比较级的逻辑表达式上，PLN如何实现相关推理。为了更好地显示有效的推理过程，我们在下面的例子中过滤了和比较级推理无关的RelEx关系和逻辑表达。
+
+假设有：
+
+\begin{itemize}
+\item Bob likes Hendrix more than the Beatles
+\item Bob is American
+\item Menudo is liked less by Americans than the Beatles
+\end{itemize}
+
+\noindent 那么我们可以推出：Bob likes Hendrix more than Menudo.
+
+对于第一个句子，通过执行RelEx和RelEx2Logic，可以得到：
+
+ {\tt\begin{small}\begin{lstlisting}
+_subj(like, Bob)
+_obj(like, Hendrix)
+than(Hendrix, Beatles)
+_comparative(like, Hendrix)
+==>
+TruthValueGreaterThanLink
+    EvaluationLink like Bob Hendrix
+    EvaluationLink like Bob Beatles
+\end{lstlisting}\end{small}}
+
+\noindent 类似地，第二个句子：
+
+ {\tt\begin{small}\begin{lstlisting}
+_subj(like, Americans)
+_obj(like, Menudo)
+than(Beatles, Menudo)
+_comparative(like, Beatles)
+==>
+TruthValueGreaterThanLink
+    EvaluationLink like Americans Beatles
+    EvaluationLink like Americans Menudo
+\end{lstlisting}\end{small}}
+
+从这些句子中得到的逻辑表达是非常透明的。简单地根据“TruthValueGreaterThan”关系是可传播，以及“Bob is American”，PLN很容易推理得到结论：
+
+ {\tt\begin{small}\begin{lstlisting}
+TruthValueGreaterThanLink
+    EvaluationLink like Bob Hendrix
+    EvaluationLink like Bob Menudo
+  \end{lstlisting}\end{small}}
+  
+那么现在所处理的知识是逻辑形式而非句法形式，因此可以调用知识库中的相关知识加入到推理过程中。例如，假设我们还知道“Bob likes Sinatra more than Menudo”，可表示如下：
+    
+     {\tt\begin{small}\begin{lstlisting}
+TruthValueGreaterThanLink
+    EvaluationLink like Bob Hendrix
+    EvaluationLink like Bob Menudo
+  \end{lstlisting}\end{small}}
+  
+  
+  \noindent 根据PLN中的回溯推理规则 $\left((A\rightarrow C) \wedge (B\rightarrow C) \Rightarrow(A\rightarrow C)\right)$,可以得到：
+  
+     {\tt\begin{small}\begin{lstlisting}
+SimilarityLink
+    Hendrix
+    Sinatra
+  \end{lstlisting}\end{small}}
+  
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{基于自然语言的三段论推理}{Syllogistic Reasoning From Natural Language Premises}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+为了测试RelEx2Logic的输出用于逻辑推理的有效性，我们使用了PLN来执行基于自然语言输入的三段论的推理。接下来，我们给出一个基于自然语言的三段论推理的例子，和详细的推理步骤。
+
+
+假设我们需要完成的推理如下：
+
+\begin{verbatim}
+Socrates is a man.
+Men breath air.
+|- 
+Socrates breath air.
+\end{verbatim}
+
+对于此例，推理前提在Atomspace中可表示如下：
+
+{\tt\begin{small}\begin{lstlisting}
+Concepts
+
+(ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
+
+(ConceptNode "Socrates" (stv .1 1.0)) ; [218]
+
+(ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1" (stv .1 1.0)) ; [220]
+
+(ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13" (stv .1 1.0)) ; [290]
+
+(ConceptNode "man" (stv .1 1.0)) ; [221]
+
+(ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+
+(ConceptNode "air") ; [293]
+
+(ConceptNode "present") ; [227]
+
+Tuple that satisfies breathe(x,y)
+
+(ListLink (stv 1.000000 0.000000)
+  (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
+  (ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+) ; [295]
+
+breathe(x,y)
+
+(EvaluationLink (stv 1.000000 1.000000)
+  (PredicateNode "breathe@218b15b2-52a8-430c-93f6-b4bba225418c") ; [287]
+  (ListLink (stv 1.000000 0.000000)
+    (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
+    (ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+  ) ; [295]
+) ; [296]
+
+Socrates IS-A man
+
+(InheritanceLink (stv 1.000000 1.000000)
+  (ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
+  (ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1") ; [220]
+) ; [223]
+
+Instance inherits from generic concept
+
+(InheritanceLink (stv 1.000000 0.990000)
+  (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
+  (ConceptNode "man") ; [221]
+) ; [291]
+
+(InheritanceLink (stv 1.000000 1.000000)
+  (ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
+  (ConceptNode "Socrates") ; [218]
+) ; [219]
+
+(InheritanceLink (stv 1.000000 0.990000)
+  (ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1") ; [220]
+  (ConceptNode "man") ; [221]
+) ; [222]
+ \end{lstlisting}\end{small}}
+ 
+
+下图显示了PLN的推理路径以及每一步中使用的推理规则：
+
+{\tt\begin{small}\begin{lstlisting}
+1) GeneralEvaluationToMemberRule
+Input
+
+(EvaluationLink (stv 1.000000 1.000000)
+  (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+  (ListLink (stv 1.000000 0.000000)
+    (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+    (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+  ) ; [358]
+) ; [359]
+
+Output (and 3 other variations of this link where elements of the ListLink are substituted with variables)
+
+(MemberLink (stv 1.000000 1.000000)
+  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (SatisfyingSetLink (stv 1.000000 1.000000)
+    (VariableNode "$X0") ; [441]
+    (EvaluationLink (stv 1.000000 0.000000)
+      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (ListLink (stv 1.000000 0.000000)
+        (VariableNode "$X0") ; [441]
+        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+      ) ; [443]
+    ) ; [444]
+  ) ; [445]
+) ; [446]
+
+2) MemberToInheritance Rule
+Input is previous output
+Output
+
+(InheritanceLink (stv 1.000000 1.000000)
+  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (SatisfyingSetLink (stv 1.000000 1.000000)
+    (VariableNode "$X0") ; [441]
+    (EvaluationLink (stv 1.000000 0.000000)
+      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (ListLink (stv 1.000000 0.000000)
+        (VariableNode "$X0") ; [441]
+        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+      ) ; [443]
+    ) ; [444]
+  ) ; [445]
+) ; [6107]
+
+3) AbductionRule
+Input
+
+(InheritanceLink (stv 1.000000 0.990000)
+  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "man") ; [284]
+) ; [354]
+
+(InheritanceLink (stv 1.000000 0.990000)
+  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
+  (ConceptNode "man") ; [284]
+) ; [285]
+
+Output
+
+(InheritanceLink (stv 1.000000 0.988901)
+  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
+  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+) ; [609]
+
+4) DeductionRule
+Input is previous ouput and
+
+(InheritanceLink (stv 1.000000 1.000000)
+  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
+  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
+) ; [286]
+
+Output
+
+(InheritanceLink (stv 1.000000 0.991755)
+  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
+  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+) ; [777]
+
+5) DeductionRule
+Input is previous output and output from 2)
+Output
+
+(InheritanceLink (stv 1.000000 0.986333)
+  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
+  (SatisfyingSetLink (stv 1.000000 0.000000)
+    (VariableNode "$X1") ; [442]
+    (EvaluationLink (stv 1.000000 1.000000)
+      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (ListLink (stv 1.000000 0.000000)
+        (VariableNode "$X1") ; [442]
+        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+      ) ; [922]
+    ) ; [923]
+  ) ; [8605]
+) ; [12317]
+
+6) InheritanceToMemberRule
+Input is previous output
+Output
+
+(MemberLink (stv 1.000000 0.989841)
+  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [217]
+  (SatisfyingSetLink (stv 1.000000 1.000000)
+    (VariableNode "$X0") ; [385]
+    (EvaluationLink (stv 1.000000 0.000000)
+      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (ListLink (stv 1.000000 0.000000)
+        (VariableNode "$X1") ; [442]
+        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+      ) ; [922]
+    ) ; [388]
+  ) ; [389]
+) ; [6375]
+
+7) MemberToEvaluationRule
+Input is previous output
+Final output
+
+(EvaluationLink (stv 1.000000 0.989841)
+  (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+  (ListLink (stv 1.000000 0.000000)
+    (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [217]
+    (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+  ) ; [922]
+) ; [388]
+ \end{lstlisting}\end{small}}
+
+\noindent 需要说明的是，上述提供的从前提到结论的推理路径中，只显示了在推理过程中提供有用信息的推理步骤。在推理过程中，PLN的后向推理链尝试并放弃大量其他的可能推理步骤。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{本章小结}{Summary of Accomplishments and Future Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本章介绍了几个使用自然语言理解系统的输出在PLN上的推理实验。 实验表明，我们的自然语言理解系统输出的逻辑形式能和逻辑推理引擎结合，并能进行简单的常识推理。但是目前的系统还无法完成较复杂的推理。我们下一步将继续改进RelEx2Logic系统，使其能更好地为复杂的句子提供更准确的逻辑表达，并改善PLN的控制机制，使其能进行更复杂的推理。

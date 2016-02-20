@@ -1,0 +1,355 @@
+\chapter{自然语言生成：从逻辑到语言}{From Logic to Language}
+\label{chap:generation}
+
+与第\ref{chap:comprehension}章阐述的自然语言理解系统的工作（将英语句子转换成超图表示的逻辑形式）正好相反，本章将要的阐述的自然语言生成系统的工作是将基于超图表示的逻辑结构转换成合法的英语句子。本章的研究工作主要针对第\ref{chap:intro}章中的提到的假设2展开。根据该假设，我们认为，借助一个超图转换系统和一个超图匹配系统，在由自然语言理解系统自动生成的二元组（语言表达式，逻辑表达式）组成的知识库中根据逻辑表达式找到匹配的语言表达式并生成自然语言，是可行的。
+
+基于这样的假设，我们在自然语言生成系统中设计并实现了一个超图转换系统，用于自然语言生成中的微观规划（micro planning）；和一个超图匹配系统，用于自然语言生成中的表层生成（surface realization）。我下面章节将分别对这两个子系统的工作原理和实现方法等做进一步地讨论。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{微观规划器}{Microplanning}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本章节主要介绍我们的自然语言生成系统中的用于微观规划的子系统，我们称其为微观规划器（以下称Microplanner）。
+
+从我们的要实现长期目标即智能会话系统的设计角度来看，对话管理模块输出的基于超图表示的逻辑表示，这些逻辑表示包含了智能会话系统想要表达的内容，即“说话内容”，说话内容的逻辑表示只是对话管理模块在没有相关的语法约束，根据当时的语境从知识库Atomspace中收集到的有关信息，因此，这些表示”说话内容“的超图表示可能无法直接通过在（语言表达式，逻辑表达式）的二元组的知识库中找到相应的语言表达式来生成句子。因此，我们引入了Microplanner。Microplanner的任务就是接收从对话系统传来的表示”说话内容“的超图表示，通过超图转换，生成能够符合表达要求的超图。
+
+从实现角度来看，Microplanner的工作在OpenCog的统一知识库Atomspace中进行，主要任务是将一组Atoms（用{\bf S}表示）和一些用于表示话语类型（如祈使句、疑问句等）的参数（该参数可以从言语行为规划器中获得，第\ref{sec:SAS}节中进一步讨论），在不改变这些S中所包含的”说话内容“的前提下，转换成符合输入参数所需的话语类型的，且符合英语语法的一组新的Atoms（用{\bf S'}表示）。需要说明的是，为了能规划出一个完整的句子，Microplanner也有可能使用S之外的Atom。在实现过程中，我们利用Atomspace中SetLink（参见第\label{sec:atoms}节中的Atomspace的基本边和节点）来连接S中的所有Atoms。
+
+目前，我们的Microplanner还不够成熟，但已经实现了基本的功能。其中包括以下话语类型的表达：
+
+\begin{itemize}
+
+\item {\bf 陈述句（Declarative）：}对于陈述句话语类型，Microplanner的目标就是能表明S中的所含的内容且符合语法的超图表示S‘
+\item  {\bf 疑问句（Interrogative）：}对于疑问句话语类型，Microplanner的目标可以是下面两项：
+\begin{itemize}
+\item 对一般疑问句，征求某一个超图的边L的真值 (L包含S中的内容)
+\item 对特殊疑问句，征求可以填充某个变量节点VariableNode \$V 的内容（S构成\$V的约束）
+\end{itemize}
+\item {\bf 祈使句（Imperative）：}对于祈使句话语类型，其目标是产生一组Atoms，使其包含S中希望听话人能服从的命令内容。
+\item {\bf 感叹句（Interjective）：} 对于感叹句话语类型，其目标就是能表达S中的相关语用内容
+\end{itemize}
+
+Microplanner的相应算法流程可表示如下：
+
+\begin{verbatim}
+MakeUtterance(Atom-Set S, utterance type t)
+
+\\ the utterance type t = declarative, interrogative, imperative, etc.
+\\ 如果话语类型输入为空，那么系统会考虑所有的类型。
+
+   Initialize S_leftover=S
+
+   Repeat until S_leftover = empty  :
+
+      Make a sentence by calling MakeSentence(S_leftover, S, t)
+
+      Let S_used = the Atoms from S used inside the
+      above invocation of MakeSentence (i.e. the Atoms expressed
+      in the sentence that MakeSentence produces)
+
+      Let S_leftover = S_leftover - S_used
+
+\end{verbatim}
+
+其中，针对陈述句类型的MakeSentence流程可表示如下（其他话语类型类似）：
+
+\begin{verbatim}
+
+MakeSentence(Atom-Set S_available, S_just_said, utterance type t)
+
+   S_available = the Atoms available for utterance, within S
+
+   S_just_said = the Atoms just said within the same utterance,
+              useful for inserting anaphora
+
+   Initialize S_leftover=S_available
+
+   Pick a top-level sentence form (e.g. for declarative it could be SV or SVO).
+
+   Pick a set S_start consisting of Atoms in S_leftover that match the 
+      top-level sentence form chosen
+      (i.e. that match the output of the RelEx2Logic rule corresponding to the
+      top-level sentence form)
+
+   Let S_working = S_start
+
+   If S_working contains Atoms from S_just_said, or from previous versions of
+      S_working within this invocation of MakeSentence, then consider inserting
+      anaphora to refer to them
+
+   (**) Use SuReal (and a reverse of the chosen RelEx2Logic rule) to produce a 
+      sentence corresponding to S_working  
+   
+   If the sentence produced is too long or complex, DONE
+       (i.e., decide that the sentence is done and additional Atoms must
+       go into a new sentence, referring back to the current one)
+
+   Now, pick a RelEx2Logic rule whose output matches some set S_new of Atoms that
+      overlaps with S_working
+
+   Let S_working = S_working + S_new
+
+   Goto step **
+
+   DONE
+
+\end{verbatim}
+
+
+目前，Microplanner的工作主要通过两个模块来完成：组块和指代的引入。下面将具体介绍这两个模块的实现方法。
+
+\subsection{组块}{Chunking}
+
+从上面的Microplanner算法的伪代码可得知，Microplanner首先选择输入S中的子集来进行组块，然后不断迭代，直到输入S中所有内容都被规划。组块的算法可描述如下：
+
+\begin{enumerate}
+\item 对输入的超图（S的子集）中的每条边根据以下几个权重因子来排序：
+
+\begin{itemize}
+\item form-weight (0..1): 该边是否能满足基本句式（Microplanner根据话语类型定义了相应的基本句式）
+\item time-weight (n..0): 集合中的时间顺序（很多表达输出需要考虑时间顺序，比如“我要去厦门参加论文答辩”中“去厦门”和“参加论文答辩”必须按照一定顺序输入）
+\item link-weight (n): 当前输入的超图中与已经规划过的内容中相同节点的个数
+\end{itemize}
+
+\noindent 其中默认的权值计算公式如下： $form-weight * (time-weight + link-weight)$
+
+\item 选择权值最高的边，调用SuReal（在下一节中会讨论），判断该边是否是”可表达的“（即能在知识库中找到相应的语言表达式），或者是否是“很复杂的”（即该组块能在知识库中找到超过n种话语类型的语言表达式，n默认为3）。其中“很复杂的”因素只是针对输入时没有指定话语类型的情况。
+
+\begin{enumerate}
+\item 如果该组块是“可表达的”，但是还能更长，那么进行以下操作：
+
+\begin{itemize}
+\item 对剩下的超图中的所有边重新排序，但这次排序的目的在于选择不同于已使用的句式的边A。这样考虑是因为，如果已使用的句式不能完全表达A中的内容，那么可以试试其他的句式。
+\begin{itemize}
+\item form-weight (0..1): 同上
+\item time-weight (n..0): 同上
+\item link-weight (n): 当前的超图中与即将说的内容中的相同节点的个数
+\end{itemize}
+
+其中默认的权值计算公式如下： $(time-weights + link-weights) * (2 - form-weights)$
+
+\item 选择权值最高的边，然后继续调用SuReal试着再说一遍。
+\end{itemize}
+\item 如果该组块不是“可表达的”，那么：
+\begin{itemize}
+\item 检查当前组块，看是否有节点只出现过1次
+\item 在该节点对应的边加入组块中
+\item 继续这样尝试n次（n默认为3）后，如果该组块还不是“可表达的”那么放弃。
+\end{itemize}
+\end{enumerate}
+\end{enumerate}
+
+\subsection{指代的引入}{Insertion of Anaphor}
+
+为了让句子的表达更具语言色彩以及更符合人类的交流习惯，还需要对已经描述的对象进行指代处理，也就是利用代词、固定名、完整或缩略名词短语来替换那些已经被描述过的对象，因此Microplanner设计了引入指代处理的模块。其实现步骤可以表示如下：
+
+\begin{enumerate}
+\item 遍历所有的组块，找到所有的名词，并生成一个名词序列。
+
+\item 对名词序列中的每一个名词，通过查询知识库中与其相关的RelEx关系，选定能在替换该名词时所要使用的代词的根，这里的根指"he", "she", "it", "they"等。例如，“Mary”通常是表示女名，那么这里就指定能替换”Mary“的代词的根”she“。
+
+\item 遍历每个名词，判断它是否可以被替换成代词：
+
+\begin{itemize}
+\item 如果该名词从来没有被提及过，或者在很久前被提及过（超过n个组块的范围，n默认为3），那么该名词不能被替换成代词。
+\item 如果该名词在同一个组块里被InheritanceLink修饰，那么该名词不能被替换成代词。（英文中形容词后面的名词不能被替换成代词）
+\item 检查该名词在名词序列中的前3个词，如果其中一个已经被替换成代词了，那么为了降低表达的歧义，这里也认为该名词不能被替换成代词。
+\end{itemize}
+
+\item 根据上面的判断结果，对可以被替换成代词的名词进行如下代词替换操作：
+
+\begin{itemize}
+\item 如果名词是主语，将代词保持主格形式，（即 "I", "he", "they"等）
+\item 如果名词在被赋值为“所有格”的EvaluationLink中，那么将其改为所有格形式（"my" "his" "its"等）
+\item 如果名词是宾语或者间接宾语
+\begin{itemize}
+\item 如果它和主语是相同名词，那么根据情况替换成 "myself", "himself", "themselves"等。
+\item 如果它和主语不同，那么根据情况替换成"me", "him", "them"等
+\end{itemize}
+\end{itemize}
+
+\item 如果一个名词无法被换成代词，将使用下列算法来进一步考虑它是否可以被相关的名词替代（例如“松树”可以用“树”取代）：
+
+\begin{itemize}
+\item 通过InheritanceLink查找与该名词节点有继承关系的名词节点
+\item 根据下面公式对这些有继承关系的名词进行打分：
+    $(输出的超图中新节点的个数) * (对应的InheritanceLink的强度Strength) * (对应InheritanceLink的置信度Confidence)$
+\item 选择得分最高的名词去替换（如果最高得分的名词不止一个，那么随机选择一个）
+\end{itemize}
+\end{enumerate}
+
+
+\subsection{存在问题和改进方向}{Summary of Accomplishments and Future Work}
+
+我们这里讨论的Microplanner虽然能处理一般的现象，并且能和后面章节要讨论的对话管理以及表层生成等模块结合起来用于简单的对话系统。但还有很多方面需要改进。一般来说，微观规划过程还包含选词处理，但由于我们目前使用的知识库还比较小，可以直接通过InheritanceLink找到相关词，所以这一模块暂时被搁浅，我们会在下一个版本中实现选词模块以及加入更多话语类型的处理模块。除此之外，我们还可以在微观规划过程中引入简单的逻辑理论，进一步改进指代的引入。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{表层生成器SuReal}{SuReal for Surface Realization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+表层生成是将经微观规划后的内容描述映射至由文字、标点符号和结构注解信息组成的表层文本的过程。在第\ref{chap:review}中提到，表层生成的算法有很多种，而且由于本身“表层生成”的概念没有明确的定义，不同的表层生成系统的输入都不同，很难有可比性。本文从人脑或类人脑系统的生成语言的思路出发，结合机器具备大型计算能力的优点，设计并在OpenCog中的知识库上实现了基于超图近似匹配的表层生成器（{\bf Su}rface {\bf Real}izer，以下简称SuReal），使其能将微观规划后的超图转换成英文句子。本节将会具体阐述其工作原理和实现方法。
+
+\subsection{SuReal算法}{The SuReal Algorithm}
+
+
+概括地说，SuReal的工作可以看成是第\ref{chap:comprehension}中描述的自然语言理解系统Link Parser, RelEx, RelEx2Logic的逆过程，但是， 实现这样的逆转换并没那么简单，因为在将英文句子转成逻辑形式的过程中抽象了很多词法或语法关系等重要语言表层现象。而且在我们的自然语言系统中创建的一系列规则也只是同态而并不同构，无法通过简单地反向使用同样的规则集来实现这个逆转过程。
+
+基于这些考虑，我们提出了一个全新的表层生成方法，它以基于超图的逻辑表达式作为输入，但不是直接在语义层面上将此逻辑表达式与知识库中的其他逻辑表达式进行匹配，而是将句法分析结果也转换成超图形式引入到知识库中，然后在句法规则的指导下进行基于超图的匹配。SuReal的实现原理操作流程如下：
+
+\begin{itemize}
+\item	使用第\ref{chap:comprehension}章中的自然语言理解系统分析一系列英文句子，然后将分析后得到的语义结构以及中间步骤得到的句法结构形成配对的二元组，以（语言表达式，句法表达式+逻辑表达式）的形式存入到知识库Atomspace中。其中逻辑表达式是指RelEx2Logic产生的使用超图表示的逻辑形式，句法表达式是链语法分析产生的结果并存入到Atomspace中的超图形式；语言表达式即以超图中的SentenceNode节点表示的英文句子。句法表达式在Atomspace中的超图表示如下：
+
+\begin{verbatim}
+
+;链语法分析结构中”the”和“cat”之间的链接的超图表示
+
+(EvaluationLink (stv 1.0 1.0)
+   (LgLinkInstanceNode "Ds**c@4432ef3-3c4e-42a9-8072-9975d168a12c")
+   (ListLink
+      (WordInstanceNode "the@da65d87c-22b9-4af2-89f4-60042816c579")
+      (WordInstanceNode "cat@1a6d58eb-e9c0-4c8e-af01-8d4304e3430c")
+   )
+)
+
+;链语法分析结构中链Ds**c的超图表示
+
+(LgLinkInstanceLink
+   (LgLinkInstanceNode "Ds**c@4432ef3-3c4e-42a9-8072-9975d168a12c")
+   (LgConnector
+      (LgConnectorNode "D")
+      (LgConnDirNode "+")
+   )
+   (LgConnector
+      (LgConnectorNode "Ds**c")
+      (LgConnDirNode "-")
+   )
+)
+
+\end{verbatim}
+
+\item	SuReal的输入需要用SetLink连接用于生成句子的逻辑表达式，这里假设输入为SetLink S，那么可通过以下操作实现SuReal(S)：
+
+\begin{enumerate}
+
+\item 对给定的SetLink S中的某个节点元素，在链语法词典中查找对应的链语法链接要求，并以DNF(Disjunctive Normal Form)的形式存入Atomspace中
+
+\item 调用OpenCog中的模式匹配器（Pattern Matcher），将S中的每个节点携带相应链语法链接要求的词节点当成变量，与预先存入知识库中的二元组中的逻辑表达式和句法表达式进行匹配。
+
+\item  当模式匹配器在知识库中搜索到对应的匹配后，检查其中的词节点携带的链语法链接要求是否与S中对应节点携带的链语法链接要求DNF是否吻合，如果含有相似的链接要求，则将匹配到的超图中的词节点替换成S中对应的词节点。
+
+\item 将匹配结果在二元组中对应的语言表达式中的相应词替换成新的词节点对应的词后，生成句子。
+
+\item 对上一步得到的所有句子进行排序后输出最终结果。排序中考虑的因素有语言模型、已经原有句子中被替换掉的词的个数等。
+
+\end{enumerate}
+\end{itemize}
+
+
+\subsection{综观SuReal及其存在的问题和改进方向}{A General View of SuReal}
+XXXX需要翻译
+
+Very broadly speaking, what this algorithm is doing is simply to reversing the various graph and hypergraph rewrite rules described in the previous sections on the Link Parser, RelEx and RelEx2Logic.   However, this is not entirely simple, because the rules create homomorphisms rather than isomorphisms.  Any one Atom structure may be produced by many different link-grammar structures, because there are many grammatical ways to produce any given idea.   But not all the grammatical structures corresponding to different subsets of a given Atom set needing articulation, will necessarily be grammatically compatible with each other.  So one has a constraint satisfaction problem, which in general will have multiple solutions, with varying levels of syntactic ambiguity and subjective human naturalness.   The above algorithm represents a heuristic approach to this problem.
+
+More precisely, suppose we have an Atom set $A = \{A_i\}$; and let $R = \{ R_{j} \}$ denote the set of all graph rewrite rules $R_j$ with the property that $R_j$ maps at least one link parse subtree into some nonempty subset of $\{A_i\}$.  Let $R^i \in R$ denote the set of rewrite rules that produce an Atom set including the particular Atom $A_i$; we may write $R^i = \{R^i_k\}$, with $R = \bigcup_i R^i$.   Let $m_g(r )$ denote the proposition that the rewrite rule $r$ matches some subgraph of the graph $g$.
+
+Given this set-up, the problem of generating a sentence expressing the Atom set $A$ boils down to finding some link parse $g$ that 
+
+\begin{itemize}
+\item parses correctly according to link grammar
+\item satisfies the expressiveness condition
+
+$$
+\bigwedge_i \bigvee_k m_g(R^i_k),
+$$
+
+\item satisfies an assumed "aesthetic condition", initially: that it would either not parse or not satisfy the expressiveness condition if any of its words were removed
+\end{itemize}
+
+\noindent Given a link parse $g$, producing the relevant sentence is trivial.  The task of generating a sentence-set expressing $A$ reduces to choosing a way to partition $A$ into subsets, so that each can be acceptably expressed via a single sentence.  
+
+A strength and weakness of this approach is that, in most practical cases, this constraint satisfaction problem will have many solutions.  Selection among the various solutions could be approached in many ways, e.g.  via evaluating various solutions and choosing the one with the highest  word tuple probabilities relative to a large reference corpus; or via proceeding as in the current NLGen system, and choosing solutions whose fragments are known via past NL comprehension experience to have been used in real human-generated sentences.
+
+Another strength and  weakness of this approach is that it is data-driven.   The system can only generate sentences whose fragments resemble previously-encountered sentences.  For this reason, from an AGI perspective, this approach can ultimately serve only as a portion of an overall language generation system.  It must be augmented by a method with less limited creative power, even if this additional method is slower.  But for medium-term practical purposes, there are many more critical challenges than expanding the creative potential of the surface realization component of our system; the current approach seems more than adequate for the time being.
+
+
+目前SuReal存在的问题有：
+
+\begin{itemize}
+\item 受限于RelEx2Logic的输出。由于匹配所使用的三元组知识库是通过我们的自然语言理解系统产生的，那么其中的逻辑表达式中的所有Atoms类型只能来源于RelEx2Logic中定义的，因此如果输入中含有RelEx2Logic中未使用过的Atom类型，那么将无法生成句子。
+\item 尚未将OpenCog中的强化学习使用到匹配中，使匹配更智能简洁。
+\end{itemize}
+
+可以改进方向包括：
+
+\begin{itemize}
+\item 使用强化学习来实现更智能更灵活的超图匹配。
+\item 改进RelEx2Logic使其能提供更丰富的逻辑关系，从而使通过我们的自然语言理解系统分析并存入知识库的查询库更丰富。
+\end{itemize}
+
+
+\subsection{实验结果示例及简要分析}{Examples of SuReal in Action}
+
+
+正如前面提到，不同的自然语言生成系统所使用的输入形式都不一样，有词语层次的输入，也有句法和语义层次的输入，导致研究的方向不一样，算法也千差万别，因此目前并没有权威的评估标准。我们这里只给出本系统的一些实验结果并简要分析。
+
+首先给出一个句子集如下：
+
+\begin{verbatim}
+
+Play a song by Weird Al Yankovic.
+Play another song by Weird Al.
+Play something by The Cure.
+Who wrote 'Blue Monday'?
+What is the best song by New Order?
+When did 'Thriller' come out?
+I want to hear some 60's soul music.
+Can you play something new for me?
+He bought a guitar in the store.
+Madonna sang the song called 'Vogue'.
+
+\end{verbatim}
+
+然后运行我们的自然语言处理系统，将得到的相应的（语言表达式，逻辑表达式）二元组导入OpenCog的知识库Atomspace中。运行SuReal可以得到如下实验结果：
+
+\begin{verbatim}
+输入：
+    (SetLink
+        (EvaluationLink
+            (PredicateNode "ate")
+            (ListLink
+                (ConceptNode "John")
+                (ConceptNode "pig")
+            )
+        )
+    )
+
+输出：
+(John ate a pig.)
+(John ate the pig.)
+
+\end{verbatim}
+
+不难看出，第一个输出(Jonh ate a pig.)是匹配导入的句子集合中“He bought a guitar in the store.”对应的超图的子图成功后得到的结果；第二个输出(John ate the pig.)是匹配其中“Madonna sang the song called 'Vogue'.”对应的超图的子图成功后得到的结果。
+
+\begin{verbatim}
+输入：
+    (SetLink
+        (EvaluationLink
+            (PredicateNode "sang")
+            (ListLink (VariableNode "$ABC"))
+        )
+    )
+
+输出：
+(who sang ['] Blue Monday ['] ?)
+
+\end{verbatim}
+
+该输入中含有一个变量，说明是由Microplanner规划的疑问句形式，而且根据输入的逻辑表达式可以看出，该变量充当主语的角色。因此可以通过匹配“Who wrote 'Blue Monday'?”后得到相应的结果。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{本章小节}{Summary of Accomplishments and Future Work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+本章针对自然语言生成，设计并实现了一个新的自然语言生成系统，能将基于超图表示的逻辑形式转换成英语句子形式。由于使用独特的知识表示系统，该设计完全是本文特有的构想。当然，该语言生成系统也有一定的局限性，比如Microplanner目前只能处理一定的话语类型，SuReal无法生成知识库中不存在的表达。但我们的实验结果表明，它们已经能完全运用在简单的句子生成上，有时候甚至也能处理稍微复杂一点的情况。

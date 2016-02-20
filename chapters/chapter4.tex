@@ -1,1031 +1,1055 @@
-\chapter{自然语言理解：从语言到逻辑}{From Language to Logic}
-\label{chap:comprehension}
+\chapter{基于言语行为理论和概率逻辑推理的智能对话系统建模}{Cognitive Dialogue System Model Based on Speech Act Theory And Probabilistic Logic Reasoning}
+\label{chap:dialogueModel}
 
-本章阐述如何对第\ref{chap:intro}章中的提到的假设1展开研究。根据该假设，我们认为， 借助于依存关系语法和传统逻辑与谓词逻辑的合理结合，将自然语言表达式转换成满足下列两个条件的逻辑表达方式是完全可行的：
+
+本文研究的其中一个长远目标便是结合前文提到的各项自然语言处理和逻辑推理技术，构建一个能较好地与人交流沟通的智能对话系统，此系统将接收到的人类话语转化成逻辑表达形式，并且结合系统本身的动机和情感状态，经过一定的解析和逻辑推理，从而得到想表达的内容的逻辑表达形式，最后将这些逻辑表达式再转化成自然语言回应给谈话对象。
+
+构建一个完整能运作的智能对话系统，除了必要的自然语言理解和生成技术之外，对话控制是其中很关键的部分，对话控制决定了对话是否能谈话者接受和理解。我们把规划对话控制的模块称为宏观规划（以下称为“Marcoplanning”）。从言语行为理论来看，宏观规划可以看成是一个可以规划以下两点的工具：1）在哪个时间点发生哪些言语行为，2）使用哪些内容去封装这些言语行为。宏观规划更多的是从语用和推理方面出发，淡化语义或语法（或者音韵词汇等）的限制。
+
+       本章将重点介绍这样的智能对话系统（以下简称“CogDial”）的系统架构，该系统基于前面章节描述的自然语言理解和自然语言生成的相关技术，并通过OpenCog的核心子系统（主要是PLN和OpenPsi）来控制其对话结构和表达方式。该CogDial系统能够灵活地理解和处理具有不同程度的复杂性和智能性的人类言语行为。创建一个完全符合人类标准的人工智能对话系统无疑是一个精彩的挑战，但似乎在当前的科学技术水平下，也无疑是一个非常困难的研究项目。 相对于目前主流的基于规则或者基于统计的对话系统，我们这里提出的CogDial架构引入目标驱动的逻辑推理和情感控制等，显然表现更智能些，但还不足以完全达到符合人类智能标准。这样一个介于目前相关研究水平和完全人类水平之间的对话系统可以看做是构建更人性化的对话系统的一个重要步骤，或者看做是使用更可行的研究方法在人机对话系统上集成更多的功能，而不是一味地去盲目追求达到人类水平的目标。本着这样的理念，说的更具体点，我们CogDial的目标不是精确类似人类的对话，而是具备通用认知能力、情感表达能力、能合理结合语用和经验的智能对话系统。
+
+         CogDial的初步预期目标主要是实现面向游戏角色和人性机器人的对话系统，但同样的研究思路也完全能应用在基于文本的对话系统，例如智能对话搜索接口。我们分阶段来实现这样的系统，以一个相对小而简单的系统为起点，通过不断改进和完善，以及结合系统本身的自学习和认知能力，最终实现一个在一定程度上接近人类水平的系统。目前，我们的系统还没有达到最终的水平，但基本框架已经到位。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{智能对话系统的概念模型}{The Conceptual Model of the Cognitive Dialogue System}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXXX  
+介绍本文提出的新的智能对话系统的模型，引出下两节中的情感驱动模型和言语行为规划器。
+
+
+下面我们来介绍基于上述的目标控制体系的智能会话系统CogDial的系统框架。目前该系统只能处理英文对话，接下来章节中的对话的例子基本按照英文的习惯举的例子，可能不太适合中文的习惯，但是该系统的所采用的技术和理论基础都是完全适合中文的。CogDial主要采用了以下技术：
+
 \begin{itemize}
-\item 包含该自然语言表达式的主要语义
-\item 具体化自然语言表达式中存在的任何无法在语言到逻辑的转换消除的歧义，使得这些歧义能通过基于语境知识的逻辑推理后很直截了当地得到消除。
+\item  基于OpenPsi以及相关OpenCog机制的宏观规划（Macroplanning）
+\item  本文第XXXX章描述的句法分析和语义关系及逻辑关系抽取的自然语言理解技术
+\item  本文第XXXX章描述的微观规划（Microplanning）和表层生成的自然语言生成技术
+\item  专门设计的符合智能会话系统的“言语行为规划器”集合，这些言语行为规划器将用于：
+\begin{itemize}
+    \item 在OpenPsi的控制机制下，结合当前的语境，激活相应的言语行为规划器
+    \item 收集相关内容，生成能关联Microplanner的Atoms
+    \item  调用一系列的认知机制（包括用于逻辑推理的PLN），选择相关的Atoms发送到Microplanner
+\end{itemize}
 \end{itemize}
 
-基于这样的假设，我们采用的自然语言方法是，首先利用链语法分析工具Link Parser\cite{Sleator1993}，然后在此基础上搭建了一个用于依存关系抽取的工具RelEx，最后开发了一个新的逻辑关系抽取工具RelEx2Logic，通过超图的同态映射方式将句法结构转换成语义表示。该方法概念上的本质并不依赖这些特定的工具，而是具体的实现方法。
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{情感驱动的智能对话}{Emotion-Driven Cognitive Dialogues}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXX语言及各章节的标题需要稍微调整
 
-确切地说，如何将“自然语言理解系统”分解成不同模块以及如何进行不同模块之间的转换，取决于对语言学理论的选择。在2008-2012年期间，OpenCog中的自然语言理解模块采用如下流程：
+本节将介绍OpenCog中如何集成基于Psi的动机性行为模型，使其能为我们的智能会话系统CogDial提供能用于动机性行为选择机制。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{OpenCog中的行为选择机制}{ Action Selection in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+正如Stan Franklin\cite{Franklin1995}指出的，智能的{\it 智能体}的本质在于它可以做事，还可以采取{\it 行为}。我们的智能会话系统CogDial中的行为选择会涉及OpenCog中所采用的行为选择机制\cite{EGI2}，因此本章节首先简单介绍该行为选择机制的基本思路，以及Psi的变体模型如何在OpenCog中处理动机（包括情感、驱动、目标等）和对行为选择的指导。
+
+OpenCog中的行为选择机制的关键部分在于：
+
+\begin{itemize}
+\item 行为选择器（Action Selector）根据当前环境选择可能帮助实现重要目标的程序
+\begin{itemize}
+\item {\it 例如：} 假设当前十分重要的目标是取悦谈话对象，一旦谈话对象问了问题，那么回答该问题会被评估为很可能可以达到“取悦谈话对象”的目标的程序。
+\end{itemize}
+
+\item 为了支持行为选择器，OpenCog设立了这样的蕴含式$Context \& Procedure \rightarrow Goal$，其中上下文（Context）是一个被赋值于智能体处境的谓词，在智能对话系统中，我们视为语境。
+
+\begin{itemize}
+\item {\it 例如：} 如果Bob请求智能体（智能会话系统）去写一段话，又假设该智能体知道Bob非常执着，那么该蕴含式可以被用成：
+ \begin{itemize}
+ \item ``Bob命令执行 X''  and ``执行 X''  $\rightarrow$ ``取悦 Bob''  $<.9,.9>$
+ \end{itemize}
+
+\item {\it 例如：} 如果智能体想说服谈话对象相信某个陈述X，那么该蕴含式可以被用成：
+ \begin{itemize}
+ \item ``告诉Bob我为什么相信X是正确''  and ``我想要说服Bob相信X是正确''  $\rightarrow$ ``满足度''  $<.9,.9>$
+ \end{itemize}
+
+\end{itemize}
+\item 这些蕴含式的真值可以根据经验和推理来赋值。
+\begin{itemize}
+\item {\it 例如：} 第一个例子中的蕴含式的真值可以根据经验来赋值，即通过与记忆里Bob给出指令相关的情节来判断
+\item {\it 例如：} 也能根据推理来赋值，即根据与Bob相似的个体给出指令的经验来类推，或结合Bob本人的明确表达，和Bob的自我描述通常合理的知识来推断
+\end{itemize}
+
+\item 重要值（Importance Value）可以通过经济注意力分配（Economic Attention Allocation）\cite{EGI2}在目标之间传播，推理可用于从现有目标中学习子目标。目前，这一点还未被利用在CogDial系统中，但我们相信这点能帮助实现更复杂的对话行为。
+\begin{itemize}
+\item {\it 例如：} 如果Bob告诉智能体去做X，那么智能体将“取悦Bob”的目标分解为“做X”，那么“取悦Bob”的目标会将它的重要值分给“做X”的目标（同样，“做X”的目标会将其重要值分给它的子目标，或者分给执行“做X”）。
+\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Psi在OpenCog中的使用}{Psi in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+这里我们讨论Psi模型中的动机性行为的基本模块是如何被集成到OpenCog中的，更深入的了解，可参考文献 \cite{Zhenhua2011}中使用OpenPsi（即OpenCog中实现的Psi的情感和动机模型）来控制游戏世界里的动画角色。这里只简单地列出其中的实现要点
+
+
+\begin{itemize}
+
+\item 需求用GroundedPredicateNodes（GPN）表示，即节点的真值计算由一些内部的C++程序或者程序库中Combo程序来完成
+
+\begin{itemize}
+\item {\it 例如：} 警觉，外界感知的新鲜感，内在的新鲜感，得到老师的奖励，社交刺激等
+\end{itemize}
+
+\item 动机也用GPN表示，其真值根据需求所对应的节点的真值来定义。OpenCog中有时使用Ubergoal来代替动机（Urge），通常用来表示顶层目标。
+
+\item 每个系统都有固定的Ubergoal集合（且只有非常高级的OpenCog系统可以修改它们的Ubergoals）
+
+\begin{itemize}
+\item {\it 例如：} 现在和将来都要活着并保持警惕；现在和将来都要经历和学习新的东西；现在和将来都要从老师那获得奖励；现在和将来都要和其他智能体都要有丰富的社交行为等
+
+\item  一个更高级的OpenCog系统可以把有抽象（但必须与经验绑定）的伦理原则作为其中的Ubergoal。例如：根据 \cite{GoertzelHP}讨论的伦理道德， 一个Ubergoal是追求快乐；一个Ubergoal是促进成长；一个Ubergoal是帮助抉择
+\end{itemize}
+
+\item Urbergoal中的ShortTermImportance（STI）表明该目标的紧急程度，因此，如果对应Ubergoal的需求在其目标范围内，那么Ubergoal的STI值为0。所有的Ubergoal都能被给定最高的LongTermImportance（LTI），以保证他们不会被删除。
+
+\begin{itemize}
+\item {\it 例如：} 如果系统在一个（根据Ubergoal）持续提供足够的新鲜感的环境里，那么对应外界新鲜感需求的Ubergoal会有低得STI值但是高的LTI值，表示该系统不会浪费资源在寻求新鲜感上。但如果环境变得更单调，那么对外界新鲜感的需求的紧急程度就会增加，而其中的STI也会相应增加，资源会开始重新分配在提高新鲜感上
+
+\end{itemize}
+
+\item 愉悦感也是用GPN表示, 其中的内在真值计算程序将Ubergoal的满足度当成其期望的满足度。
+
+\begin{itemize}
+\item 有多种数学函数能用于平均不同Ubergoal的满足度（针对不同$p$的$p'th$ power averages\footnote{the $p'th$ power average 可定义为 $\sqrt[p]{\sum X^p}$} for different $p$），而这里对愉悦感的不同计算方式的选择，可以带来不同“个性”的系统。
+
+\end{itemize}
+
+\item 目标可以用节点或边来表示。系统的目标列表被称为目标池（Goal Pool）。Ubergoal一般都是自发性的目标，但也有可能有许多其他目标。
+
+\begin{itemize}
+\item {\it 例如：} “从老师那获得奖励”的Ubergoal可以产生类似“从Bob那得到奖励”（如果Bob是老师）的子目标，也可以产生“使老师微笑”，或“创造新的令人惊讶的话语”（如果后者也能得到老师的奖励）的子目标
+\end{itemize}
+
+\item Psi中记忆使用OpenCog中的知识库Atomspace来表示
+\begin{itemize}
+\item {\it 例如：} OpenCog智能体在什么语境下说过什么的记忆都会存储在Atomspace中。
+
+\item 在Psi和MicroPsi中，同样的现象会以完全不同的表达方式存储在记忆空间中，但Psi的基本动机模型与这些存储方式无关。
+
+\end{itemize}
+
+\item Psi的动机选择在OpenCog中通过经济注意力分配（economic attention allocation）来执行，即对目标节点分配ShortTermImportance  
+
+\begin{itemize}
+\item {\it 例如：} 重要值从“从老师那得到奖励”到“从Bob那得到奖励”到“给Bob讲个笑话”的传播流程，是Psi中被称为“动机选择”的一个实例。虽然还没开始执行任何行为，但智能体在这过程中已经对该实现哪个的具体目标做出了选择，而这个具体目标会被用于指导行为的选择。
+\end{itemize} 
+
+\item Psi的行为选择被用于OpenCog的行为选择，但在OpenCog中，行为选择的问题就是选择哪个{\it 程序}（即“规划器（schema）” ）去执行，而不是选择哪个具体行为去执行。其实，类似的概念在Psi上也存在，Psi中的“自发性行为（automatized behaviors）”类似OpenCog中的规划器；唯一的区别就是在OpenCog中这些自发性行为是默认的情况。
+
+\begin{itemize}
+\item {\it 例如：} 如果“做一个能惊讶谈话对象的有趣声明”有一个高的STI，那它可被用于激励相关执行程序的选择。如“从以前读过的文本里找到有趣内容，从中抽取摘要，并简明地表达这些摘要”的程序。 当一个程序被选择时，该程序还可能触发相关的子程序的执行。
+\end{itemize}
+
+\item Psi的规划通过OpenCog中的多种学习过程来实现。大部分的学习过程通过逻辑推理引擎PLN来完成（也是本文目前关注的学习机制），还可以通过OpenCog中的遗传编程工具MOSES或者爬山算法等来实现。
+\begin{itemize}
+\item {\it 例如：} 当智能体决定说服谈话对象相信某事实X时，它可能需要进行周密的计划，如：推断出谈话对象缺少哪些相关的背景知识去理解X，然后首先给谈话对象传输所缺的相关知识，再来传输X。
+
+\end{itemize}
+
+\item 调节因子用系统参数表示，可以用PredicateNode来表示，且必须在多个动态的MindAgents之间相互协作。如：
+\begin{itemize}
+\item {\it 激活度（activation）} 影响行为选择。当激活度较高时，智能体倾向于做出快速响应外部刺激，因此可能会选择那些能做快速回答的规划器来执行。
+\item {\it 解析度（resolution level）} 影响推理。当解析度较低时，智能体选择减少精力去解析输入中的语言现象。
+\item {\it 明确度（certainty）} 影响推理、模式发掘以及新概念构建的过程。当明确度较低时，智能体接受更多不确定的结论。
+\item {\it 选择阀值（selection threshold）}引入偏好信息，可以帮助智能体在几个互相冲突的目标之间做出选择。
+\end{itemize}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{OpenCog中的目标}{Goals in OpenCog}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+OpenCog中，一个目标Atom表示 一个\textit{目标系统状态}，当系统在一定程度上满足了其表示的条件，那么该目标Atom的真值就高；一个上下文Atom表示 \textit{已经观察到的状态} ，当定义的状态都被察觉，那么该上下文Atom的真值就高。这两个Atom类型构成了那些需要在特定的上下文环境下实现具体目标的OpenCog系统的基础。但也不是所有OpenCog的行为活动都需要这两类型的Atom来指导，尤其是那些自发的，不面向目标的任务。
+
+具体实现上，一个目标Atom是被GoalRefinement的MindAgent挑选出来的系统认为很需要被实现的Atom（通常式一个PredicateNode，有时是边，也有可能是其他类型的Atom）。GoalRefinement通过调用RFS (Request For Service)来及时确定某Atom是否能被当成目标Atom。
+
+一个OpenCog的实例必须从初始的 \textit{Ubergoals}（即\textit{顶层目标}）开始，但可以多种推理方式去细化这些顶层目标。相对简单的，或者只关注某个应用的OpenCog系统不能修改自己的顶层目标，也不能添加或删除顶层目标。但高级的OpenCog系统有权限修改、添加或删除顶层目标，但这些操作对系统的动态机制有着很关键和不易察觉的影响，必须谨慎对待。
+
+\paragraph{目标组建}\label{Goal Formation}
+
+除了初始设定的Ubergoal之外，OpenCog中还可以通过PLN推理来组建新的目标。概括地说，PLN通过推理查找那些能在一定概率上蕴含现有目标的谓词，来进行新目标的组建。这些谓词一旦被用于新目标组建后，会被赋值更高的注意力值，那么根据OpenCog的目标驱动的注意力动态分配机制可知，这些新目标会触发系统中能满足它们的相应程序。
+
+下面通过一个从ExternalNovelty（外在新鲜感）的Ubergoal开始组建子目标的例子来说明OpenCog中如何细化目标。假设该智能体已经学习到，每次Bob给它读诗的时候，它的外在新鲜感能在很大程度上得到满足，也就是说：
 
 \begin{verbatim}
-文本 --> 分词/断句 --> 基于链语法的句法分析（Link Parser） --> 依存关系抽取（RelEx）--> 基于FrameNet的语义关系抽取（RelEx2Frame） --> 语义节点和关系链（SemanticNodes & Links）
+Attraction
+   Evaluation recite (Bob, me, poem)
+   ExternalNovelty
 \end{verbatim}
+\noindent 其中，$\textit{Attraction}\ A\ B$ 衡量 $A$ 蕴含B高于$\lnot A$蕴含B的程度。
 
-2012年的时候我们对系统进行了一些简化，取消了对FrameNet的依赖，采用了如下的目前正在使用的系统：
+这些信息允许智能体指定以下的Atom：
 
 \begin{verbatim}
-文本 --> 分词/断句 --> 基于链语法的句法分析（Link Parser） --> 依存关系抽取（RelEx）--> 抽象的逻辑关系抽取（RelEx2Logic --> 语义节点和关系链（SemanticNodes & Links）
+EvaluationLink recite (Bob, me, poem)
 \end{verbatim}
 
-需要注意的是，目前的很多自然语言理解系统都有“词性标注”阶段，在我们目前使用的方法中，词性标注被绑定在句法分析阶段，对于Link Parser来说，词性已被作为单词的一个属性定义在词典里。尽管如此，如果能在Link Parser里使用先进词性标注技术，无疑能减少不少字典编写方面的工作，也能在一定程度上指导句法分析过程，因此也是有一定存在意义的。
+\noindent 为一个目标（Ubergoal的子目标）。这是一个如何细化目标的实例，也是PLN从现有目标中创建新目标的多种方式中的一种。
 
-本文的工作已经表明，上述系统中的各模块操作都是可行的，只需针对每一步制定相应的规则，或者通过有监督的机器学习方法来学习相应的规则，来指导其中的操作。针对本文自然语言理解方面的以下几个额外事项将在未来的研究中被实现：
+\paragraph{OpenCog中的上下文环境}\label{Context Atoms}
+
+最简单的情况下，上下文环境可以被简单地看成是一个ContextLink的内容来源，例如：
+
+\begin{verbatim}
+Context
+    quantum_physics
+    Inheritance Ruiting amateur
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{管理的执行}{Execution Management}
+\label{Execution Management}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+被命名为GoalFulfillment的MindAgent会选择可以实现当前目标的规划器，但并一定执行这些规划器，而是将这些根据当前目标选择得到的规划器放入ActiveSchemaPool中，对于ActiveSchemaPool中的每一个规划器$S$ ，都能满足具有较高真值的：
+
+\begin{verbatim}
+Attraction
+   C
+   PredictiveAttraction S G
+\end{verbatim}
+
+其中$C$表示当前可用的环境，$G$是目标池中的某个目标。
+
+当SchemaAction启动时，该MindAgent会调用ExecutionManager来决定执行ActiveSchemaPool 中哪个规划器。ExecutionManager根据推理以及查询记忆知识，选择那些不会同时引起\textit{破坏性干扰}（且希望能引起建设性影响）的规划器来执行。该过程可能（间接地）会导致新的规划器的创建，或者Atomspace中的其他规划器被激活。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{针对对话控制的OpenPsi的配置}{Configuring OpenPsi for Dialogue Control}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+基于Psi的基本框架，我们选择了以下的具体需求用来指导我们的对话系统的行为：
 \begin{itemize}
-\item 使得各个子流程中所使用的规则，能很自然地支持基于持续经验增长的修正和泛化。
-\item 使得语义理解能根据特定的语境来指导规则的选择。
-\item 知道何时该打破规则，而根据语义的直觉指导相关操作。
+\item 社交需求（Affiliation）：与他人互动，希望被其他成员接纳的需求；取悦谈话对象可以视为此目标的一个特例
+\item 能力需求（Competence）：通过对话达到某种目标的需求，衡量言语表达方式的指标
+\item 确定性需求（Certainty）：智能体对自身语境的了解需求，特别是对目标的了解需求
+\item 新颖性需求（Novelty）：维持智能的会话而不是简单重复的问答会话。
 \end{itemize}
 
-另外需要注意的一点是，当使用基于规则的方法时，在规则的设计需要特别注意规则的可扩展性和可普及性，因为随着系统的经验增长，原先设计的规则可能无法被满足。
-
-本章接下来的章节会系统介绍我们使用的自然语言理解系统中的各个子系统的工作原理和方法。
-
-\section{链语法}{Link Grammar}\label{sec:linkGrammar}
-
-本小节主要介绍链语法的基本原理和方法，并分析了和语言形式主义的不同，同时指出其中的问题以及我们对其进行的一些改进。
-
-链语法（Link Grammar）在1991年由 Daniel Sleator和Davy Temperley共同提出 \cite{Sleator1993}。它和被广泛应用的依存语法类似，但两者也有很大的不同，比如链语法中两个单词的连接是无序的，而依存语法中有依存和被依存关系。链语法允许句子中的链接有环状结构，而依存语法是不允许环的存在的。链语法更倾向于语法理伦的词汇主义。
-
-链语法的核心是链语法词典（Link Dictionary），词典中的每一个词都记录着一些特点的链接要求，这些链接要求通过一系列具有特定逻辑排序的链接子（connector）组合成的公式（Formula）收录在词典的相应词条里，链接子包含名称和后缀（“+”或“-”），后缀表示该链接子的指向方向,“+”表示该链接子指向右，“-”表示该链接子。如果两个词需要合法连接，则要求两个词首先有相同名称的链接子，且左边单词的链接子的连接方向必须指向右，右边单词的链接子的连接方向必须指向左。
-
-链语法分析器（Link Parser）是基于链语法的句法分析器。使用链语法分析句子的时候，句法分析器对句子中的每个单词去查询链语法词典得到每个单词的链接要求，根据这些链接要求进行相应的链运算，便得到句子的链语法结构。 链语法判断句子是否合法，除了需要满足句子所有单词的链要求外，还要满足以下四个原则：
+CogDial中的对话控制主要通过不同的需求来选择相应的言语行为规划器，因此，在选择言语行为规划器前，我们需要知道当前状态下上述每种需求的被满足的程度。鉴于目前的CogDial系统的有限能力，为了能更好地实现一个面向集成认知体系的智能会话系统框架，我们将上述的几项需求做了更具体化的定义：
 
 \begin{itemize}
-\item 平面性(Planarity)，链之间不能互相交叉。
-\item 连通性(Connectivity)，句子中的每个单词都必须有链和其他至少一个单词相连，形成连通图。
-\item 顺序性(Ordering)，公式中较左边的链接子必须和距离单词较近的单词链接，反之，公式中较右边的链接子必须和距离单词较远的单词链接。
-\item 排它性(Exclusion)，一对单词之间同时不能有两条链链接。
+\item 社交需求（Affiliation）：我们对该需求进行了下面三种满足程度：
+\begin{itemize}
+\item 当对话系统正在与人或者其他智能体进行会话时，该需求在一定程度上被满足；
+\item 当系统正与多个人或智能体进行会话时，该需求被满足的程度提升；
+\item  当该系统的会话内容都属于积极向上的时候（通过情感分析技术实现），该需求被满足的程度达到最高。
+\end{itemize}
+\item 能力需求（Competence）：此项需求需要通过OpenCog来评估。简单来说，对每一个目标，OpenCog记录着会话系统在过去完成该项目标的程度，然后根据当前的不同目标所占的权重，我们可以通过以下公式估算该需求被满足的程度（首先针对每一个目标，计算目标权重*能达到该目标的概率，然后求总）。当然计算目标被完成的程度，还应该考虑实现目标的语境等因素，目前我们的系统更注重构建一个智能会话系统框架，因此在语境无关的假设下来衡量目标被实现的程度。
+\item 确定性需求（Certainty）：如果会话系统正在和一个陌生人对话，或者系统无法理解大量被提及的单词或概念，那么当前的确定性需求被满足的程度就会降低。如果系统获取了新的可靠知识，那么该需求被满足的程度就会增加。
+\item 新颖性需求（Novelty）：我们定义了以下几种方式来增加智能绘画系统对新鲜度需求的满足程度值：
+\begin{itemize}
+\item 多和不同的人类或智能体会话；
+\item 谈论新的话题或引入新的词汇和概念；
+\item 学习新的可靠信息（ OpenCog推理得出的新的置信度高的知识存储的载体原子（Atoms））
+\end{itemize}
 \end{itemize}
 
-下面我们借用Sleator和Temperley的“Parsing with a Link Grammar”\cite{Sleator1993}中使用的例句来解释链语法分析的操作过程。
+基于上述目标需求的智能会话系统，除了需要结合前文所述的OpenPsi的框架理论，以及本文描述的自然语言理解和生成的相关工具之外，还需要有以下模块：
+\begin{itemize}
+\item 制定一组能被特定目标需求激活的对话控制程序
+\item 建立目标和相应去实现目标的行为之间的关联，可通过相关规则来实现，也可以通过强化学习来实现，我们系统框架采用两种结合的方法，但目前的系统还是以规则关联为主。
+\end{itemize}
 
-\begin{center}
-\textbf{The cat chased a snake.}
-\end{center}
 
-链语法分析器对上面的例子分析后产生如下结果：
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{言语规划器}{Speech Act Schema}
+\label{sec:SAS}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\includegraphics[width=12cm]{figures/catSnake.png}
+“言语行为规划器”（Speech Act Schema）是CogDial的一个核心设计， 每个言语行为规划器里包含一种特定的言语行为（Speech Act），以及与该言语行为对应的特定的认知行为（Cognitive Procedure）。每种言语行为规划器都能在不同情况下被激发调用。对于言语行为规划器的选择，我们采用OpenCog中的OpenPsi的动机驱动模块来执行。
 
-由于我们对该链语法分析器做了不少的改进，所有我们这里给出的分析结果和Sleator和Temperley的原文中的结果以及发布在网上的分析器得到的结果会有细微的不同，后面章节会介绍我们做的改进。
+    CogDial的总体规划是针对本文第 \ref{chap:litreview}章综述里提到的42种SWBD-DAMSL言语行为 \cite{Twitchell2004}，实现相应的言语行为规划器。 CogDial目前只实现了42种中的部分言语行为对应的言语行为规划器。另一方面，CogDial中的言语行为规划器的设计也绝不局限于这42种言语行为，CogDial实现了一些言语行为规划器能对应这42种中的某两种或多种言语行为，比如我们利用真值回答规划器（TRUTH VALUE ANSWER schema）来同时关联其中的YES QUESTION和NO QUESTION，从而可以将一般疑问句的回答根据真值的大小延伸到“可能”“不确定”“可能不”等，而不仅仅是局限于回答“是”或者“不是”。CogDial还根据智能体的具体情况拆分了这42种中的某些言语行为，例如，我们针对言语行为“STATEMENT” 实现了两个不同的言语行为规划器：回应声明以及智能体自发的用于表达其自身状态和想法等的声明。
 
-链语法认为在句子最前面加上一个虚拟词（通常用LEFT-WALL表示）是很有必要的，这样首先能保证链语法的“连通性“原则，使得句子最后的标点符号能与LEFT-WALL连接而不被孤立。另外，在本文的\ref{sec:head}节也提到，通过这样的虚拟词来追溯句子的头（主动词）也是非常方便可行的。上面的句法分析结果中出现的”RIGHT-WALL”是可选的，可以用于特殊标点符号的处理，但通常情况下只是用RW链与句子最后的标点符号相连。
+总的来说，本文虽然没有完全照搬SWBD-DAMSL的言语行为分类，但是，该分类体系是来源于对大量人类会话的进行具体分析后的实验结果，也在具体的会话分析和抽象的言语行为理论之间架起了桥梁，使得抽象的言语行为理论在机器上实现变得可行，因此，SWBD-DAMSL的言语行为分类体系还是很有借鉴价值的。
 
-前面提到链语法词典是链语法的核心，它包含所有常用的英文单词的链接要求。下方的表格列出上述例句中出现的单词以及它们在链语法词典里被定义的链接要求。
+要实现上述的言语行为规划器，每一个言语行为都会引发一个相应的认知行为，也就是说，每一个言语行为都会触发调用一段程序；而这样的机制正好符合OpenCog里的 GroundedSchemaNode的用法。GroundedSchemaNode是OpenCog的超图知识库里的一种节点类型，通常被封装在ExecutionOutputLink里，连接着一段代码（一般情况下是Scheme或者Python编写的代码）的名称。该代码可以通过ExecutionOutputLink被触发和执行。因此，鉴于这样的执行机制，我们可以通过对每个言语行为规划器定义一个GroundedSchemaNode来实现言语行为规划器。这样的设计方案可以减少冗长复杂的代码块，而直接通过OpenCog中统一又通用的Atomspace的基本操作方法来管理和执行复杂的言语行为规划器。另外，这样的机制也能很容易调用知识库Atomspace之外的复杂程序，从而得到很好的扩展性，也为言语行为规划器的扩展研究搭建了个很好的平台。例如，我们可以通过调用外部程序将逻辑推理系统PLN的前向或者后向推理应用到言语行为规划器中，使其能实现自适应学习，不断完善言语行为规划器。本文后面会进一步讨论这样的扩展。
 
-\begin{tabular}{|p{2.0in}|p{2.1in}|} \hline 
-\textbf{单词} & \textbf{公式} \\ \hline 
-a, the & D+ \\ \hline 
-snake, cat & D- \& (O- or S+) \\ \hline 
-Chased & S- \& O+ \\ \hline 
-\end{tabular}
+每一个言语行为规划器的输入是一个被叫做对话节点（DialogueNode），DialogueNode是可以表示一方或者多方之间的会话交互的节点类型。DialogueNode可以有不同话语节点（UtteranceNodes）作为成员，在实现方式上，DialgoueNode通过MemberLinks指向不同的UtteranceNodes。而UtteranceNode则可以关联以下不同类型的节点：
+\begin{itemize}
+\item 关联一个或多个文本节点（TextNode）、句子节点（SentenceNode）或者短语节点（PhraseNode），则表示输入的话语内容来自一个或者多个文本、句子或者短语。
+\item  关联一个声音节点（SoundNode），则表示该话语来自外界声音。
+\item  关联指向说话者的Link。
+\item  关联指向对话语的补充信息的Links，这些补充信息可以是该话语的言语行为类型、与该话语相联系的情感等。
+\item  关联指向产生话语的言语行为规划器，用于响应是什么触发该话语。
+\item  关联一个或多个解析节点（InterpretationNode），这些解析节点可以是用来解析话语的语义和语用信息。
+\end{itemize}
 
-如前面所述，链接要求限制了这些连接子必须按照一定的原则来分配，例如“the”只有一个向右的连接子D+，那么它只能和带有D-的单词形成合法的链接。而“snake”和“cat”都能和它相连，但根据链语法的“顺序性原则”，“cat”比“snake”近，所以“the”“cat”之间可以画一条D链，同样的道理，“chased”和“snake”之间可以画一条O链，以此类推。最终我们可以得到如下的结构图。需要注意的是，我们这里只是对链语法的工作原理做简单地介绍，因此忽略了链接子类型的子类型等细节，比如“cat”含有Ss+，“chased”含有链接子Ss-,，所以该句法结构图和我们上面列出的目前链语法分析器在连接类型上有点小出入。 
+言语行为规划器的输出是连接了一系列相关联Atoms的SetLink，该输出会送入本文第\ref{chap:generation}章中描述的微观规划和表层生成等工具，从而产生相应的自然语言来回应输入的内容。言语行为规划器还会将输出的话语关联到产生该话语的DialogueNode，这样不仅仅是记录了会话的内容，还能用于智能体的强化学习和提高智能体的各种需求的满足度。
+下面通过一个例子来解释上述的实现过程。假设有下面的简单对话：
+\begin{verbatim}
+Ruiting: How are you doing?
+CogDial: I am fine
+\end{verbatim}
+这个简单的对话可用以下的Atoms来表示：
 
-链语法分析器在对句子进行句法分析时，对句子中的每个单词，都会考虑下面两种变量：
+\begin{verbatim}
+
+MemberLink
+	UtteranceNode [555]
+	DialogueNode [123]
+	
+MemberLink
+	UtteranceNode [666]
+	DialogueNode [123]
+	
+EvaluationLink
+	PredicateNode "say"
+	ConceptNode "Ruiting"
+	UtteranceNode [555]
+
+EvaluationLink
+	PredicateNode "say"
+	ConceptNode "me"
+	UtteranceNode [666]
+		
+EvaluationLink
+	PredicateNode "Textual Content"
+	UtteranceNode [555]
+	SentenceNode "How are you doing?"
+	
+EvaluationLink
+	PredicateNode "Textual Content"
+	UtteranceNode [555]
+	SentenceNode "I am fine."
+	
+EvaluationLink
+	PredicateNode "Utterance Type"
+	UtteranceNode [555]
+	ConceptNode "Interrogative"
+	
+EvaluationLink
+	PredicateNode "Utterance Type"
+	UtteranceNode [666]
+	ConceptNode "Declarative"
+	
+AtTimeLink
+	UtteranceNode [555]
+	TimeNode "22:15:33 12/06/2014"
+	
+AtTimeLink
+	UtteranceNode [666]
+	TimeNode "22:15:47 12/06/2014"
+	
+EvaluationLink
+	PredicateNode "Interpretation"
+	UtteranceNode [555]
+	InterpretationNode [22]
+	
+EvaluationLink
+	PredicateNode "Interpretation"
+	UtteranceNode [666]
+	InterpretationNode [33]
+	
+	
+MemberLink
+	EvaluationLink
+		PredicateNode "doing"
+		ListLink
+			ConceptNode "you"
+			VariableNode "var1"
+	InterpretationNode [22]
+	
+	
+MemberLink
+	InheritanceLink
+		ConceptNode "I"
+		ConceptNode "fine"
+	InterpretationNode [33]
+	
+ExecutionLink
+	GroundedSchemaNode "polite_banter.scm"
+	ListLink
+		UttteranceNode [555]
+		DialogueNode [123]
+	UtteranceNode [666]
+
+\end{verbatim}
+
+其中的命题也可以有多种选择，例如：
+
+\begin{verbatim}
+EvaluationLink
+	PredicateNode "Conversation Partner"
+	DialogueNode $D
+	$X
+\end{verbatim}
+
+该命题为真，当且仅当，X是D其中一个话语的发言人。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{言语行为自动分类}{Speech Act Classification}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXX Introduction of our approach and experimental results
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{言语行为规划器}{Speech Act Schemas}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXXX这章可能需要调整。针对不同言语行为类型实现相应的言语行为规划器，本节主要讨论如何在每个言语行为类型中使用情感计算模型和逻辑推理等进行相应的规划
+
+“言语行为规划器”（Speech Act Schema）是CogDial的一个核心设计， 每个言语行为规划器里包含一种特定的言语行为（Speech Act），以及与该言语行为对应的特定的认知行为（Cognitive Procedure）。每种言语行为规划器都能在不同情况下被激发调用。对于言语行为规划器的选择，我们采用前面介绍的OpenPsi作为动机驱动模块来执行。
+
+    CogDial的总体规划是针对本文第 \ref{chap:intro}章综述里提到的42种SWBD-DAMSL言语行为 \cite{Twitchell2004}，实现相应的言语行为规划器。 CogDial目前只实现了42种中的部分言语行为对应的言语行为规划器。另一方面，CogDial中的言语行为规划器的设计也绝不局限于这42种言语行为，CogDial实现了一些言语行为规划器能对应这42种中的某两种或多种言语行为，比如我们利用真值回答规划器（TRUTH VALUE ANSWER schema）来同时关联其中的YES QUESTION和NO QUESTION，从而可以将一般疑问句的回答根据真值的大小延伸到“可能”“不确定”“可能不”等，而不仅仅是局限于回答“是”或者“不是”。CogDial还根据智能体的具体情况拆分了这42种中的某些言语行为，例如，我们针对言语行为“STATEMENT” 实现了两个不同的言语行为规划器：回应声明以及智能体自发的用于表达其自身状态和想法等的声明。
+
+总的来说，本文虽然没有完全照搬SWBD-DAMSL的言语行为分类，但是，该分类体系是来源于对大量人类会话的进行具体分析后的实验结果，也在具体的会话分析和抽象的言语行为理论之间架起了桥梁，使得抽象的言语行为理论在机器上实现变得可行，因此，SWBD-DAMSL的言语行为分类体系还是很有借鉴价值的。
+
+要实现上述的言语行为规划器，每一个言语行为都会引发一个相应的认知行为，也就是说，每一个言语行为都会触发调用一段程序；而这样的机制正好符合OpenCog里的 GroundedSchemaNode的用法。GroundedSchemaNode是OpenCog的超图知识库里的一种节点类型，通常被封装在ExecutionOutputLink里，连接着一段代码（一般情况下是Scheme或者Python编写的代码）的名称。该代码可以通过ExecutionOutputLink被触发和执行。因此，鉴于这样的执行机制，我们可以通过对每个言语行为规划器定义一个GroundedSchemaNode来实现言语行为规划器。这样的设计方案可以减少冗长复杂的代码块，而直接通过OpenCog中统一又通用的Atomspace的基本操作方法来管理和执行复杂的言语行为规划器。另外，这样的机制也能很容易调用知识库Atomspace之外的复杂程序，从而得到很好的扩展性，也为言语行为规划器的扩展研究搭建了个很好的平台。例如，我们可以通过调用外部程序将逻辑推理系统PLN的前向或者后向推理应用到言语行为规划器中，使其能实现自适应学习，不断完善言语行为规划器。本文后面会进一步讨论这样的扩展。
+
+每一个言语行为规划器的输入是一个被叫做对话节点（DialogueNode），DialogueNode是可以表示一方或者多方之间的会话交互的节点类型。DialogueNode可以有不同话语节点（UtteranceNodes）作为成员，在实现方式上，DialgoueNode通过MemberLinks指向不同的UtteranceNodes。而UtteranceNode则可以关联以下不同类型的节点：
+\begin{itemize}
+\item 关联一个或多个文本节点（TextNode）、句子节点（SentenceNode）或者短语节点（PhraseNode），则表示输入的话语内容来自一个或者多个文本、句子或者短语。
+\item  关联一个声音节点（SoundNode），则表示该话语来自外界声音。
+\item  关联指向说话者的Link。
+\item  关联指向对话语的补充信息的Links，这些补充信息可以是该话语的言语行为类型、与该话语相联系的情感等。
+\item  关联指向产生话语的言语行为规划器，用于响应是什么触发该话语。
+\item  关联一个或多个解析节点（InterpretationNode），这些解析节点可以是用来解析话语的语义和语用信息。
+\end{itemize}
+
+言语行为规划器的输出是连接了一系列相关联Atoms的SetLink，该输出会送入本文\ref{chap:generation}中描述的微观规划和表层生成等工具，从而产生相应的自然语言来回应输入的内容。言语行为规划器还会将输出的话语关联到产生该话语的DialogueNode，这样不仅仅是记录了会话的内容，还能用于智能体的强化学习和提高智能体的各种需求的满足度。
+下面通过一个例子来解释上述的实现过程。假设有下面的简单对话：
+\begin{verbatim}
+Ruiting: How are you doing?
+CogDial: I am fine
+\end{verbatim}
+这个简单的对话可用以下的Atoms来表示：
+
+\begin{verbatim}
+
+MemberLink
+	UtteranceNode [555]
+	DialogueNode [123]
+	
+MemberLink
+	UtteranceNode [666]
+	DialogueNode [123]
+	
+EvaluationLink
+	PredicateNode "say"
+	ConceptNode "Ruiting"
+	UtteranceNode [555]
+
+EvaluationLink
+	PredicateNode "say"
+	ConceptNode "me"
+	UtteranceNode [666]
+		
+EvaluationLink
+	PredicateNode "Textual Content"
+	UtteranceNode [555]
+	SentenceNode "How are you doing?"
+	
+EvaluationLink
+	PredicateNode "Textual Content"
+	UtteranceNode [555]
+	SentenceNode "I am fine."
+	
+EvaluationLink
+	PredicateNode "Utterance Type"
+	UtteranceNode [555]
+	ConceptNode "Interrogative"
+	
+EvaluationLink
+	PredicateNode "Utterance Type"
+	UtteranceNode [666]
+	ConceptNode "Declarative"
+	
+AtTimeLink
+	UtteranceNode [555]
+	TimeNode "22:15:33 12/06/2014"
+	
+AtTimeLink
+	UtteranceNode [666]
+	TimeNode "22:15:47 12/06/2014"
+	
+EvaluationLink
+	PredicateNode "Interpretation"
+	UtteranceNode [555]
+	InterpretationNode [22]
+	
+EvaluationLink
+	PredicateNode "Interpretation"
+	UtteranceNode [666]
+	InterpretationNode [33]
+	
+	
+MemberLink
+	EvaluationLink
+		PredicateNode "doing"
+		ListLink
+			ConceptNode "you"
+			VariableNode "var1"
+	InterpretationNode [22]
+	
+	
+MemberLink
+	InheritanceLink
+		ConceptNode "I"
+		ConceptNode "fine"
+	InterpretationNode [33]
+	
+ExecutionLink
+	GroundedSchemaNode "polite_banter.scm"
+	ListLink
+		UttteranceNode [555]
+		DialogueNode [123]
+	UtteranceNode [666]
+
+\end{verbatim}
+
+其中的命题也可以有多种选择，例如：
+
+\begin{verbatim}
+EvaluationLink
+	PredicateNode "Conversation Partner"
+	DialogueNode $D
+	$X
+\end{verbatim}
+
+该命题为真，当且仅当，$X是$D其中一个话语的发言人。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{言语行为规划器及其关联的目标和上下文的实现}{Initial Speech Act Schema and their Linkage to Goals and Contexts}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+在\cite{Twitchell2004}, 中，Twitchell和Nunamaker根据Searl的言语行为理论的经典分类，在对大量的人类会话进行经验分析后，将言语行为细分为42种。虽然此分类体系很有理论研究价值，但在实验过程中，考虑到实用智能对话系统的语境等因素，我们对这42种言语行为做了稍微调整，同时也在CogDial中添加了一些SWBD-DAMSL研究中没有出现言语行为。
+
+即使在有明确的言语行为类型的情况下，仍然有很多种方法去构建一个智能对话系统。CogDial根据多个广泛的可扩展目标制定一些特定的设计决策，在这些决策基础上，系统能通过自适应学习方法自动改进，为能跳出传统的对话系统的研究方法搭建一个基础平台。为了搭建这样的系统，需要考虑的第一点是，对于每一个言语行为，都有相应的固定形式的认知内容被触发，也有相应的习惯性表达方式来表达该认知内容。
+
+如果在类似的言语行为类型分类基础上构建一个简单的“聊天机器人”，一般通过更简单，不用加入很多认知处理，针对每个言语行为类型，输出直接的具体的话语，也同样能达到类似的效果。例如，对于言语行为类型Agree，可以编写简单的程序使智能体输出“同意（Agree）”或者“是的，我同意（Yes, I agree)”。目前，“聊天机器人”的概念很模糊。我们这里提到的“聊天机器人”范围也很广，可以是完全基于模板匹配的聊天机器人ELIZA\cite{Weizenbaum1966}，也可以是具有一些推理能力但是基本忽略语义理解的众所周知的Siri。但关键的一点是，我们设计的CogDial系统，是本着该系统能“理解”自己在说什么的理念，也就是说，该系统所产生的话语来自于内部的语义关系图，且该语义关系图和系统知识库中的其他语义关系图之间有着丰富的语义关系。我们希望系统能在一定程度上更深地“理解”自己在说什么，而不是只生成它不理解的字符串。在某些情况下，在不理解的情况下破口而出一些话语，尤其是习惯用语，也是可以接受的（其实人类有时候也会无意识地这么做），但这并不是大部分情况。
+
+在CogDial系统的设计中，每一个言语行为都需要下列几项内容与之相应：
+\begin{itemize}
+\item 相应的目标和语境二元组（goal，context），表明何时该言语行为会被触发。
+\item 相应的能生成相关信息的程序，产生由该言语行为引起的要传递给谈话对象的信息。
+\item 一个或多个相应的“语义模板”，表明由该言语行为引发的相关认知内容。
+\item 连接上述语义模板所在的Atoms和特定的句子实现的Atoms的Links，用于传送到Microplanning，从而生成相应的话语。
+\end{itemize}
+
+这样一来，通过编写一些抽象的语义形式和特定的会话习惯之间的匹配模式，便能构建出一个具有一定合理功能的智能会话系统，当系统学习了用不同的更复杂的表达方式去实现抽象的语义形式后，也就能在更大程度上“理解”会话内容。此外，这些抽象的语义形式除了与言语行为和目标需求相关联，还和其他不同的认知内容相关联，因此，系统会随着经验的增长而趋向成熟。
+假设任何言语行为被触发都能增加下面表达式中的EvaluationLink的真值：
+ \begin{verbatim}
+EvaluationLink
+	PredicateNode "Currently Having Conversation"
+	TimeNode T
+\end{verbatim}
+    其中，“T”表示当前时间。又假设上面表达式中的EvaluationLink和系统中多个顶层目标有关联（该假设对于某些应用也不总为真，那么在这样的情况下，这些不为真的关联的链的权重会根据具体情况被调为适当的值），也就是说，该系统能看到会话行为带来的价值。 因为每个言语行为都蕴含着这个EvaluationLink，所以每个言语行为都会影响系统的目标实现。一些言语行为会通过持续进行对话从而超标完成某个系统目标。这样的言语行为会在后面章节详述。
+    下面会给出一些具体的例子进一步解析前面几段提到的Atoms。
+ \begin{verbatim}
+ImplicationLink <.5>
+	EvaluationLink
+		PredicateNode "Currently Having Conversation"
+		TimeNode $T
+	EvaluationLink
+		PredicateNode "Increase Knowledge"
+		TimeNode $T
+\end{verbatim}
+上述超图片段表明，维持对话能在一定程度上满足系统目标“增长知识”，ImplicationLink的初始权重设为0.5，表明“当前有会话”蕴含系统目标“增长知识”只有0.5的概率。这个权重会随着系统的经验而改变，也会通过其关联的其他节点和链的具体情况推算得来。例如：
+ \begin{verbatim}
+ImplicationLink <.1>
+	ANDLink
+		EvaluationLink
+			PredicateNode "Currently Having Conversation"
+			TimeNode $T
+		EvaluationLink
+			EvaluationLink "DialoguePointer"
+			PredicateNode "Currently Having Conversation"
+			DialogueNode $D
+		EvaluationLink
+			PredicateNode "Conversation Partner"
+			ConceptNode "Bob"		
+	EvaluationLink
+		PredicateNode "Increase Knowledge"
+		TimeNode $T
+\end{verbatim}
+
+上面的超图片段表明，当进行对话的对象是Bob的时候，只有0.1的概率能实现系统目标“增长知识”。
+\begin{verbatim}
+ImplicationLink <1>
+	ExistsLink $G, $S, $O, $U, $D
+		ANDLink
+			MemberLink
+				GroundedSchemaNode $G
+				ConceptNode "Speech Act Schema"
+			AtTimeLink
+				TimeNode $T
+				ExecutionLink
+					GroundedSchemaNode $G
+					$S
+					$O
+			MemberLink
+				UtteranceNode $U
+				DialogueNode $D
+			EvaluationLink
+				PredicateNode "Textual Content"
+				UtteranceNode $U
+				SentenceNode $O
+			AtTimeLink
+				TimeNode $T
+				EvaluationLink
+					PredicateNode "Currently active"
+					DialogueNode $D			
+		EvaluationLink
+			PredicateNode "Currently Having Conversation"
+			TimeNode $T
+\end{verbatim}
+
+上面的例子说明，如果一个言语行为规划器被执行，当前的对话节点（DialogueNode）$D$会关联一个谓词“当前活跃”，表明$D$出于活跃状态， 那么“当前有会话”的目标被实现。
+
+ \begin{verbatim}
+MemberLink
+	GroundedSchemaNode "answer_yes.scm"
+	ConceptNode "Speech Act Schema"
+\end{verbatim}
+
+接下来的例子演示了言语行为如何与目标关联：
+
+ \begin{verbatim}
+ImplicationLink <.8>
+	ExistsLink $S, $O, $U, $D
+		ANDLink
+			AtTimeLink
+				TimeNode $T
+				ExecutionLink
+					GroundedSchemaNode "answer_yes.scm"
+					$S
+					$O
+			MemberLink
+				UtteranceNode $U
+				DialogueNode $D
+			EvaluationLink
+				PredicateNode "Textual Content"
+				UtteranceNode $U
+				SentenceNode $O
+			AtTimeLink
+				TimeNode $T
+				EvaluationLink
+					PredicateNode "Currently active"
+					DialogueNode $D			
+		EvaluationLink
+			PredicateNode "Please Conversation Partner"
+			TimeNode $T
+\end{verbatim}
+
+上面的例子表明言语行为规划器“肯定回答”（”Answer Yes”schemma）可以用于增加实现“取悦谈话对象”目标的幅度值，超越了谈话对象因单纯继续对话而被取悦的程度。
+
+许多言语行为规划器都会有不同的清晰表达相关语义内容的方式。比如说，一般会话的开头，可以说“你最近状态怎么样？”（”What has your state been recently?”），或者“你最近都忙什么？”(“What have you been doing?”) 等，而类似这样的语义内容很容易约定俗成地被说成“最近怎么样？”（“What’s up?”)。对于机器来讲，如果对话系统直接问 “What’s up?” 当然也没问题，但是有必要使系统知道 “What’s up?”只是其他两种说法或者 “what are you thinking about?“的一种约定俗成的简约说法。系统会根据智能体的不同个性对每种不同的说法一个相应的权值。
+
+一般来说，会存在很多的“个性参数”影响着多种言语行为。在CogDial的实现过程，我们针对那些对对话影响较大的关键特性（我们称为“对话特征”（Dialogue-trait））创建相应的概念节点（ConceptNode），比如：习惯用语（Idiomaticity）、非正式（Informality）、精确（Precision）、累赘（Wordiness）、开放（Openness）。用来表示由言语行为规划器产生的具体话语的SetLink，将以不同的权重与这些表示不同对话特征的ConceptNode相连。例如，表示“I dunno”的SetLink将以较高的权重与“Informality”以及“Idiomaticity”关联，以较低的权重与“Precision”“Wordiness”关联。这些对话特征的参数可以在对CogDial设置基本参数的时候根据不同的需求人为设计。也可以在对话过程中根据谈话对象的喜好来自适应地调整。
+
+综上所述CogDial的整个设计方案中，需要人工参与的部分包括：
+\begin{itemize}
+\item 自然语言理解流水线中的提到的规则（最终会被我们正在研究的无监督语言学习所取代，本文第9章有更详细的阐述）
+\item OpenPsi中的顶层目标
+\item 不同的言语行为所引发的不同认知过程。目前这些过程是在与GroundedSchemaNode绑定的相应Scheme或者Python代码中被实现。这些认知过程也可以在OpenCog的知识库Atomspace里被实现（如下文中的Question-answering schema）。
+\end{itemize}
+本章接下来的部分将进一步阐述CogDial使用的一系列言语行为规划器以及解释它们在CogDial中的实现机制，这些言语行为规划器大部分从SWBD-DAMSL中借鉴。当然这些特殊的言语行为规划器的集合并非一成不变，在以后对系统的不断改进和完善过程中，无疑会导致对该集合一定程度的延伸和细化。但我们相信这是一个好的开始，需要重申的是这些言语行为规划器分类是大量人类对话的实证分析的结果。目前，我们的研究工作重点在问答式规划器（Question-answering schema），将会在\ref{sec:QA}中进一步阐述。
+
+\subsubsection{谈话开场白、结束谈话和转移话题}{Opening, Closing and Transitioning}
 
 \begin{itemize}
-\item 该单词在链语法词典中对应的链接要求，即上面中的公式（Formula）
-\item 该单词为了满足句子结构的一致性（Agreement）必须具备的特征属性
+\item 被放弃或转移、结束
+\begin{itemize}
+  \item 例如："所以，嗯…"(”So, hmmmm....”)
+  \item 相关目标、语境：当前谈话不尽能达到智能体的目的；但其中一些与谈话对象的对话，似乎仍有达到智能体目的合理程度上的可能性。或者，智能体无法想到任何与谈话对象所讲之相关的答复。当持续对话被断定为可达到智能体的某些目的，然而其他言语行为似乎无法在显着程度上充分达到智能体之目的；或当言语行为极有可能达到智能体的目标，然而看似与先前的对话失去连结性，在这样的情况下，这就会被使用（因此，某些言语标志对于划定新的谈话阶段之界线，是很恰当的）。
+  \item 程序：在此情况下，待给予的语意内容往往会是"或许我们该来谈点别的"(”Perhaps we should talk about something else”)丶或"现在来谈谈别的吧。"(”Let us now talk about someone else”) 这样的语意内容会搭配清晰的咬字，也涉及社交上常见的言辞，比如"嗯…这个嘛…"(”Hmmmm... welll...”)。
+\end{itemize}
+\item 常见谈话开场白
+  \begin{itemize}
+  \item 例如："最近过得怎样？"(”How’s it going?”)
+  \item 相关目标、语境：一名潜在交谈对象在现场，经断定，与该对象交谈将能达到系统的目标。
+  \item 程序："常见谈话开场白"的性质，会以表示问候丶欲进行交谈的一种社会成规作为开端。有些常见的谈话开场白非常普通，例如"嗨。"(”Hi.”) 而其他较有语意内涵的，比如"现况如何？"(”What is your current state?”)丶"最近经历了哪些事？"(”What have been your recent experiences?”)丶"在想些什么？"(”What are you thinking about?”)丶"目前在从事些什么？"(”What are you involved with currently?”) 这样的语意内容会搭配清晰的咬字，也涉及社交上常见的言辞，比如"最近怎样？"(”What’s up?”)丶"有什么新鲜事？"(”What’s new?”)丶"生活怎么样？"(”How’s it going?”) 等。同样地，也可能会明白地问丶或通过惯用语表达"我想和你谈谈"(”I would like to talk to you”) 或"想聊天吗？"(”Would you like to chat?”) 等语意内容。 
+  \end{itemize}
+\item 结束谈话
+  \begin{itemize}
+  \item 例如："那好吧…今天跟你聊天很开心。"(”Alrighty then... it’s been good to chat with you.”)
+  \item 相关目标、语境：如结束谈话会是达成系统目标的最佳方式，这样的话语是很适当的。若确定谈话对象欲结束谈话，在这种情况下，结束谈话会是达成系统目标取悦谈话对象最好的办法。在任何情况下，比起唐突结束，用言辞结束谈话反而是达成取悦人类的目标最佳的方式。
+  \item 程序：结束谈话的语意内容会有"这次谈话我很尽兴"(”I have enjoyed the conversation”)丶"谢谢你给我这么有意义的谈话"(”Thanks you for the good conversation”)丶"希望下次还能再跟你聊天"(”I hope to talk to you again”) 等，并且是以直接或惯用性言辞表达。
+  \end{itemize}
 \end{itemize}
 
-比如在上述例句中，对于单词“snake”，通过查询链语法词典，我们得到相应的公式“D- \& (O- or S+)”，同时该单词还有相应的特征属性如“时态（tense）”“人称（person）”等。但对于单词“the”，就不需要与一致性相关的变量。
+\subsubsection{实质性对话开场白}{Substantive Openings}
 
-链语法分析器中也使用简单的转换生成类似短语结构语法的句法分析结果，如下：
-
-{\tt\begin{small}\begin{lstlisting}
-(S (NP The cat)
-	(VP chased
-	 	(NP a snake))
- 	.)
-\end{lstlisting}\end{small}}
-
-在我们的工作中，对该短语结构用的不多，所以这里不做详细说明。我们会在下一节简单讨论链语法和短语结构语法的潜在关系。
-
-\subsection{链语法与短语结构语法}{Link Grammar vs. Phrase Structure Grammar}
-
-讨论各种语法的优缺点不是本文的重点，本节只将链语法和典型的短语结构语法做个简单的对比来讨论它们的潜在联系。一般来说，依存语法和短语句法也有相应的联系（参见图\ref{fig:Dependency-and-Phrase-Structure}），但不同的依存语法使用不同依存关系集合，也有不同的属性，分析起来会比较复杂，也不是本文的研究内容，所以我们这里不做详细阐述。
-
-\begin{figure}
-
-\begin{centering}
-\includegraphics[width=12cm]{figures/schneiderFigure1} 
-\par\end{centering}
-
-\caption{依存句法分析和短语句法分析对比\label{fig:Dependency-and-Phrase-Structure}}
-A comparison of dependency (above) and phrase-structure (below) parses.
-In general, one can be converted to the other (algorithmically); dependency
-grammars tend to be easier understand.
-(图片来自G. Schneider, ``Learning to Disambiguate Syntactic
-Relations''  Linguistik online 17, 5/03)\\
- \rule[0.5ex]{1\columnwidth}{1pt} 
-\end{figure}
-
-简单起见，这里只列出两条有用的观察结果，基于这些观察结果，我们不难发现，在链语法中也隐形存在短语结构。这是有一定道理的，但由于自然语言的复杂性，某些情况下可能也不是那么简单。
+在 CogDial 系统的语境中，有许多种对话开场白往往很实用，但这并没有在 SWBD-DAMSL 研究中被提出讨论。例如：
 
 \begin{itemize}
-\item 链语法中的公式是符合语法范畴的。例如，前面提到的例句中“chased”的链结构是“S- \& O+”，在范畴语法中，这意味着，“chased”属于这样的语法范畴，该范畴中的词都满足链结构“S- \& O+”。换句话说，链语法中每一个“公式”都对应依附该公式的单词的范畴。 
-\item 词之间的链接也可以看成是短语的核心词（head）之间的链接。例如，在例句“The cat chased a snake”中，“chased”和“snake”之间有链接O，那么也可以说，以“chased”为核心词的短语和以“snake”为核心词的短语之间有链接O。换句话说，可以理解成，链语法为了简化，通过核心词来识别短语。
+\item 意识流陈述性开场白
+\begin{itemize}
+\item 例如："我常在想，有些人总在谈些同样的事。"(”I’ve been thinking there are some people who always talk about the same things.”)
+\item 相关目标丶语境：为取悦谈话对象丶或达到令人出奇的目标，就会通过此等开场白达成。
+\item 程序：在此开场白的程序，会先从 AttentionalFocus 截取一组 Atom，再将之供给微规划程序进行发音。
+\end{itemize}
+\item 个人化开场白
+\begin{itemize}
+\item 例如："我对下届的总统大选有些看法。"(”I have some thoughts about who’s going to win the next Presidential election.”) [向时常谈论政治的人说]
+\item 相关目标丶语境：与意识流陈述性开场白相同，但更着重于取悦谈话对象和增进联系。 
+\item 程序：对代表谈话对象的 Atom 予以高度的重视值（在 OpenCog 术语中的 ShortTermImportance），接着在其散播到 AtomSpace 一段时间后，从 AttentionalFocus 中选择一组 Atom，再将之供给微规划程序进行发音。
+\end{itemize}
 \end{itemize}
 
-\subsection{识别句子的中心词}{Identifying the Head of a Sentence}
-\label{sec:head}
+从某种意义上来看，这些言辞只是陈述句；但事实上，它们被用作对话开场白，使之增添了些许不同于平常的韵味。不同的认知程序经常会被用在选择哪些语句该作为对话开场白。 
 
-链语法从词的局部着手关注任意两个词之间的关系，在一定程度上忽略了语言的层次结构。因此标准的链语法也存一些弊端，有不少语言现象会被链语法拒绝认为是不合法的结构。比如并列结构、介词短语等。在本文的研究过程，我们对链语法做了很多的改进，由于链语法的链接要求非常复杂，修改链语法词典可能牵扯到很多语言学上的问题。但这不是本文的研究重点，所以这里不一一列出我们做过的改进，只简单的列出几项较大的改进：
+在有些相关言语行为中，问句会被用作对话开场白。例如："谁会赢得下届的总统大选？"(”Who’s going to win the next Presidential election?”) 这些都可为如下探讨的任何问句形式。但演算出该问什么来开始一段对话，与演算出该用何种语句来作对话开场白的程序，会有高度的相同性。
+
+\subsubsection{常见反应}{Conventional Responses}
 
 \begin{itemize}
-\item 改进了链语法对连词的处理
-\item 改进了链语法对量词的处理
-\item 识别句子的中心词。
+\item 了解（衬托型反馈形式）
+\begin{itemize}
+\item 例如："嗯，了解。"(”Yep, understood.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标（因为多数人都喜欢谈话时被了解的感受）；由于表示了解某谈话要点，使得谈话对象似乎可继续传达下个谈话重点，因此也可达到增进新奇感和知识的目的。基本的语境条件，在于谈话对象说了某些智能体了解的话。另一方面，选择此规划器的重要性在此情形下会更高：谈话对象不太确定智能体是否了解，或者谈话对象似乎会重复相同的信息（例如智能体连续给予谈话对象两个带有高度相似内涵的言辞）。若智能体强烈了解谈话对象的表达而胜过同意之，这时选择此规划器的重要性也较高。
+\item 程序：语意内容如"我了解你刚所说的"(”I understand what you just said”)；这般言辞可明确或以惯用语方式传达。
+\end{itemize}
+\item 同意、接受
+\begin{itemize}
+\item 例如："你说对了。"(”You got it.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标（因为多数人都喜欢谈话时被了解的感受）；由于表示了解某谈话要点，使得谈话对象似乎可继续传达下个谈话重点，因此也可达到增进新奇感和知识的目的。基本的语境条件，在于谈话对象说了某些智能体了解、并且同意的话。另一方面，选择此规划器的重要性在此情形下会更高：谈话对象不太确定智能体是否了解，或者谈话对象似乎会重复相同的信息（例如智能体连续给予谈话对象两个带有高度相似内涵的言辞）。 
+\item 程序：语意内容如"我同意你刚所说的"(”I agree with what you just said”)；这般言辞可明确或以惯用语方式传递。
+\end{itemize}
+\item 欣赏
+\begin{itemize}
+\item 例如："是啊，我很确定…"(”Yeah, I’m sure....”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标（因为多数人都喜欢谈话时被了解的感受）；由于表示了解某谈话要点，使得谈话对象似乎可继续传达下个谈话重点，因此也可达到增进新奇感和知识的目的。基本的语境条件，在于谈话对象说了某些智能体了解、同意、且满意的话。 
+\item 程序：语意内容如"我很满意你刚所说的"(”I am caused pleasure by what you just said”)；这般言辞可明确或以惯用语方式传递。
+\end{itemize}
+\item 对明白的回应
+\begin {itemize}
+\item 例如："好的，明白你的意思了。"(”OK, gotcha.”)
+\item 相关目标丶语境：这就如前述的"了解"行为，惟有基本的语境条件，在于谈话对象说了某些智能体了解、并回应某些智能体先前所说过的话。 
+\item 程序：就如前述的"了解"情况，语意内容为"我明白你刚所说的"(”I understand what you just said”)；这般言辞可明确或以惯用语方式传递，但惯用语的表达方式会与"了解"的情况不尽相同。
+\end{itemize}
+\item 重复措词
+\begin{itemize}
+\item 例如："啊，你觉得他疯了。"(”Ah, you think he’s crazy.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标（因为多数人都喜欢谈话时被了解的感受）；由于表示了解某谈话要点，使得谈话对象似乎可继续传达下个谈话重点，因此也可达到增进新奇感和知识的目的。基本的语境条件，在于谈话对象说了某些智能体了解的话。另一方面，选择此规划器的重要性在此情形下会更高：谈话对象不太确定智能体是否了解。
+\item 程序：语意内容为重复谈话对象不久前所说的。首先，可重复谈话对象整体的言辞评论，或仅取其最重要的措辞句话。常见的言辞如"哦"(”Oh”)、或"啊？"(”huh?”) 也可视情况添加。
+\end{itemize}
+\item 道歉
+\begin{itemize}
+\item 例如："对此我很抱歉。"(”Sorry about that.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标。主要的语境条件，在于谈话对象看似受到智能体所说、或未说的话之困扰或冒犯；其次较不重要的语境条件，在于谈话对象看似对其他事情困扰、不悦或受到冒犯。 
+\item 程序：语意内容单纯为"我很抱歉"(”I am sorry”) 或"对 X 我感到很抱歉"(”I am sorry about X”)；而“X”为对谈话对象造成负面反应的任何事物；这般言辞可明确或以惯用语方式传递。
+\end{itemize}
+\item 道谢
+\begin{itemize}
+\item 例如："太感谢你了，这真的很棒！"(”Thanks so much, that was fantastic!”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标。主要的语境条件，在于智能体满意谈话对象所说的。另一个条件，在于"谢谢你"为社交上适宜的言辞，比如谈话伙伴明确称赞智能体的情况。
+程序：语意内容为"对 X 我很感谢"(”I am grateful for X”)，或单纯为"我很感激"(”I am grateful”)；这般言辞可明确或以惯用语方式传递。
+\end{itemize}
+\item 置之度外
+\begin{itemize}
+\item 例如："当然，没事的，别担心。"(”Sure, no problem, don’t worry about it.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标。主要的语境条件，在于谈话对象对于其所说的话或所做作为感到后悔；或对他自己说了些负面的话。 
+\item 程序：语意内容为"对于 X 我并不深受其扰"(”I am not significantly bothered by X”) 或"那件事并没有太影响我"(”I am not significantly bothered by that”)；这般言辞可明确或以惯用语方式传递。
+\end{itemize}
 \end{itemize}
 
-链语法分析器（Link Parser）是一个开源工具，包括链语法词典，我们所有的改进都发布在 \url{http://abisource.com/projects/link-grammar/}
+\subsection{实质回应}{Substantive Responses}
+\begin{itemize}
+\item 协作完成
+\begin{itemize}
+\item 例如："…没连任又担任了两届的总统"(”... who served two non-contiguous presidential terms”) [回应一句不完整的言辞"格罗弗•克利夫兰是美国唯一的一位…"(”Grover Cleveland was the only US president...”)] 
+\item 相关目标丶语境：此达成了取悦谈话对象的目标。主要的语境条件，在于谈话对象说了看似一句较长语句中一部分的话，而智能体正确猜到剩下的叙述为何。
+\item 程序：语意内容为智能体猜测谈话对象所说的其余叙述，完善一个句子。
+\end{itemize}
+\item 引用
+\begin{itemize}
+\item 例如："食言是很不可理喻的。"(”It doesn’t make sense to eat words.”) [被告知某人食言时的回应。] 
+\item 相关目标丶语境：例如当谈话对象发出的某些言辞，是智能体本身就有强烈评估的事物– 这言辞显然正确、错误、令人讶异或令人开心等。 
+\item 程序：语意内容为"P 属于 X"的形式；X 为谈话对象先前发出的言论，而 P 为智能体强烈认定为 X 所拥有 – 例如事实、虚伪、惊讶、喜悦、不悦等。这种言辞的惯用语的表示并不多，但确实是有不少方式可表示此等言辞，像是"X 使我高兴"(”X makes me happy”)、"X 令我欣喜"(”X pleases me”)、"我喜欢甲"(”I like X”) 之类。
+\end{itemize}
+\item 总结/再阐述
+\begin{itemize}
+\item 例如："所以说，你觉得他是个危险的疯子。"(”So you think he’s a dangerous madman.”)
+\item 相关目标丶语境：此达成了取悦谈话对象的目标（因为多数人都喜欢谈话时被了解的感受）；由于表示了解某谈话要点，使得谈话对象似乎可继续传达下个谈话重点，因此也可达到增进新奇感和知识的目的。基本的语境条件，在于谈话对象说了某些智能体了解的话。另一方面，选择此规划器的重要性在此情形下会更高：谈话对象不太确定智能体是否理解、或智能体本身也不确定自己是否理解。 
+\item 程序：语意内容为与谈话对象先前的言辞相同，或有时为谈话对象近来的一系列言辞。微规划系统会被特别要求找出不同表达此语意内容的方式，而不是重复谈话对象所说的话。
+\end{itemize}
+\item 反问
+\begin{itemize}
+\item 例如："若沙特阿拉伯不具备这些美国武器，那迪拜会有什么防御足以对抗贫穷非洲人的大举入侵？"(”What defense would Dubai have against an invasion by masses of impoverished Africans if Saudi Arabia didn’t have all those American weapons?”)
+\item 相关目标丶语境：最基本的语境条件，在于有些疑问是智能体认为它对该问题思考过会较好。例如智能体认为某些问题是谈话对象会知道更多、或说出更有益的食物，而智能体对此问句更熟悉，在此情况就有可能发生；反问的问句便会附属这个语句。作用于此的主要目标是为了取悦谈话对象– 而较间接、有把握（知识），因为当谈话对象了解越多，智能体也就会知道越多，这往往不会出错。 
+\item 程序：此程序的关键在于确认是否有 S 的语句，若谈话对象知悉 S、或对 S 有更深度的了解，谈话对象对当前谈话主题的知识会较渊博。若如此，以问句方式来构建 S 并提出这个问题，较有意义。
+\end{itemize}
+\item 或者从句
+\begin{itemize}
+\item 例如："还是说，他是为了自己而拿了所有钱？"(”Or did he take all the money for himself?”)
+\item 相关目标丶语境：语境条件在于谈话对象发出带有内涵或清楚含义 X 的语句，但某 Y 排除了 X，对智能体而言似乎也有合理程度上的强烈可能性（不必然，但或许与 X 的可能性同等强烈、或比 X 更强烈）。这部分达成的目标一般而言是取悦谈话对象，并增进知识。若证实提出的选项 Y 比选项 X 还要新奇，新奇感也会是相当重要的目标。 
+\item 程序：此程序其实就是找出貌似极有理的 Y，排除谈话对象表示的 X。假定如此，待用言语表现的语意内容则为 Y。
+\end{itemize}
+\item 而且从句\footnote{此为笔者个人的延伸论点，而非 SWBD-DAMSL 言语行为的一部分。}
+\begin{itemize}
+\item 例如："而且他还自己吃光了所有奶酪？"(”And then he ate all the cheese himself?”)
+\item 相关目标丶语境：语境条件在于谈话对象发出带有内涵或清楚含义 X 的语句，而智能体顺势地从 X 联想到某 Y。这部分达成的目标一般而言是取悦谈话对象，并增进知识。若证实提出的选项 Y 令人惊讶，新奇感也会是相当重要的目标。
+\item 程序：此程序其实就是找出貌似极有理的 Y，延伸谈话对象表示的 X。假定如此，待用言语表现的语意内容则为 Y。
+\end{itemize}
+\end{itemize}
 
-为了读者对如何修改链语法词典有个大致的思路，本小节就其中的改进“识别句子的中心词”展开讨论。
-
-对于“识别句子的中心词”的改进，我们的出发点是使链语法分析结构（Link Parse）能转换成一颗类似的依存句法树。改进后，我们能直接通过追溯“WV”链找到句子的中心词，或者通过追溯“CV”链找到子句的中心词。找到中心词后，可以将其定为树的根节点，然后依次遍历各个链，最终能得到一颗句法树。具有这样的转换能力有以下优点：
+\subsubsection{回答}{Answers}
 
 \begin{itemize}
-\item 能使用很多能用在树结构上的机器学习方法来改进链语法分析器，比如频繁子树挖掘(Frequent Subtree Mining)\cite{Chi2005}
-\item 能更直接的链语法分析结果转换成依存句法树，从而能使用依存语法的语料库或者工具来改进链语法分析器
-\item 能更好地从其他语法理论（例如词语法（Word Grammar）\cite{Hudson2007}）角度来解析链语法分析结构
-\item 能简化一些RelEx中需要通过追溯很多链来找到中心词的规则
+
+
+\item 肯定回答
+\begin{itemize}
+\item 例如："是的，没错。"(”Yes, that’s right”)
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案为肯定。目标是取悦谈话对象。
+\item 程序：语意内容为"是"(”Yes”)，措辞表达的方式有很多种。
 \end{itemize}
 
-对于句子的中心词定义，语言学界有很多不同的看法。我们这里借鉴依存语法的观点，选择使用句子的主动词来作为句子的中心词，以及子句的主动词来作为子句的中心词。
 
-此项改进的具体目标就是使句子的中心词，即句子的主动词，更容易从链语法分析得到的结果中被检索到。这样的改进不仅仅使链语法分析结构能够很直接地转换成类似依存句法树，因为依存语法一般以主动词为根节点；还无意中改进了链语法分析器对复句的分析能力，使其产生了更直观合理的分析结果，因为我们采用了将功能词与子句的主动词相连的方法来追溯子句的中心词，这显然比标准链语法中，不论什么情况，都使用功能词与子句的第一个词互相链接更直观合理；这样的改进给我们后续研究的依存关系抽取和逻辑关系抽取带来了诸多方便，因为在改进之前，无聊是并列复句还是偏正复句，或者是带状语的单句，链语法都将其中功能词与子句的第一个词相连，这样使得判断子句之间的语义逻辑关系变得很困难。
+\item 否定回答
+\begin{itemize}
+\item 例如："不，恐怕不是这样。" (”No, I’m afraid not.”)
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案为否定。目标是取悦谈话对象（虽然在此情况下，达到目标的程度一般会比"肯定回答"来得稍微低些– 比起否定的答复，多数人更想听到的是肯定回答，但这显然还是依特定情况而定）。 
+\item 程序：语意内容为"否"(”No”)，措辞表达的方式有很多种。
+\end{itemize}
 
-为了能实现这样的改进，我们首先引入了三种标准链语法中不存在的链接类型：WV，CV和IV。其中，WV用于链接LEFT-WALL和句子的中心词，CV用于链接功能词和子句的中心词，IV用于链接LEFT-WALL和非限定动词。这些链接类型并不是第一批用来处理句子中心词的链接类型，链语法词典中有几个链接类型已经充当类似的角色，如B，AF，CP,Eq，COq等，但是这些链类型的用法非常复杂而且分类很模糊，引入的这几个新的链接类型，使句子的中心词角色更突出和直观，同时也和其他语法接轨。有关不同的链接语法中的链接类型的含义和使用方法，可参考链语法词典的在线文档： \url{http://www.abisource.org/projects/link-grammar/dict/section-WV.html}
 
-对这一改进，我们采用的具体实现方法可以归纳为以下几步：
+\item 拒绝
+\begin{itemize}
+\item 例如："呃…不，我做不到。"(”Uh... no I can’t do that.”)
+\item 相关目标丶语境：语境条件在于谈话对象提出了建议，而智能体认为这建议有误（若为陈述句）、不值得做或不可能办得到（若为命令句）。在拒绝某命令的情况下，此举是关系到所有智能体的目标，但仍取悦谈话对象和达成联系 – 因为一般来说，若智能体拒绝了某要求，是因从事智能体所想做的，会比从事谈话对象所请求的更能够帮助其达成其他目标。
+\item 程序：语意内容为"我不认同 X"(”I don’t agree with X”) 或"我不想从事 X"(”I don’t intend to do X”)；措辞表达的方式有很多种，而 X 可被取代为"那个"或其他照应语。
+\end{itemize}
+
+
+\item 肯定的委婉回答
+\begin{itemize}
+\item 例如："对啊，她是这样。"(”Yes she did.”)
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案为肯定。目标是取悦谈话对象。对此规划器应有成见的情况，在于智能体对问题的重视、或者谈话对象看似对该问题有特定程度的重视，正如这类回答带有特别的强调语气。 
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同"我同意 F"(”I agree with F”)、或"F 是对的"(”F is true”) 等措辞。
+\end{itemize}
+
+
+\item 否定的委婉回答
+\begin{itemize}
+\item 例如："这个嘛，我不认为…"(”Well I think not...”)
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案为否定。目标是取悦谈话对象（虽然在此情况下，达到目标的程度一般会比"肯定回答"来得稍微低些）。对此规划器应有成见的情况，在于：问句或其答案看似有特别高度的重要性（OpenCog 中的 STI），正如这类回答带有特别的强调语气；或者，智能体对问题的重视、或谈话对象看似对该问题有高度的重视。
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同"我不赞同 F"(”I disagree with F”)、或"F 并不是对的"(”F is not true”) 等措辞。
+\end{itemize}
+
+
+\item 也许、部分接受
+\begin{itemize}
+\item 例如："是啊 – 好像是吧。"(”Yeah – kind of.”)
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案具有不太接近 1、也不太接近 0 的真伪值。目标是取悦谈话对象。 
+\item 程序：一般程序为使语句 S相应于谈话对象问的问题，并从该语句取一关键片段 F，再以言语方式表达等同"我部分同意 F" (”I partly agree with F”)、"我认为 F 可能是对的"(”I think F is possibly true”) 或"F 有部分是对的"(”F is possibly true.”) 等措辞。智能体会使用特定的惯用语表达特定程度的估计真实性，比如"我认为 F 也许是对的"(”I think F is probably true”) 或"我觉得 F 有令人信服的真实度"(”I think F is conceivably true”) 等。较动摇不定的讲法如"我估计 F 的可能性约为 6，带有 8 的置信水平"(”I estimate the probability of F at approximately 6 with confidence level. 8”)（或被给予的任何数值）。
+\end{itemize}
+
+
+\item 其他回答
+\begin{itemize}
+\item 例如："我不知道。" (”I haven’t a clue.”) 
+\item 相关目标丶语境：语境条件在于谈话对象问了个是非问答，而智能体认为答案为肯定。目标是取悦谈话对象以及聚集知识。特定的语境条件，在于谈话对象问了个问题，而智能体也不知道答案、或对问题有其他反应，或问题的评估对智能体而言比该答案还要重要。
+\item 程序：此程序为对该问句识别出主观上的重要反应或评估。语意内容为"我有反应 R"(”I have reaction R”) 或"我对问题 Q 有 反应 R"(”I have reaction R to question Q.”) 例如"我不知道"(”I have no idea”)、"我不知道是谁杀了 J.R."或"我真的很讨厌思考为什么人们如此邪恶"(”I really hate thinking about why people are so evil.”)。
+\end{itemize}
+
+
+\item 不合意的回答
+\begin{itemize}
+\item 例如："那其实不是我所想的。"(”That’s not really what comes to mind.”) 
+\item 相关目标丶语境：语境条件在于谈话对象回答了一个问题，但智能体认为答案虽行得通，但并不是最好的答案。目标是取悦谈话对象以及聚集知识。
+\item 程序：语意内容为"我认为 X 并不是 Q 最好的答案。"”I think X is not the best answer to Q.”，措辞表达的方式有很多种。
+\end{itemize}
+
+
+\end{itemize}
+
+\subsection{问句}{Questions}
+
+\begin{itemize}
+
+
+\item 是非问答（稍微延伸 SWBD-DAMSL；广义来说，如考量到答案为分等、而非是、否之二元真伪值的情况，则可将之视为真伪值疑问。）
+\begin{itemize}
+\item 例如："你有给我编程吗？"(”Did you program me?”)
+\item 相关目标丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件为：
 \begin{enumerate}
-\item 修改并增强链接B，使得B能指向句子的中心词，以及子句的中心词。上面一段提到，链语法词典中的链接类型B有类似能指向句子的主动词的功能，但是其使用方法和能被应用的情况分类很模糊。
-\item 通过链接B找到句子的中心词，然后将LEFT-WALL和该中心词之间用新引入的W链接相连。
-\item 通过B链接找到子句的中心词，修改链接CO或者Cs（CO和Cs都是改进前链语法中用于链接功能词和子句的第一个词的链接类型），使其指向子句的中心词，并将其链接类型改为CV。
+\item 智能体或许某程度上重要的 Atom，但置信度低；因此欲针对此 Atom 的真伪值提问。
+\item 谈话对象或许提及了一特定的概念 C，而 C 有几个层面是智能体知识较不足的；这可被确切阐述为真伪值疑问句。在此情况下，取悦谈话对象会是主要目标。
 \end{enumerate}
-
-IV的处理方式和WV类似，这里不再详述。
-
-下面给出了针对这些关系链接的改进的例子，
-例句："Call me when you are ready."
-改进前句法分析结果如下：
-\begin{verbatim}
-    +------------------Xp------------------+
-    |        +---MVs--+                    |
-    +---Wi---+-Ox-+   +-Cs+-Spx+--Pa--+    |
-    |        |    |   |   |    |      |    |
-LEFT-WALL call.v me when you are.v ready.a .
-\end{verbatim}
-
-改进后句法分析结果如下：
-\begin{verbatim}
-    +------------------Xp------------------+
-    |        +---MVs--+---CV---+           |
-    +---Wi---+-Ox-+   +   +-Spx+--Pa--+    |
-    |        |    |   |   |    |      |    |
-LEFT-WALL call.v me when you are.v ready.a .
-\end{verbatim}
-
-例句："I left soon after I saw you."
-改进前句法分析结果如下：
-\begin{verbatim}
-    +--------------------Xp--------------------+
-    |             +----MVs----+                |
-    +--Wd--+-Sp*i-+--MVa-+    +-Cs+Sp*i+-Ox-+  |
-    |      |      |      |    |   |    |    |  |
-LEFT-WALL I.p left.v-d soon when I.p saw.w you .
-\end{verbatim}
-
-改进后句法分析结果如下：
-\begin{verbatim}
-    +--------------------Xp--------------------+
-    +------WV-----+----MVs----+---CV---+       |
-    +--Wd--+-Sp*i-+--MVa-+    +   +Sp*i+-Ox-+  |
-    |      |      |      |    |   |    |    |  |
-LEFT-WALL I.p left.v-d soon when I.p saw.w you .
-\end{verbatim}
-
-例句："Apparently, she loves cheese."
-改进前句法分析结果如下：
-\begin{verbatim}
-    +--------------------Xp-------------------+
-    +---------Wd--------+                     |
-    |          +---CO---+                     |
-    |          +--Xc-+  +--Ss-+----Ou---+     |
-    |          |     |  |     |         |     |
-LEFT-WALL apparently , she loves.v cheese.n-u .
-\end{verbatim}
-
-改进后句法分析结果如下：
-
-\begin{verbatim}
-    +--------------------Xp-------------------+
-    +------------WV-----------+               |
-    +---------Wd--------+     |               |
-    |          +---CO---+     |               |
-    |          +--Xc-+  +--Ss-+----Ou---+     |
-    |          |     |  |     |         |     |
-LEFT-WALL apparently , she loves.v cheese.n-u .
-\end{verbatim}
-
-需要说明的是，在链语法分析器的当前版本中，虽然我们采用了WV链来链接LEFT-WALL和句子的中心词，但我们仍然保留了原来版本中的链接LEFT-WALL和句子的第一个词的Wd或者Wi等链，只是为了保持版本的向后兼容性。在转换成句法分析树的时候，我们会忽略Wd或者Wi等这些链。
-
-\subsection{RelEx}{RelEx}
-
-这一节我们将介绍依存关系抽取工具RelEx（Relation Extractor）的工作原理和基本实现方法。RelEx采用上一节中链语法分析器的输出作为输入，将其转换成一个特殊的特征结构图，然后根据相应的规则进行一系列的图结构转换，最后得到一个含有比链语法分析结果更抽象一点的介于句法关系和语义关系之间（syntactico-semantic）的依存关系图。
-
-RelEx包含了很多个模块，我们这里只介绍其中关键的模块。它的核心思想就是将链语法分析器的分析结果转换成一个特有的特征结构有向图（Feature Structure），然后使用一系列规则（在RelEx系统中被称为句子算法，Sentence Algorithm）对特征结构图进行一系列相应的有序的修改，最终得到一个精炼的特征结构图。最终得到的特征结构图中包含了句子中词和词之间的RelEx句法语义关系（如主谓关系、动宾关系等），还包含了句子中每个词的相关属性（如词性、时态等）。RelEx还处理一些消歧工作，如指代消解，我们会在下面章节进一步阐述。
-
-\begin{figure*}
-\begin{centering}
-\includegraphics[width=12cm]{figures/RelEx.png}
-\protect\caption{\label{fig:relex}Overview of the internal dynamics of the RelEx semantic extraction system, which maps link parses into sets of more abstract syntactico-semantic relationships.}
-\end{centering}
-\end{figure*}
-
-RelEx的输出可看作是被简化了的输入句子的语法结构，在一定程度上，RelEx还对一些表层关系进行归一化处理，因为很多等效但异构的动词框架会被映射到一致或者同态的特征结构图中。例如下面的两个不同的句子语义却一样：
-
-\begin{verbatim}
-      Mary ate the cake.
-      The cake was eaten by Mary. 
-\end{verbatim}
-
-在RelEx的输出中，它们同时含有下面的RelEx依存关系：
-
-\begin{verbatim}
-     _subj(ate, Mary)
-     _obj(ate, cake)
-\end{verbatim}
-
-\subsection{RelEx的系统框架}{RelEx Framework}
-
-RelEx系统框架主要包括两大模块：附属关系抽取模块和语法关系抽取（参见图\ref{fig:relex}）。它能识别句子中词和词之间的主语、宾语、间接宾语和其他依存关系，也能像其他依存语法分析器那样生成依存关系树。 
-
-RelEx首先对句子中的每个词创建一个特征节点（FeatureNode），然后通过一系列相关规则不断更新每个特征节点。这些规则将链语法分析器的输出结果中的不同链的组合转换成相应的RelEx依存关系，有些转换可能是通过某一条规则直接从链到RelEx依存关系的转换，也可能是间接地根据几条规则动态修改一个词的特征节点，并结合其他相关的特征节点中的特征，最终得到相应的RelEx关系。
-
-接下来我们使用在链语法章节中使用的例句“The cat chased a snake.”来更详细地解析RelEx的每个步骤和实现方法。
-
-\noindent {\bf 步骤1：将链语法分析器的输出转换成一个特征结构图。}
-
-如上所述，RelEx首先将链语法分析器的输出结果转换成一个特征结构图。特征结构图是一个带权有向图，其中节点可以表示一个值，也可以是一个无序的特征列表。 RelEx中，特征指的就是一条指向另一个节点的带权边，而特征的值通常是一个字符串。
-
-从上一节中我们可知，例句输入链语法分析器后产生下面的链语法结构： 
-
-\includegraphics[width=12cm]{figures/catSnake.png}
-
-根据我们上面的步骤描述，首先需要将上面的链语法分析结构转换成特定的特征结构图。句子中的每个词都会被转换成特征结构图的一个节点，其中该节点包含以下特征（[]中的内容表示特征的类型，如 NEXT[node]表示该特征是一个特征节点类型）：
-
-\begin{itemize}
-\item NEXT[node]：该特征指向表示该词的后一个词（如果存在）的特征节点。
-\item PREV[node]：该特征指向表示该词的前一个词（如果存在）的特征节点。
-\item this[node]：该特征指向自己（该特征的存在只是为了方便某些句子算法的执行）
-\item wall[node]：该特征指向表示LEFT-WALL的特征节点。
-\item index\_in\_sentence [int]: 该词在句子的位置，LEFT-WALL的位置为0，以此类推。
-\item start\_char [int]: 该词的第一个字符在原句子中的位置。从0开始计算。
-\item end\_char [int]: 该词的最后一个字符的后一个字符在原句中的位置。 end\_char - start\_char = 字长
-\item str [string]: 该词的内容。该内容应该和从句子中取（start\_char, end\_char）之间的子串得到的结果一致。
-\item POS [string]: 该词的词性。
-\item num\_left\_links [int]: 从该词出发指向左方向的链接个数。
-\item num\_right\_links [int]: 从该词出发指向右方向的链接个数。
-\item linkL0 [node]: 指向表示从该词出发指向左方向的链接的特征节点
-\item linkL(1,2,3,...) [node]: 指向表示从该词出发指向左方向的链接的特征节点（如果从该词出发指向左方向的链接个数超过1）
-\item linkR0 [node]: 指向表示从该词出发指向右方向的链接的特征节点
-\item linkR(1,2,3,...) [node]: 指向表示从该词出发指向右方向的链接的特征节点（如果从该词出发指向左方向的链接个数超过1）
+\item 程序：将"Atom C 的真伪值为何"(”What is the truth value of Atom C”) 转换为一个句子，一般会从多种惯用语表达方式之中取一种。例如，智能体绝不应这么问："猫吃老鼠的真伪值为何？"(”What is the truth value of cats eating mice?”)，取而代之，应这么问："猫吃老鼠吗？"(”Do cats eat mice?”)；也不应这么说："猪很笨的真伪值为何？"(”What is the truth value of pigs being stupid”)，取而代之，应这么说："猪很笨吗？"(”Are pigs stupid?”)
 \end{itemize}
 
-类似地，链语法分析结构中的每个链接也被表示成一个特征节点，其中该节点包含以下特征：
 
+\item 特殊疑问句 (Wh-Question)
 \begin{itemize}
-\item LAB [string]: 该链接的名称
-\item F\_L[node]: 指向表示该链接左边的词的节点
-\item F\_R[node]: 指向表示该链接右边的词的节点
-\end{itemize}
-
-\begin{figure}
-
-\begin{centering}
-\includegraphics[width=12cm]{figures/featureStructure.png} 
-\par\end{centering}
-
-\caption{初始特征结构图\label{fig:featureStructure}}
-
-
-\end{figure}
-
-不难发现，RelEx中的使用特征结构图非常复杂，为了能更形象地理解特征结构图，本文截取了上述例句的特征结构图的部分来进一步解释（参见图\ref{fig:featureStructure}）。
- 
-  图\ref{fig:featureStructure}中，带\$的节点可以表示代表句子中的某个词的特征节点，通过特征str指向词的内容；也可以表示代表某个链接的特征节点，通过特征LAB指向链接名称。从上图我们可以看出，“cat”和“snake”通过链接Ss相连。例句中的第二个个词节点的特征str表示该词的内容“cat”，特征NEXT指向表示下一个词的特征节点（即str为“chased”的节点），特征F\_L表示该词是链接“Ss”的左右的词。“LinkR0”表示它指向的链接Ss是从该词“cat”出发指向右边的链接。以此类推，不难从上图中找出例句中第三个词节点的一系列相关特征。
-
-\noindent {\bf 步骤2： 执行包含一系列句子算法的句子算法应用器（Sentence Algorithm Applier），对步骤1中得到的特征结构图进行相应的改写操作。}
-
-句子算法应用器从句子算法的定义文件中导入一系列的句子算法，句子算法的执行顺序必须按照定义文件中句子算法的排序。当一个句子算法被执行时，RelEx不断迭代遍历特征结构图中的每一个特征节点，对每个节点都尝试执行该句子算法。句子算法的执行会导致特征结构图的修改，因此它们的操作顺序是很重要的。例如，假如前面的句子算法执行后，特征结构中的所有特征节点的词性（POS）特征都被删除，那么用于处理含有POS特征节点的句子算法将无法被执行。
-
-所有的句子算法都带有一个特定的标记（可以理解成该句子算法的名称），当某个句子算法被成功执行后，该算法会在被成功执行该算法的节点上添加一个特征SIG，并将其赋值为该句子算法名称。被句子算法添加的一个最重要的特征是指向表示词的特征节点的ref，RelEx使用ref特征来输出最后的关系集合。
-
-除了复杂的特征结构，RelEx的另一个核心部分是前文一直提到的句子算法。RelEx使用的句子算法也是很复杂的，可分为抽象的句子算法和需要实例化的句子算法。我们这里选择一个用的最广泛的通用句子算法TemplateActionAlg来进一步阐述。一个TemplateActionAlg实例能接受文本输入，第一行表示该实例的名称（不可重复），接下来是一个用于匹配的模板路径集合（Template Paths和行为路径集合（Action Paths），之间用“=”隔开。对于模板路径\textless x, y, z\textgreater ，表示目标值按照\textless x, y, z\textgreater 这样的路径来解析。对于操作路径\textless x, y, z\textgreater ，表示目标值按照\textless x, y, z\textgreater 这样的路径被赋值。例如，在如下的被实例化的TemplateActionAlg的句子算法中，
-
-\begin{verbatim}
-#TemplateActionAlg
-SPECIAL-ADJ
-; Used for "easy to read." 
-; The B links back to the adjective. But it should really be
-; interpretted as linking back to the subject of the adjective
-<LAB> = \B\.*|\BW\.*
-<F_L POS> = adj
-=
-<F_R obj> = %
-<F_R obj> = <F_L subj>
-<F_L ADJ-OBJ-FLAG> = T
-\end{verbatim}
-
-在该句子算法中，模板就是：
-
-\begin{verbatim}
-<LAB> = \B\.*|\BW\.*
-<F_L POS> = adj
-\end{verbatim}
-
-不难看出，第一行表示用于匹配那些表示链接名称B或者BW的特征节点，句子算法的表示使用了正则表达式，意味着，只要链接名称以B或者BW的特征节点都满足。除此之外，要想上面的句子算法能被执行，还要满足第二行，即该特征节点表示的链接左边的词必须是一个形容词。
-
-如果上面的两条模板都匹配成功，那么下面的操作将会被执行：
-
-\begin{verbatim}
-<F_R obj> = %
-<F_R obj> = <F_L subj>
-<F_L ADJ-OBJ-FLAG> = T
-\end{verbatim}
-
-这些操作可被解释如下：第一行的操作表示该链接的右边的词所在的特征节点的obj特征会被清空。清空后，紧接着将该链接左边的词所在的特征节点的sub特征值赋给它。最后，将该链接的左边的词所在的特征节点的ADJ-OBJ-FLAG特征值设为T（真）。
-
-我们接着用上面的例句“The cat chased a snake.”，接下来两个图是图\ref{fig:revisedFeatureStructure}的节选特征结构图，更直观地解释了，通过执行相关的句子算法后，被修改的结构特征图。  
-\begin{figure}
-\begin{centering}
-\includegraphics[width=12cm]{figures/revisedFeatureStructure.png} 
-\par\end{centering}
-
-\caption{修改过的特征结构图\label{fig:revisedFeatureStructure}}
-\end{figure}
-
-
-图\ref{fig:revisedFeatureStructure}中虚线部分是执行了下面的句子算法后特征结构图被修改的部分：
-
-\begin{verbatim}
-#TemplateActionAlg
-BASIC_REF
-<str> = $string
-=
-<ref name> = <str>
-\end{verbatim}
-
-根据上面的句子算法，当模板“<str> = \$string”被匹配时，会执行操作“<ref name>=<str>”，也就是，把该词的内容赋值给通过路径<ref, name>找到的节点。
-
-\begin{figure}
-\begin{centering}
-\includegraphics[width=12cm]{figures/revisedFeatureStructure_1.png} 
-\par\end{centering}
-
-\caption{修改过的特征结构图\label{fig:revisedFeatureStructure_1}}
-\end{figure}
-
-图\ref{fig:revisedFeatureStructure_1}中，同样地，虚线部分表示执行相应的句子算法后特征结构图被修改的部分。
-
-
-XXXXX
-
-The dashed parts of the above graph show the executions of the following sentence algorithms in order:
-
-\begin{verbatim}
-#TemplateActionAlg
-STANDARD_SUBJ
-<LAB> = \S\.*|\SX\.*|\Mg\.*|\MX\.*
-<LAB> != \MX.[rj]\.*
-<LAB> != MX|MXs|MXp
-=
-<IS_SUBJ_LINK> = T
-
-\noindent If we found the subject link, then create the subj dependency.
-#TemplateActionAlg
-MAKE_STANDARD_SUBJ
-<IS_SUBJ_LINK> = T
-<F_L conj> = %
-=
-<F_R subj> += <F_L ref>
-\end{verbatim}
-
-The first sentence algorithm, when it finds the node whose "LAB" satisfies the regular expression \verb§\S\.*|\SX\.*|\Mg\.*|\MX\.*§ (which is the case for the uppermost feature node, as its "LAB" is $Ss$), it will generate a new feature IS\_SUBJ\_LINK and set the value as "T" (Truth).  IS\_SUBJ\_LINK is a temporary feature, which will be used in the second sentence algorithm listed above. Similarly, after applying the first sentence algorithm, the uppermost feature node can apply the second sentence algorithm, as it matches the templates of the second algorithm -- so it will execute the action "\textless F\_R subj\textgreater += \textless F\_L ref\textgreater, which means it will append the path target of \textless F\_L ref\textgreater to the value of the feature node that is achieved by the path \textless F\_R subj\textgreater, which is shown by the bottom dash arrow in the above graph. Note that the action operator "+=" means Append -- so the algorithm appends the path target to the feature node's value.
-
-XXX
-
-
-\noindent {\bf 步骤3： 遍历最后得到的特征结构图，输出最终的RelEx关系集合。}
-
-XXX
-The node representing the left-wall (see \ref{sec:linkGrammar}) is conveniently also used to collect pointers to the nodes representing RelEx's final representation. The head feature points to the target(s) of the ref feature from the main clause(s) of the sentence and all subclauses. The background feature points to other relationships, such as those derived from adjective and adverb modification, which don't show in the sample sentence. The features used to generate the final representation may be thought of as a subset of the entire feature structure, which can be extracted with a feature name filter while traversing the FeatureNodes(feature structure) representing the words in the sentence. For each one, it follows the ref link, then follows subsequent links to build up a dependency relation representation. 
-
-Regarding the above sample sentence "The cat chased a snake.", after filtering the temporary features, it generates the following final feature structure, which can be easily traversed to generate the final RelEx dependency relationships.
-
-\includegraphics[width=12cm]{figures/finalFeatureStructure.png}
-
-\noindent From FeatureNodes representing referents (The word properties we use are listed in Appendix \ref{app:XX}):
-\begin{itemize}
-\item name: points to a string value for the name of the refent.
-\item pos: points to a string value for the Part Of Speech of the refent.
-\item tense: if the referent is a verb/event, points to a string value representing a tense
-\item definite-FLAG: if the referent is a noun, points to a string with value ``T'' iff the noun is restricted with quantification definite determiner, such as "the" "it".
-\item noun\_number: if the referent is a noun/thing, points to a string value representing a noun number
-\item links: points to a a feature node, with features representing the dependency relations in which this referent is the first argument.
-\end{itemize}
-
-\noindent From FeatureNodes representing a collection of links (The dependency relation types are listed in Appendix \ref{app:XX}):
-\begin{itemize}
-\item \_subj: points to the second argument of a \_subj relation. 
-\item \_obj: points to the second argument of a \_obj relation.
-\end{itemize}
-
-XXX
-
-当所有的句子算法都被遍历过后，会得到一个精简的用于生成RelEx关系集合的特征结构图。
-
-\begin{figure}
-\begin{centering}
-\includegraphics[width=12cm]{figures/finalFeatureStructure.png} 
-\par\end{centering}
-
-\caption{最终特征结构图\label{fig:finalFeatureStructure}}
-
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{RelEx关系的形式化}{RelEx Relationship Formalization}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-RelEx relationships reflect the semantic relationships that connect pairs of words or phrases, such as subject, object, modifier, possessive relations, etc. Thus, for example, in the sentence "John threw the ball", "John" is the subject who is doing the throwing, and "the ball" is the object being thrown. Besides that, RelEx also tags individual words in a sentence with many different possible properties or features, such as tense, part of speech, number, etc. To make it easier to explain here, we use BNF (Backus Normal Form or Backus Naur Form)  to formalize the grammar of RelEx relationships as follows. 
-
- {\tt\begin{scriptsize}\begin{lstlisting}
-<RelEx-rel>::== <dependency-rel> | <property-rel>
-<dependency-rel>::== <dependency-type> "(" <word-instance> ", " <word-instance>")"
-<property-rel> ::== <property-type> "(" <word-instance> ", "<property-value> ")"
-<word-instance> ::== <word> <instance> | <word>
-  \end{lstlisting}\end{scriptsize}}
-
-This formal representation can be interpreted as,
-
-\begin{itemize}
-\item A RelEx-rel (RelEx relationship) is either a dependency relationship, which shows the RelEx semantic relationship between two different words;
-  or a property relationship, which specify the property of the word in the context of the sentence. 
-\item A dependency-rel (dependency relationship, also know as binary relations) consists of the dependency relation type, followed by a pair of word or phrase instances. For more details, the dependency relation types are listed in Appendix \ref{app:XX}
-\item A property-rel (properties, or features) consists of the property name, followed by a word and the value of the property or feature for the word. For more references, the properties we use are listed in Appendix \ref{app:XX}
-\item A word-instance is either a word, or a word with an integer instance number (the latter being useful if  there are repetitive words in a sentence). 
-\end{itemize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{基于涉身的指代消解}{Standard and Embodiment-Based Anaphor Resolution}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-RelEx contains code carrying out anaphor resolution using  the classical Hobbs algorithm\cite{Hobbs1978}. Basically, when a pronoun (it, he, she, they and so on) is identified in a sentence, the Hobbs algorithm searches through recent sentences to find the nouns that fit this pronoun according to number, gender and other characteristics. The Hobbs algorithm is used to create a ranking of candidate nouns, ordered by recency.
-
-An alternate anaphor resolution algorithm has recently been implemented in the OpenCog Atomspace, utilizing a similar logic but based on a more flexible representation that is capable of incorporating semantic linkages as well.   As an example of the value of this more general approach to anaphor resolution, consider an application pursued in 2009, in which an OpenCog controlled agent lives in a world with many objects, each one with their own characteristics.   This example is depicted in the video available at \url{https://www.youtube.com/watch?v=ii-qdubNsx0}, and was carried out using an earlier version of the current Atomspace-based anaphor resolution system.
-
-For example, in such a game world we can have multiple balls, with varying colors and sizes. We represent this in the OpenCog Atomspace via using multiple nodes: a single ConceptNode to represent the concept "ball", a WordNode associated with the word "ball", and numerous ConceptNodes representing particular balls.   There may of course also be ConceptNodes representing ball-related ideas not summarized in any natural language word, e.g. "big fat squishy balls," "balls that can usefully be hit with a bat", etc.
-
-As the agent interacts with the world, it acquires information about the objects it finds, through perceptions.  The perceptions associated with a given object are stored as other nodes linked to the node representing the specific object instance. All this information is represented in the Atomspace using RelEx2Logic (exemplified in the next section).
-
-When the user says, e.g., "Grab the red ball", the agent needs to figure out which specific ball the user is referring to -- i.e. it needs to invoke the Reference Resolution (RR) process. RR uses the information in the sentence to select instances and also a few heuristic rules.  Broadly speaking, Reference Resolution maps nouns in the user's sentences to actual objects in the virtual world, based on world-knowledge obtained by the agent through perceptions.
-
-In this example, first the brain selects the ConceptNodes related to the word "ball". Then it examines all individual instances associated with these concepts, using the determiners in the sentence along with other appropriate restrictions (in this example the determiner is the adjective "red"; and since the verb is "grab" it also looks for objects that can be fetched). If it finds more than one "fetchable red ball", an heuristic is used to select one (in this case, it chooses the nearest instance).
-
-The agent also needs to map pronouns in the sentences to actual objects in the virtual world. For example, if the user says "I like the red ball. Grab it," the agent must map the pronoun "it" to a specific red ball. This process is done in two stages: first using anaphor resolution to associate the pronoun "it" with the previously heard noun "ball"; then using reference resolution to associate the noun "ball" with the actual object.  
-
-In this context, we can improve the Hobbs algorithm results by using the agent's world-knowledge to help choose the best candidate noun. Suppose the agent heard the sentences:
-
-\begin{verbatim}
-"The ball is red."
-"The stick is brown."
-\end{verbatim}
-
-\noindent and then it receives a third sentence
-
-\begin{verbatim}
-"Grab it.".
-\end{verbatim}
-
-
-XXXXXX
-指代解析器将构建一个列表，此列表包含针对第三个句子中代词“it”的两个选项：ball和stick。如果stick是最近使用的名词，那么正如Hobbs建议的那样，代理将抓取stick，而不是ball。
-与此类似，如果代理的历史包含
-"From here I can see a tree and a ball."
-"Grab it."
-，那么Hobbs的算法按顺序返回名词tree和ball作为候选。但是如果使用我们的综合指代消解（引用解析）处理，代理将推断不能抓取tree，所以仅选择ball。
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{RelEx2Logic：逻辑关系抽取}{RelEx2Logic: Translating Linguistic Dependency Relations into Logical Relations}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-现在解释我们的自然语言理解系统中最后的纯语言学阶段，这称为RelEx2Logic。RelEx2Logic是我们本论题所做工作的一个关键组成部分，用于将RelEx生成的句法-语义语言分析结果转换成PLN和其它OpenCog认知组件可以使用的逻辑表示，从而使得我们的自然语言理解管道可以与逻辑推理系统（例如PLN）、控制系统（例如OpenPsi）和OpenCog的其它组件进行有效交互。
-
-\subsection{RelEx2Logic}{RelEx2Logic}
-
-自然语言允许内在含义相同的内容存在许多不同的表示。要想用OpenCog AtomSpace表示格式来表达自然语言语句的含义，必须面对这个事实：可以有许多语句不同但是语义等同的方法来表示一个简单的句子。RelEx2Logic系统的目标是以尽可能简单的方式将RelEx输出映射到PLN可以理解和推理的AtomSpace表示，生成可以获取相关表达所包含的大量含义的精确表示。RelEx2Logic不会试图解析RelEx输出中所有的语义歧义，而是努力解析为了生成精确的原子（Atom）结构（这些原子结构较易进行处理而获得有用的推断）所必须解析的那些歧义。
-
-从操作上讲，RelEx2Logic的核心理念是通过应用一系列简单的重写规则以及较复杂的后处理规则（处理复杂句子和问题需要这些后处理规则，例如进行概念实例区分）把RelEx关系映射到语义解释（例如OpenCog AtomSpace表示）。
-每个核心重写规则的输入是句法分析图中满足特定约束的子图，输出是一个原子（Atom）超图。在实践中，需要的规则通常采用成对标记(G,A)的形式，其中：
-
-\begin{itemize}
-\item $G$是一个图，其节点是单词或变量，其边是RelEx关系类型。
-\item  $A$是一个超图，其节点是单词、变量或特殊的语言学节点（根据一个小型词汇表绘制），其超图边是OpenCog原子（Atom）类型（例如InheritanceLink和EvaluationLink）。
-\item $G$和$A$中的变量列表必须相同。
-\end{itemize}
-
-我们把符合这种说明的规则称为“简单映射规则”。
-
-对于处理人类语言真正需要的简单映射规则来讲，满足约束条件{\bf $G$中的每个边映射到$A$中的单个超图边}。从数学上讲，这个约束条件的后半部分意味着每个重写规则各自都是一个图同态\cite{Voloshin2009}，这进一步意味着一起应用的一系列重写规则也是一个图同态。
-
-这种规则的一个简单例子是这样一个(G,A)，其中
-$$
-G = \{ S_*(v_1,v_2), \ O_*(v_1, v_3) \}
-$$
-
-$$
-A = (EvaluationLink \ v_1 \ v_2 \ v_3)
-$$
-
-这把主语为$v_2$，宾语为$v_3$的动词$v_1$映射到一个v1为谓语，($v_2$, $v_3$)为参数列表的OpenCog EvaluationLink。例如，$S_*$ 指任何$S$的链路分析器子类型。当然，大部分规则都比这个例子复杂。
-
-在具体实现中，由于自然语言的复杂性，仍然有一些这种形式的RelEx2Logic规则无法处理的语言学信息。所以，为了获取句子正确的逻辑表示而不影响其含义，我们向RelEx2Logic框架添加一个后处理步骤，这个步骤主要包含下列部分：
-
-\begin{itemize}
-\item 处理OpenCog Atomspace中的实例。根据输入的自然语言的含义，将通用概念或谓语与特定概念或谓语进行区分。
-\item 估计模糊谓语或概念的概率。例如，如果句子是“Maybe the cat chased a snake.”，那么我们需要给最后的逻辑表示指定相较于句子“the cat chased a snake.”较低的概率。
-\item 正确处理量词。众所周知，自然语言中的量词十分复杂。不可能创建一个通用规则而以通用方式获取所有量词的正确抽象表示。而且，我们想要使得我们的规则更加通用，所以我们不想为每个量词使用单独的规则，这需要以简化的方式编写量词规则，而不是极力利用后处理方法允许的更大灵活性。
-\end{itemize}
-
-下面将解释后处理的更多细节。
-
-将我们当前的简单映射规则应用于上述的例句“The cat chased a snake.”，会生成以下基本输出：
-
- {\tt\begin{small}\begin{lstlisting}
-EvaluationLink 
-      PredicateNode chase@3453432
-      ListLink
-            ConceptNode cat@1243546464
-            ConceptNode snake@564636322
-       
-\end{lstlisting}\end{small}}
-
-这些“基本输出”仅仅是这个句子解释后Atomspace中所创建的完整原子（Atom）集合的一小部分。一个更完整的列表是
-
-{\tt\begin{small}\begin{lstlisting}
-((ReferenceLink
-   (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
-   (SetLink
-      (ImplicationLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
-         (PredicateNode "chase" (ptv 1 0 1))
-      )
-      (InheritanceLink
-         (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
-         (ConceptNode "cat" (ptv 1 0 1))
-      )
-      (InheritanceLink
-         (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
-         (ConceptNode "snake" (ptv 1 0 1))
-      )
-      (EvaluationLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
-         (ListLink
-            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
-            (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
-         )
-      )
-      (InheritanceLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
-         (ConceptNode "past")
-      )
-      (InheritanceLink
-         (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
-         (ConceptNode "DeclarativeSpeechAct")
-      )
-      (EvaluationLink
-         (PredicateNode "definite")
-         (ListLink
-            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
-         )
-      )
-   )
-)
-\end{lstlisting}\end{small}}
-
-本节最后会给出更多映射例子以及所涉及原子（Atom）类型的解释。
-
-如果链路分析器给出多个分析选项，RelEx2Logic规则将为每个分析选项提供一个逻辑解释。目前已经实现基于语料库进行统计启发来排列多个分析的可信性，当然这并不完美。一些情况中，会向OpenCog提供多个逻辑输出选项，并且必须基于更高层次的上下文推断在这些选项之间进行选择，这是当前研究的一个难题和主题。
-
-
-\subsection{RelEx2Logic所使用的规则}{RelEx2Logic Rules}
-
-为了将RelEx关系转换成抽象的OpenCog AtomSpace逻辑表示，我们引入一系列RelEx2Logic规则。RelEx2Logic规则（以前称为Link2Atom和Syn2Sem规则\cite{Lian2012}）是一系列人工编码的规则，用于把RelEx的输出映射到OpenCog原子（Atom）表示的形式，这种表示更适合于由PLN和其它工具进行自动化推断。本节总结性地阐述规则集合并给出一些规则例子。可以在\url{opencog/nlp/scm/relex-to-logic.scm}在线找到所有规则。
-
-RelEx2Logic规则有多个目标：
-
-\begin{itemize}
-\item 作为运行的OpenCog自然语言处理系统的一部分，其潜在用途包括文本分析和自然语言对话。
-\item 作为概念研究工具，帮助我们理解句法-语义输出（例如RelEx生成的句法-语义输出）映射到更抽象的逻辑关系（例如PLN采用的逻辑关系）的问题。
-\item 作为工具来帮助生成成对（链路分析和抽象的PLN形式的原子）的语料库，然后可以自动分析此语料库来产生语言理解和生成规则（更多信息请参见Syn2Sem）。
-\end{itemize}
-
-{\bf 示例规则（Tense规则）}
-
-为了方便阐述剩下的内容，我们从一个非常简单的RelEx2Logic规则例子开始。当然，大部分规则比这个例子复杂。此处，为了方便人理解，采用RelEx SFF格式（RelEx许多输出格式中的一种）来说明规则输入。
-
-为了用便于阅读的方式说明RelEx2Logic规则，我们在此使用类似以下的格式：
-
-\begin{verbatim}
-规则输入：
-tense(W, Tense)
-pos(W, verb)
-规则输出：
-(tense-rule W (get_instance_name W word_index sentence_index) Tense)
-\end{verbatim}
-
-在OpenCog中运行此规则，规则的输出将启动一个帮助器函数（在Scheme中编码）。下面会列出这个帮助器函数。然后帮助器函数将最终生成最后的OpenCog Atomspace表示。
-
-如同上一子节中所述，在我们真实的软件实现中，我们使用诸如(ImplicationLink $P_G$ $P_A$)这样的格式来表示RelEx2Logic规则，从而使得RelEx2Logic与OpenCog系统的其余组件保持一致。例如，这种格式意味着规则可以由OpenCog模式匹配器来执行（OpenCog模式匹配器用来在OpenCog Atomspace中搜索原子的特定模式、排列或“模板”）。所以上述简单的RelEx2Logic规则在当前系统中将被如下表示：
-
-\begin{verbatim}
-ImplicationLink
-     EvaluationLink
-           PredicateNode "tense"
-           ListLink
-                WordNode W
-                ConceptNode Tense
-     ExecutionOutputLink
-              GroundedSchemNode "r2l/tense-rule.scm"
-              ListLink
-                   WordNode W
-                   ConceptNode Tense
-                   NumberNode word_index
-                   NumberNode sentence_index
-
-\end{verbatim}
-
-对应于上述RelEx2Logic规则的提供后处理的相应帮助器函数为：
-
-\begin{verbatim}
-帮助器函数：
-(define (tense-rule verb instance tense)
-   (define new_predicate (PredicateNode instance))
-   (define verb_node (PredicateNode verb)) 
-   (define tense_node (ConceptNode tense))
-   (list
-      (InheritanceLink new_predicate verb_node)
-      (InheritanceLink new_predicate tense_node)
-   )
-)
-
-例子：
-tense(chase, Past)
-pos(chase, verb)
-==>
-(tense-rule "chase" "chase@3453432" "Past")
-==>
-(InheritanceLink "chase@3453432" chase)
-(InheritanceLink "chase@3453432" Past)
-
-\end{verbatim}
-
-注意：这个例子使用了额外的帮助器函数$get\_instance\_name$。
-
-下面解释这个帮助器函数。本质上，这个函数只是为概念的实例选择一个在给出的AtomSpace中唯一的名字（例如，它可能为$chair$的实例选择名字$chair77$）。如果单词W在句子中是第K次出现，那么单词序号为K。句子序号是该句子区别于其它句子的一个标识符。
-
-\subsection{RelEx2Logic的后处理过程}{PostProcessing}
-
-RelEx2Logic最初的设计意图是如同上述例子那样通过直接的逻辑含义进行所有需要的处理。但是随着工作的进展，我们认识到这样做在许多情况中会非常麻烦，同时我们发现引入一些更精巧的后处理方法是最直接的解决办法。此处我们阐述这些后处理规则的基本类型。
-
-现阶段，我们已经实现的后处理规则包括下列类别：
-
-\begin{itemize}
-\item 量词：为带有量词的单词引入变量并通过使用相应的链路限定变量的范围，同时给链路指定一些真值。
-\item 模糊情态动词：为模糊情态动词发生过修改的谓语指定一些置信下限。例如“Maybe dogs like fish.”，这表示“dogs like fish”的置信度不是很高，所以我们把“he is a genius.”的置信度从默认的0.99调整为0.5。
-\item 冗余实例清理：为可以从句法分析知道的通用概念清理实例号。例如“Dogs like meat.”，没有为dogs和meat指定任何明确的冠词、修饰语或代词，并且也没有意指任何其它概念，所以我们认为dogs和meat指通用概念dog和meat，而不是某些特定概念（特定概念需要指定实例号）。
-\end{itemize}
-
-下面更详细地阐述我们怎样为上面列出的每种类别实现后处理。
-
-{\bf 量词：}在前面的阶段，我们使用量词记号来标记需要进行后处理的量词。例如“All dogs like meat.”，在应用量词RelEx2Logic规则期间创建“allmarker”并生成下列结果。
-
-\begin{verbatim}
-           EvaluationLink
-                 PredicateNode "allmarker"
-                  ListLink
-                         ConceptNode "dog@13456"
-\end{verbatim}
-
-本例中，在后处理阶段，我们为量词“all”引入“ForAllLink”（它代表OpenCog Atomspace中的通用量化）和变量节点“\$X”来限定范围包含所有含有$dog@13456$的链路。然后，每个$dog@13456$都将被替换为VariableNode “\$X”。“allmarker”将在后处理后被删除。所以，在后处理结束后，将创建：
-
-\begin{verbatim}
-           ForAllLink
-                 VariableNode "$X"
-                 ImplicationLink 
-                        InheritanceLink "$X" noun_instance
-                        AndLink
-                            ** links involving "dog@13456" **
-\end{verbatim}
-
-{\bf 模糊情态动词：}模糊情态动词后处理类似于量词后处理，我们在应用相关的RelEx2Logic规则期间使用相应的记号来标记模糊情态动词。例如，对于句子“Maybe dogs like fish.”，在应用Maybe RelEx2Logic规则后生成下列表示：
-
-\begin{verbatim}
-           EvaluationLink
-                  PredicateNode "maybemarker"
-                  ListLink
-                        PredicateNode "like@9768"
-\end{verbatim}
-
-然后，用于后处理的$maybemarker$帮助器函数将查找所有包含“like@9768”的根链路，并将置信度从默认的0.99调整为0.5。
-
-{\bf 冗余实例清理：}因为不想在句子转换成抽象语义表示期间丢失任何来自句法层面的信息，我们在后处理阶段设立“实例清理”步骤。在当前方法中，我们为句子中每个非组合单词创建一个单独的实例节点。但是，在很多情况中，这会生成许多不必要的实例节点。例如，在句子“Dogs like yummy meat.”中，无需创建诸如$yummy@1765$和$dog@2593$的实例节点，因为这个句子没有指定特定的“dog”和特殊的“yummy”。所以只创建类似以下的链路就已足够：
-
-\begin{verbatim}
-         InheritanceLink 
-                  ConceptNode   "meat@3976" 
-                  ConceptNode   "yummy"
-
-         EvaluationLink 
-                  PredicateNode "like"
-                  ListLink
-                       ConceptNode "dog"
-                       ConceptNode "meat@3976"
-\end{verbatim}
-
-但是，一个诸如“meat@3976”的实例节点更加有用。因为在这个句子中，它仅陈述“Dogs like ’YUMMY’ meat”，而并非一般的“meat”。
-
-要想知道哪些单词真正需要实例节点，必须在一定程度上理解句子的结构。当前，我们使用一些常识性的规则开始这个过程。确切地讲，如果一个单词没有被修改（名词被形容词修改或者动词被副词修改），或者没有被定冠词限定，或者使用代词，那么此单词的实例节点为“冗余”。清理实例的后处理进行以下工作：
-
-\begin{itemize}
-\item 在Atomspace中（或者仅在RelEx2Logic规则的本地输出中）检查是否存在任何此名字的原子为“冗余”。
-\item 如果找到冗余原子，那么将其删除并将它的链路移至其父概念。
-\end{itemize}
-%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{实验结果}{Examples and Analysis}  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-本节中给出更多例子来解释我们的语言理解的理解管道，包含前面阐述的所有部分：Link Parser、RelEx和RelEx2Logic。在后面的章节中，这些特定例子用来阐述PLN对语言理解管道输出的推断。
-
-XXX添加一些解释和这些句子的RelEx2Logic输出（以及相关的原子类型解释？）XXX
-
-\noindent {\bf 例子1: }Socrates is a man.
-
-\includegraphics[width=12cm]{figures/Socrates_1.png}
-
-\begin{verbatim}
-依赖关系:
-
-    _obj(be, man)
-    _subj(be, Socrates)
-
-属性:
-
-    tense(be, present)
-    subscript-TAG(be, .v)
-    pos(be, verb)
-    pos(., punctuation)
-    subscript-TAG(man, .n)
-    pos(man, noun)
-    noun_number(man, singular)
-    definite-FLAG(Socrates, T)
-    pos(Socrates, noun)
-    noun_number(Socrates, singular)
-    pos(a, det)
-
-\end{verbatim}
-
-\noindent {\bf 例子2: } Men breathe air.
-
-\includegraphics[width=12cm]{figures/Socrates_2.png}
-
-\begin{verbatim}
-
-依赖关系:
-
-    _obj(breathe, air)
-    _subj(breathe, man)
-
-属性:
-
-    tense(breathe, present)
-    subscript-TAG(breathe, .v)
-    pos(breathe, verb)
-    pos(., punctuation)
-    subscript-TAG(air, .n-u)
-    pos(air, noun)
-    noun_number(air, uncountable)
-    subscript-TAG(man, .p)
-    pos(man, noun)
-    noun_number(man, plural)
-
-\end{verbatim}
-
-\noindent {\bf 例子3: }  Socrates breathes air.
-
-\includegraphics[width=12cm]{figures/Socrates_3.png}
-
-\begin{verbatim}
-
-依赖关系:
-
-    _obj(breathe, air)
-    _subj(breathe, Socrates)
-
-属性:
-
-    tense(breathe, present)
-    subscript-TAG(breathe, .v)
-    pos(breathe, verb)
-    pos(., punctuation)
-    subscript-TAG(air, .n-u)
-    pos(air, noun)
-    noun_number(air, uncountable)
-    definite-FLAG(Socrates, T)
-    pos(Socrates, noun)
-    noun_number(Socrates, singular)
-
-\end{verbatim}
-
-\noindent {\bf 例子4: }  I think Socrates is a man.
-
-\includegraphics[width=12cm]{figures/Socrates_4.png}
-
-\begin{verbatim}
-
-依赖关系:
-
-    _obj(be, man)
-    _subj(be, Socrates)
-    _rep(think, be)
-    _subj(think, I)
-
-属性:
-
-    definite-FLAG(Socrates, T)
-    pos(Socrates, noun)
-    noun_number(Socrates, singular)
-    pos(., punctuation)
-    subscript-TAG(man, .n)
-    pos(man, noun)
-    noun_number(man, singular)
-    pos(a, det)
-    tense(be, present)
-    HYP(be, T)
-    subscript-TAG(be, .v)
-    pos(be, verb)
-    tense(think, present)
-    subscript-TAG(think, .v)
-    pos(think, verb)
-    pronoun-FLAG(I, T)
-    gender(I, person)
-    definite-FLAG(I, T)
-    subscript-TAG(I, .p)
-    pos(I, noun)
-    noun_number(I, singular)
-
-\end{verbatim}
-
-\noindent {\bf 例子5: }  Bob thinks Socrates is a woman.
-
-\includegraphics[width=12cm]{figures/Socrates_5.png}
-
-\begin{verbatim}
-
-依赖关系:
-
-    _obj(be, woman)
-    _subj(be, Socrates)
-    _rep(think, be)
-    _subj(think, Bob)
-
-属性:
-
-    definite-FLAG(Socrates, T)
-    pos(Socrates, noun)
-    noun_number(Socrates, singular)
-    pos(., punctuation)
-    subscript-TAG(woman, .n)
-    pos(woman, noun)
-    noun_number(woman, singular)
-    pos(a, det)
-    tense(be, present)
-    HYP(be, T)
-    subscript-TAG(be, .v)
-    pos(be, verb)
-    tense(think, present)
-    subscript-TAG(think, .v)
-    pos(think, verb)
-    gender(Bob, masculine)
-    definite-FLAG(Bob, T)
-    person-FLAG(Bob, T)
-    subscript-TAG(Bob, .m)
-    pos(Bob, noun)
-    noun_number(Bob, singular)
-
-\end{verbatim}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{比较级的处理：实例分析}{Comparative: A Case Study}  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-比较级提供了从表层形式映射到我们设计和实现的逻辑表示的有趣例子。
-
-关于正确处理英语和其它语言中的比较级，理论上的语言学从来没有达成一致。一些理论家假定一种省略理论，建议从句子的表层结构得出比较级语法，忽略深层结构中存在的某些单词\cite{lechner2004ellipsis} \cite{Bhatt2011}。另外一些理论家假定一种移动理论\cite{Margaret2013} \cite{Roumyana1995}，这种理论更多地由传统的生成语法启示，假设比较级语法包含一个重新排列深层结构的表层结构。
-
-链路语法框架从根本上回避了这种问题：不管省略理论还是移动理论，都由链路语法词典中的某些对称性表示，但是这些对称性不需要被链路分析器本身显式地识别或使用（虽然这些对称性可以指导人类或AI系统创建链路语法词典）。从目前的经验上讲，链路分析器对比较级的处理相当好，但是相关的词典条目有点混乱并且实际上并不完全对称。这说明两种可能：
-
+\item 例如："谁创造了第一台电脑？"(”Who built the first computer?”)
+\item 相关目标丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为次要的目标。基本语境条件为：
 \begin{enumerate}
-\item 英语比较级的语法“复杂”而混乱，不适用任何可用的理论。并且/或者
-\item 链路语法词典可以在比较级方面进行极大的改进
+\item 智能体或许带有可变因素的 Atom，并且不知道此 Atom 的任何置信满意度，因此欲提问了解。 
+\item 谈话对象或许提及了一特定的概念 C，而 C 有几个层面是智能体知识较不足的；这可轻易被阐述为真伪值疑问句。在此情况下，取悦谈话对象会是主要目标。
 \end{enumerate}
+\item 程序：
+\end{itemize}
 
-我们猜测事实是两者兼而有之。但是请注意，将链路语法作为用于理解复杂句子（包含比较级）的实际管道的一部分而部署时，我们不需要决定这个问题。
 
-我们通过一个例子说明我们的框架如何处理比较级。RelEx2Logic的一个用于比较级的规则，其简短形式如下：
+\item 陈述式是非问答（真伪值疑问句）
+\begin{itemize}
+\item 例如："所以你今天完全是走路去工作吗？"(”So you walked all the way to work today?”)
+\item 相关目标丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件与一般真伪值疑问相同；但若智能体对问题的正确答案相当肯定（虽然并不是完全肯定），采用这个形式较为适当。 
+\item 程序：语意内容为"X 是正确的吗？"(”Is it correct that X?”)，但一般而言会以惯用语的方式表达。
+\end{itemize}
 
- {\tt\begin{small}\begin{lstlisting}
-than(w1, w2)
-_comparative(ad, w)
-==>
 
-TruthValueGreaterThanLink
-    InheritanceLink w1 ad
-    InheritanceLink w2 ad
-\end{lstlisting}\end{small}}
+\item 疑问句形式的衬托型反馈
+\begin{itemize}
+\item 例如："你确定？"(”Are you sure?”)
+\item 相关目标丶语境：在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。基本语境条件，在于谈话对象说了某些事 S，而智能体认为 S 可能有误、或觉得 S 非常令人惊讶。
+\item 程序：语意内容为"你非常肯定 S 吗？"(”Are you highly certain that S?”) 但一般而言会以惯用语的方式表达。
+\end{itemize}
 
-图\ref{fig:comparativeRule}给出了完整形式。
 
-\begin{figure*}
-\begin{centering}
-\includegraphics[width=15cm]{figures/comparativeRule.png}
-\protect\caption{\label{fig:comparativeRule}Full RelEx2Logic rule for parsing one type of comparative sentence.}
-\end{centering}
-\end{figure*}
+\item 开放式问题
+\begin{itemize}
+\item 例如："对于他的前途你有什么看法？"(”What do you think about his prospects?”)
+\item 相关目标丶语境：
+\begin{enumerate}
+\item 基本语境条件，在于智能体欲获得某些话题 C 的更多信息。在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。
+\item 另一种语境情况，为智能体知道谈话对象欲谈论话题 C，因此智能体决定针对 C 发问、或提出与 C 相关的问题。若是这样的情况，取悦谈话对象会是主要目标，而获取知识或新奇感则是其次。 
+\end{enumerate}
+\item 程序：语意内容为"你对 C 有何看法？"(”What do you think about C?”)、"C 的真伪值为何？"(”What is the truth value of C?”)、或"关于 C 你知道些什么？"，但这些疑问会以惯用语的方式表达。
+\end{itemize}
 
-使用这个规则的一个简单例子是：
 
-{\tt\begin{small}\begin{lstlisting}
-Pumpkin is cuter than the white dog.
-==>
-_predadj(cute, Pumpkin)
-than(Pumpkin, dog)
-_comparative(cute, Pumpkin)
-_amod(dog, white)
-==>
-AndLink
-   InheritanceLink dog_11 white
-   InheritanceLink dog_11 dog
-   TruthValueGreaterThanLink
-       InheritanceLink Pumpkin cute
-       InheritanceLink dog_11 cute
-\end{lstlisting}\end{small}}
+\item 附加问句
+\begin{itemize}
+\item 例如："对吧？"(”Right?”)
+\item 相关目标丶语境：这部分的关键语境条件，在于智能体欲对谈话对象发问，而智能体几乎肯定该问题的正确答案 – 但智能体欲确定谈话对象也认同。在此主要的目标，一般为获取知识和新奇感；而取悦谈话对象为其次。 
+\item 程序：此程序为通过确切阐述为连续的问题（"X，那你同意 X 吗？"”X. Do you agree with X?”），提出"你同意 X 吗？"(”Do you agree with X?”) 的问题。以惯用语表达而言，在连续问题中的第二个部分，“X“ 通常会被去除，措辞表达的方式有很多种。
+\end{itemize}
 
-另一方面，为了处理诸如“Amen is more intelligent than insane”这样的句子，我们使用一个不同的规则，这个规则的简短形式如下：
 
-{\tt\begin{small}\begin{lstlisting}
-_predadj(adj1, W)
-than(adj1, adj2)
-_comparative(adj1, W)
-==>
-TruthValueGreaterThanLink
-    InheritanceLink W adj1
-    InheritanceLink W adj2
- \end{lstlisting}\end{small}}
- 
-结果输出如下：
+\item 陈述性特殊疑问句 (Declarative Wh-question)
+\begin{itemize}
+\item 例如："你跟他们说了什么？"(”You told them what?”)
+\item 相关目标丶语境：在此的关键目标，一般为获取知识和新奇感；而取悦谈话对象为其次。引起此等阐述的关键语境，似乎是在 VariableNode 的重要性比问句中的其他字词还要高的情况；因为这类阐述更强调了疑问词。
+\item 程序：这部分的语意内容纯粹只是个疑问句；必须指示微规划系统以陈述性的问句形式来表达疑问。
+\end{itemize}
 
- {\tt\begin{small}\begin{lstlisting}
-_predadj(intelligent, Amen)
-than(intelligent, insane)
-_comparative(intelligent, Amen)
-==>
-TruthValueGreaterThanLink
-     InheritanceLink Amen intelligent
-     InheritanceLink Amen insane
- \end{lstlisting}\end{small}}
+
+\item 选择式问句\footnote{这部分并不包含在 SWBD-DAMSL 中，但这显然是有别于其他的问句形式，值得提出论述}
+\begin{itemize}
+\item 例如："你认为谁最有可能当选：希拉里、杰布•布什还是迈提•毛斯"(”Who do you think is more likely to get elected: Hillary, Jeb Bush or Mighty Mouse?”)
+\item 相关目标丶语境：在此的关键目标为获取知识和新奇感；取悦谈话对象为其次。关键语境在于智能体欲从谈话对象获得某问题的答案，而智能体认为该问题仅有相当少数的可能答案。另一种语境，在于智能体想要的问题答案是以反意的形式（OrLink 或 XORLink）出现在 Atomspace 中。
+\item 程序：语意内容出于"问题：候选回答 1，…，或候选回答 K。"(”Question: Candidate Answer 1, ..., or Candidate Answer k.”) 之形式。这般言辞可直接或以惯用语方式传达。
+\end{itemize}
+
+
+\end{itemize}
+
+
+\subsubsection{陈述}{Statements}
+
+\begin{itemize}
+\item 非意见式陈述
+\begin{itemize}
+\item 例如："猫不冬眠。"(”Cats don’t hibernate.”)
+\item 相关目标丶语境：这部分的关键语境有二：
+\begin{enumerate}
+\item 谈话对象对智能体问了一个非真伪值的疑问句，而智能体欲给予回答。在此情况下，取悦谈话对象的目标相当强烈。
+\item 智能体在其 AttentionalFocus 中有些具高度重要性的 Atom，并想明确地表达出。在此情况下，取悦谈话对象的目标较不那么强烈。若智能体欲获取涉及 Atom 的一般知识，这时对获取知识的目标会有强烈的连结；而如果智能体发现新奇感往往是通过发问这些 Atom、或相似 Atom 而产生，对新奇感的目标则有强烈的连结。
+\end{enumerate}
+\item 程序：将问题中的 Atom 传送至微规划系统进行言语表达即可。
+\end{itemize}
+
+
+\item 意见式陈述
+\begin{itemize}
+\item 例如："我不认为希拉里•克林顿会当选总统。"(”I don’t think Hillary Clinton will be elected President.”) 
+\item 相关目标丶语境：除了牵涉的 Atom 具有较低的置信度，或智能体怀疑谈话对象强烈不认同智能体的真伪值评估之情况，其他情形与"非意见式陈述"相同。
+\item 程序：语意内容为"我认为 X"(“I think X”) 或"我不认为X"(“I don’t think X”)。这般言辞可直接或以惯用语方式传达。
+\end{itemize}
+
+\end{itemize}
+
+\subsubsection{自描述}{Self-Descriptions}
+
+\begin{itemize}
+
+\item 提议、选择、承诺
+\begin{itemize}
+\item 例如："我会考虑的。"(”I’ll think about it”)
+\item 相关目标丶语境：谈话对象要求智能体做某事。智能体必须决定自己是否愿意做这件事。这部分一般目的是取悦谈话对象。
+\item 程序：语意内容为"我会试着 X"(”I will try to do X”)（若智能体不确定是否会成功）、"我会 X"(”I will do X”)（若相当肯定会成功）、"我不想 X"(”I don’t want to do X”)、"我会试着X，但我不确定是否能成功"(”I will try do to X, but am not sure I can succeed”)（若智能体认为成功的机会很低）、"我会想想我是否能够 X"(”I will think about whether I can do X”)、或"我会思考我是否想要 X"(”I will think about whether I want to do X”)。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+
+\item 自言自语
+\begin{itemize}
+\item 例如："嗯…我想知道…"(”Hmmm, well I wonder....”)
+\item 相关目标丶语境：一组 Atom 在智能体的 AttentionalFocus 中产生高度的重要性，并且与当前对话中产生之 Atom 有合理、紧密的关联性。这些 Atom 可代表某陈述句或问句（后者的情况为这组 Atom 具有虚悬不定、无约束的 VariableNode；或者其不具有 VariableNode、但置信度低的情况）。这里的主要目标为取悦谈话对象和求知。 
+\item 程序：语意内容为"我在思考 X"(”I am thinking X”)（针对某陈述）、"我很好奇是否 X"(”I am wondering if X”)（针对置信度低的陈述 X）、"我在想 X"(”I am wondering X”)（针对某非真伪值的疑问，例如某 X 带有虚悬不定的 VariableNode）。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+\end{itemize}
+
+\subsubsection{后设话语}{Meta-Utterances}
+
+\begin{itemize}
+\item 模棱话
+\begin{itemize}
+\item 例如："我不太确定我的背景经历是否足以回答这问题，但…"(”I’m not so sure I have the background to really answer that, but ...”)
+\item 相关目标丶语境：在此的语境条件，在于智能体欲做出陈述，但对该语句仅持有较低的置信度。
+\item 程序：语意内容为"我对接下来要将的话较没有把握，但：S"(”I have relatively low con- fidence in the following statement, but: S”)、或"我对接下来要将的话约有三分的把握，但：S"(”My confidence in the following statement is roughly .3, but: S”)。所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+\item 答复、同意前的保留
+\begin{itemize}
+\item 例如："等等…让我想一下"(”Wait ... give me a minute....”)
+\item 相关目标丶语境：在此的语境条件，在于智能体正为接下来所要说的话做内部处理，而这个程序耗费的时间超出了某"可接受的对话迟滞"参数值（可根据某特定谈话语句之间的平均迟滞时间、或与相同谈话对象其他对谈语句之间的平均迟滞时间、或者其他类似方式的谈话等情况设置之默认值改编）。 
+\item 程序：
+\end{itemize}
+
+
+\item 不理解的信号
+\begin{itemize}
+\item 例如："你在说什么鬼话呀？讨厌的家伙！"(”What in frick’s sake are you talking about, pesky human??!”)
+\item 相关目标丶语境：在此的主要目标为获取知识，取悦谈话对象的动机较弱。语境条件在于谈话对象说了某些智能体认为荒谬的话。另一较不重要的语境条件，在于谈话对象说了某些对智能体而言错误至极的话。
+\item 程序：语意内容为"我不明白你说的 X"(”I don’t understand what you mean by X”)，所有这些言辞都可直接或以惯用语方式表达。
+\end{itemize}
+
+\end{itemize}
+
+\subsubsection{命令句、建议}{Imperatives / Suggestions}
+
+\begin{itemize}
+\item 动作指令
+\begin{itemize}
+\item 例如："告诉我他说了什么！"(”Tell me what he said!”)
+\item 相关目标丶语境：在单纯的对话系统语境中，切题的语境条件在于智能体欲获得某些其高度重视的信息，而这些信息是智能体认为谈话对象所具备的。另一相关语境，在于智能体已向谈话对象询问某特定问题，然而谈话对象的答复似乎不是该问题的正确解答。在某个应用程序中，CogDial 被搭配一个能够执行非言语行为之成体运作，该程序中也有这样的语境；智能体希望谈话对象执行某个动作（因谈话对象做了这个动作会使智能体更完善达成目标），而相信智能体有能力做这个动作，是有原因的。 
+\item 程序：语意内容为"我要你告诉我 X"(”I want you to tell me X”) 或 "我希望你 X"(”I want you to do X”)，这般言辞可明确或以惯用语方式表达。
+\end{itemize}
+
+
+\item 第三人称谈话
+\begin{itemize}
+\item 例如："说真的，鲍勃，你是这么认为的吗？"(”Really, Bob, do you feel that way?”)
+\item 相关目标丶语境：此处的相关目标为取悦谈话对象，完全在于情感上的关系管理。导致这类话语的语境条件有许多种，其中几种可能为： 
+\begin{enumerate}
+\item 谈话对象回答了某问题，其答案看似与多数人、或多数与谈话对象普遍相似的人回答的答案有所分歧。
+\item 智能体问谈话对象一个问题，智能体怀疑谈话对象的回答会与多数人、或大部分与谈话对象普遍相似的人会回答的答案有所分歧。 
+\item 问的问题被判断为"私人"，例如一般亲密的友人或家人才会问的问题。
+\item 做出了有关谈话对象的陈述，就谈话对象的观点来说，是"私人"的陈述。 
+\end{enumerate}
+\item 程序：最好将此视为可穿插到多种其他言语行为之言语现象，而非个别的言语行为。在另一言语行为制造出一组待传入微规划系统的 Atom 后，将会调用"可能插入第三方谈话"的规划器，此采用的准则包含前述的相关语境，根据这些准则，决定是否将谈话对象的名字引入到微规划系统被予以处理的一组 Atom 中（将名字给予此组 Atom，会导致表面生成器最终产生出"第三人称谈话"的例句）。
+
+\end{itemize}
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{智能对话系统的概念模型的一种实现方法}{The Design of Integrative Cognitive Dialogue System}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+XXX介绍本文本文实现的基于上述模型的智能对话系统的框架，并引出下面章节中的自然语言理解和自然语言生成系统。
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{本章小结}{Summary of Accomplishments and Future Work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-本章主要介绍我们的自然语言理解系统中的各个模块的工作原理和实现方法，并深入讨论了该系统如何将英文句子转换成超图表示的逻辑形式，以达到能使自然语言参与到逻辑推理的过程中。该自然语言理解系统已经被应用在游戏角色控制和人形机器人等领域。
-
-该自然语言理解系统使用了一些现有的开源语法分析器，本章也讨论对这些开源工具做出的各种改进，还讨论了我们实现的全新的将依存关系转换成语义逻辑表示的系统RelEx2Logic，总的来说，本章的贡献有：
-
-\begin{itemize}
-\item 改进了链语法分析器的词典，使其能够处理更复杂的语言现象，以及能识别句子的中心词从而改进了链语法对复句的分析能力。
-\item 改进了RelEx使其能处理目前语法分析器难以处理的比较级和量词等复杂的语言现象。
-\item 设计并实现了RelEx2Logic系统，使其能将RelEx输出的依存关系转换成以超图表示的逻辑形式
-\item 设计并实现了RelEx2Logic中所使用的转换规则及相应的规则引擎。
-\end{itemize}
-
-总的来说，本章搭建的自然语言理解系统已经能被用在一些用户定义的实际应用中，但仍然有很多遗留问题有待解决。在接下来的工作中，我们会在我们的自然语言理解系统中引入概率逻辑推理引擎PLN，这样不仅可以通过一些基本常识推理来改进语法分析中的结果，还可用于指导对语法分析器产生的多种结果进行排序，以及用于指导各种歧义消除和指代消解等方面。除此之外，我们还致力通过无监督的机器学习方法从大型文本语料学习相关的语法规则，来替代当前系统中使用的人工编写的规则库，本文会在第\ref{chap:learning}章中对此做更深入的讨论。
-
-
-参考文献：
-1 “Parsing with a Link Grammar”
-2 G. Schneider, ``Learning to Disambiguate Syntactic
-Relations''
-3 frequent subtree mining
-4 word grammar
+XXX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
