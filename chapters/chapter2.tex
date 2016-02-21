@@ -1,12 +1,262 @@
 \chapter{智能会话系统中的知识表示和逻辑推理}{Knowledge Representation and Logic Inference for Cognitive Dialogue System}
 \label{chap:representation}
 
+
+要使计算机能理解并灵活运用人类的自然语言，将自然语言转换成一种能容易通过计算机来操作的知识表示形式是不可忽视的，这种知识表示体系不仅要满足自然语言的复杂特性，使得自然语言处理系统能在自然语言和知识表示之间相互转换，以实现人机之间的自然语言通信。同时，为了构建一个能较好的与人类沟通的智能对话系统，这种知识表示机制还需要能被应用在适当的逻辑推理系统中使其能进行必要的逻辑推理，以生成能被人类理解的智能的对话应答。
+
+本章提出了一种能满足上述要求的基于超图的知识表示体系，阐述了该知识表示体系中的基本操作原理和基本数据类型，并从范畴论角度分析了其被应用在智能对话系统中的理论基础。本章还阐述了能被应用在这种基于超图的知识表示体系上和本文研究的智能对话中使用的逻辑推理系统----概率逻辑网络。
+
+值得一提的是，这里介绍的知识表示体系并不仅仅是适用于自然语言处理和智能对话系统，该知识表示体系目的在于模拟人脑的知识表示方式、记忆空间以及认知过程等等，因此同样适用于其他智能处理模块。本文的研究目标之一也是通过探索智能对话系统来研究实现一个相对智能的人机交互系统。
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{基于超图的知识表示方法}{The Conceptual Model of the Cognitive Dialogue System}
+\section{基于超图的知识表示方法}{Knowledge Representation Based on Hypergraph}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-XXX简单介绍从语言到逻辑中的语言的几种表现形式；重点论证使用超图来表示语义逻辑的灵活性和高效性等。
+
+对于任何以实现复杂功能为目标的自然语言处理系统（如智能对话系统或复杂的问答系统等）来说，系统内部知识如何表示是至关重要的。高效的知识表示机制不仅能使系统不同模块之间高效地传递有用的信息，更能使系统的知识库通过与用户的交互不断完善。本节主要阐述一种高效灵活的基于超图的知识表示方法，首先会解释其理论基础和相应的数据结构等，同时为了方便对本文研究工作的解释，在这一节我们还会列出一些该知识表示体系中基本的且后文经常会用到的数据类型。
+
+\subsection{知识表示和记忆空间}{Representation and Memory}
+
+\paragraph{本地和全局知识表示}
+
+本文所采用的知识表示机制其本质是一个超图表示的{\it 网络}。把心智当作网络的观点其实是隐含在模式主义哲学中的，因为每一个模式都可以被看成某物的模式，或关于某物的布置的模式——因而一个模式总是可以被看做二个或更多物体之间的关系。一系列的模式形成一个模式网络。各类知识可以以网络形式来表示，而认知过程也可以被表示为网络，举例来说将它们表示为程序，以各种树或图的形式来表示。在一个智能中模式的涌现可以被看作自身的一个模式网络；在涉身的心灵和它的物理和社会环境之间的关系可以被看做某种生态和社会网络。
+
+知识表示体系的两个主要超类是{\it 局部}（也被称为{\it 显示}）和全局（也被称为{\it 隐式}）系统，我们用一个称为{\it 全局-局部}的混合类包含了这两者。在一个{\it 局部}系统中，每一条知识都是用一小部分认知系统的元素来存储的；在一个{\it 全局}系统中，每一条知识都被以一种特定的模式存储与激活，比如以认知系统的一定比例的元素的形式；在一个{\it 全局-局部}混合系统中，这两种方式被共同使用。以上三种知识表征类型都可以被网络所实现。在本文研究的智能对话系统中，这三者都是以{\it 同样}的网络（Atomspace）来实现。
+
+\paragraph{记忆类型和相关认知处理}
+
+我们的知识表示体系中包含多种的记忆类型，如同上面所讨论的，它的前提是正确地建立一个类人的人工智能系统，以处理不同类型的记忆，这些记忆包括了结构化的和动态的。
+
+该知识表示中的记忆类型有：陈述性记忆、过程性记忆、感知记忆、以及场景记忆，这些在认知科学中被广泛讨论\cite{Tulving2005}的记忆类型，以及分配泛用的系统资源的注意力记忆、和为特定目标分配系统资源的意向性记忆。这些记忆类型在一个开源的认知体系结构系统OpenCog\footnote {\url{http://wiki.opencog.org}}中被一一实现，表格\ref{tab:opencog}概述了这些记忆类型，给出了关键的引用并指出了相关的认知过程，同时指出了每一个认知过程（模式创造、联系等）所对应的泛化的模式主义认知动力学。
+
+以模式主义认知理论的形式，上述多种记忆类型可被看做特定类型模式的特化存储方式，并经过了计算时间与空间上的优化。联系到某种特定类型的记忆的认知过程被用来创造和识别该记忆的类型。原则上所有类型的模式都可以在统一的记忆和处理构架下进行，这种类型特例化，是为了能够在现有的计算条件可接受的前提下创造有效的泛化智能。我们在\cite{Goertzel2010c}中所详细论述过，高效性并不是可有可无的，而是对真实世界中的泛化智能举足轻重的特性（就像Hutter所展示的，如果没有效率的限制，任意登记的泛化智能都可以通过简单而琐碎的程序来实现）。
+
+这种知识表示体系的设计本质在于，与每种类型的记忆相关的数据结构和处理过程是被紧密联系在一起的，相比于仅仅包含同一种结构和处理过程的而仅仅以不同的黑盒分割开的构架，它产生了协同性的智能。我们的知识表示体系中还设计有交互的认知处理过程，以使得不同类型的记忆间可以互相转换，尽管有时这会消费较多的计算资源（比如，一段陈述性的知识可能通过一些努力被解释为过程性或场景性的知识）；同时，对于一个主要处理某一种类型记忆的学习进程来说，它可能会经常通过把知识转换成其他类型来解决问题，比如认知协同任务。
+
+\newcolumntype{Y}[1]{>{\centering\hspace{0pt}\arraybackslash}m{#1}}
+
+\begin{table*}[ht]
+\centering
+\begin{tabular}{|Y{3cm}|Y{5cm}|Y{3cm}|}
+\hline \textbf{记忆类型} & \textbf{特定的认知过程} & {\bf 泛化的认知功能} \\ \hline
+\textbf{陈述性} & 概率逻辑网络PLN\cite{Goertzel2008}; 概念调整\cite{Fauconnier2002} & 创建新的模式 \\ \hline
+\textbf{过程性} & MOSES（一个创新的概率演化运算学习算法）\cite{Looks2006} & 创建新的模式 \\ \hline
+\textbf{场景性} & 内部模拟引擎\cite{Goertzel2008d} & 关联，创建新的模式 \\ \hline
+\textbf{注意性} & 注意力经济分配网络（ECAN）\cite{Goertzel2010} & 关联，评分 \\ \hline
+\textbf{意向性} & 概率目标层次按照OpenPsi动机框架通过PLN和ECAN来细化\cite{Bach2009}) & 评分，创建新的模式 \\ \hline
+\textbf{感知} & 视觉图像处理组件DeSTIN & 关联，注意力分配，创建新的模式，评分 \\ \hline
+\end{tabular}
+\caption{OpenCog中的记忆类型和认知处理过程。第三列根据模式主义理论来表示每一个特定的认知处理过程所拥有的泛化认知功能}
+\label{tab:opencog} 
+\end{table*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{基于超图的知识表示库AtomSpace}{Atomspace: Knowledge Representation Base via Hypergraph}
+\label{sec:atoms}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+正如上述所言，Atomspace是本文所使用统一且通用的知识库，它使用包含特定类型的节点（Node）和链接（Link）的加权有向超图结构来表示知识，主要用作表示叙述性的知识，同时亦间接地表示其它类型的知识。Atomspace中使用的超图的节点和链接类型是经过包括语义层面上精挑细选得来的，以满足智能对话系统在认知过程的需要。由于Atomspace是本文研究中的知识表示核心，在这里我们会详细列出几个简单的示例予以说明。
+
+以下是一个以Atomspace中常用的表示方法去表示继承链接（InheritanceLink）的例子：
+ 
+{\tt\begin{small}\begin{lstlisting}
+InheritanceLink Lian_Ruiting animal <.99>
+\end{lstlisting}\end{small}}
+
+\noindent 或更明确地：
+
+ {\tt\begin{small}\begin{lstlisting}
+InheritanceLink <.99>
+	ConceptNode "Lian_Ruiting"
+	ConceptNode "animal "
+\end{lstlisting}\end{small}}
+
+以及：
+
+{\tt\begin{small}\begin{lstlisting}
+EvaluationLink <.7>
+	chase 
+	ListLink
+		cat
+		mouse
+\end{lstlisting}\end{small}}
+
+\noindent 或更明确地：
+
+{\tt\begin{small}\begin{lstlisting}
+EvaluationLink <.7>
+	PredicateNode "chase" 
+	ListLink
+		ConceptNode "cat"
+		ConceptNode "mouse"
+\end{lstlisting}\end{small}}
+
+\noindent 正如上述示例所示，节点通常具有名称，而链接则没有，但链接可以连接一个或多个的目标，而这些目标可以是节点或链接。
+
+综合来说，Atomspace是一个“带标记的通用超图“，这些标记可以是节点的名称或其真值等等。“超图“与一般“图“的其中一个主要不同之处在于其链接，例如ListLink或SetLink，它是可以连结两个以上的参数，而其通用性也允许这些链接与其他的链接相连，而不只局限于节点。
+
+另一个值得注意的地方是这些节点的名称，虽然在这些示例中它们都是以英语来表示，但实际上我们的系统会在操作中通过自主学习去创造一些新的节点，而这些节点往往都与语言种类无关。
+
+更重要的一点是， AtomSpace的知识表示形式的主要功能是提供一个灵活的方式去紧凑地表达多种相关形式的知识，并允许它们之间有交互操作。其中的“交互操作“是指，例如，一组的陈述性的知识可以跟另一组的注意力相关或程序性相关的知识相互连结，或一组在一个类别的知识可以跟另一组在其他类别的知识重叠在一起（同一链接同时有著一个陈述性相关的真值和一个注意力相关的重要值）。总而言之，只要有任何表示形式能够提供足够的灵活性来：
+
+\begin{itemize}
+\item 紧凑地表达所有在人类记忆中扮演著主导角色关键类别
+\item 灵活地创建特定的副表示形式去表达在上述这些关键类别中的知识，同时又能够被迅速地改动或操纵这些知识
+\item 重叠和连结不同种类的知识，包括上述这些特定的副表示形式
+\end{itemize}
+
+\noindent 以上几项都符合我们系统的整体要求。而这些Atom的表示形式已能满足此计设的总体要求，并从软件的角度来看已证明是可行的。
+
+\subsubsection{基本的Atom种类}{Basic Atom Types}
+
+\begin{itemize}
+\item ConceptNode -- 表达任何的单元，具体或抽象但又不能以其他特定的节点种类来表达的概念
+\item PredicateNode  -- 表达一个为Atom产生真值的程序（以下会有详细说明）
+\item SchemaNode -- 表达一个以一个Atom产生另一个Atom的程序，或产生一些其他效果
+\end{itemize}
+
+和以下的链接：
+
+\begin{itemize}
+\item MemberLink -- 连结一个通用种类的Atom和一个ConceptNode，并拥有一个模糊真值
+\item InheritanceLink -- 连结两个ConceptNodes，并拥有一个概率真值
+\item SimilarityLink -- 连结两个ConceptNodes，并拥有一个概率真值
+\item EvaluationLink -- 连结一个PredicateNode以及其参数
+\item ExecutionLink -- 连结一个SchemaNode、其需要的参数以及其产生的输出
+\begin{itemize}
+\item ExecutionOutputLink -- 连结一个SchemaNode以及其输入，当遇到特定的认知程序时才会产生输出
+\end{itemize}
+\end{itemize}
+
+\subsubsection{绑定程序的节点}{Grounded Procedure Nodes}
+
+SchemaNode和PredicateNode有两种形态：已绑定和未绑定。未绑定是指系统尚未知道应该如何评定该方案，或系统将会以一连串的ExecutionOutputLinks来绑定该方案。而已绑定的会有一个特定程序的名称（目前该程序可以是C++，Scheme或Python语言编写的程序）来执行该方案。例如:
+
+\begin{verbatim}
+ExecutionOutputLink
+	GroundedSchemaNode "plus.py"
+	ListLink
+		NumberNode "2"
+		NumberNode "3"
+\end{verbatim}
+
+\noindent 当执行时，会调用Python函数“plus“来把“2“和“3“加起来，然后产生一个名为“5“的NumberNode作为其输出。
+
+\subsection{內涵与外延的关系}{Intensional and Extensional Relationships}
 
 
+我们所使用的知识库中的链接类型中亦有多种拥有继承和相似性质的链接，例如IntensionalInheritanceLink和ExtensionalInheritanceLink，其细节将会在\cite{PLN}中详述，但简而言之，以下链接的真值：
+
+\begin{verbatim}
+ExtensionalInheritanceLink A B
+\end{verbatim}
+
+\noindent 同时亦可被表示为：
+
+\begin{verbatim}
+SubsetLink A B
+\end{verbatim}
+
+\noindent 是一个条件概率$P(B|A)$。另一方面，以下链接的真值：
+
+\begin{verbatim}
+ExtensionalInheritanceLink A B
+\end{verbatim}
+
+\noindent 是一个条件概率$P(prop(B)|prop(A))$，当中$prop(X)$表示在PLN推理系统中定义的模糊集合X的属性。
+
+\subsubsection{SatisfyingSet}{SatisfyingSet}
+SatisfyingSet的算符能够表达一个集合关系的概念，而当中每一位成员都是乎合同一个述语的元素，并用Member的关係形式，以一个模糊数值（而非概率数值）来表达该元素属于一个概念的真确性。
+
+举例来说，假设现在有“FriendOfBob“这个述语和三个元素“Jack“、“John“和“Jill“：
+
+\begin{verbatim}
+Evaluation <.7>
+	FriendOfBob
+	Jack
+
+Evaluation <.6>
+	FriendOfBob
+	John
+
+Evaluation <.8>
+	FriendOfBob
+	Jill
+\end{verbatim}
+
+根据SatisfyingSet算符的定义，我们会得出以下的Member：
+
+\begin{verbatim}
+Member <.7>
+	Jack
+	SatisfyingSet
+		FriendOfBob
+
+Member <.6>
+	John
+	SatisfyingSet
+		FriendOfBob
+
+Member <.8>
+	Jill
+	SatisfyingSet
+		FriendOfBob
+\end{verbatim}
+
+\subsubsection{真值}{Truth Values}
+\label{真值}
+
+一个Atom的真值是用来表示一个Atom的\textit{真确性}，在某程度上是取决于Atom的类型。这个数值是以一个TruthValue物件的形式跟Atom链接在一起。一般来说我们会在Atom的表示式后以\ensuremath{<}\ensuremath{>}及一个数字来显示其真值，例如：
+
+\begin{verbatim}
+A <.4>
+\end{verbatim}
+
+來表示一個名稱为“A“的Atom的真值为.4。同样地：
+
+\begin{verbatim}
+IntensionalInheritanceLink Ben monster <.5,.9>
+\end{verbatim}
+
+\noindent 来表示一个连接著“Ben“和“monster“的IntensionalInheritance关係中有著一个.5的强度和.9确信情度。总而言之，\ensuremath{<}tv\ensuremath{>}表示著一个平均值为tv的概率分佈。这些概念和语义将会在\cite{PLN}中作详细展述。
+
+\subsection{量词}{Quantiﬁers}  
+
+在不明确逻辑理论中，量化过程是一个比较细微的事项。PLN包含了标準的ForAll和ThereExists的量词（使用高阶概率定义的概率真值），在处理量化过程时主要会用AverageQuantifier来建构，例如：
+
+\begin{verbatim}
+AverageQuantifier $X
+        F($X)
+\end{verbatim}
+
+的真值为F(\$X)的真值的加权平均值，即是以下的总和：
+
+\begin{verbatim}
+w($X) F($X) / N
+\end{verbatim}
+
+\subsubsection{和自然语言处理相关的Atom类型}{Language-Relevant Atom Types}
+
+接下来将会描述一些用来表达具体语言概念的Atom类型。
+
+原则上，要处理从ASCII编译的语言资料，除了上述介绍的数据结构外就只有以下两个节点类型和一个链接类型：
+
+\begin{itemize}
+\item CharacterNode
+\item CharacterInstanceNode
+\item ListLink
+\end{itemize}
+
+\noindent 因而字串就可以以列表或拼接的方式来表达，例如“pig“可以以列表$(\#p, \#i, \#g)$来表达。
+
+然而，实际上定义特定的語言Atom类型也很有帮助的，例如:
+
+\begin{itemize}
+\item  	MorphemeNode/ MorphemeInstanceNode
+\item		WordNode/WordInstanceNode
+\item		PhraseNode/PhraseInstanceNode
+\item		SentenceNode/ SentenceInstanceNode
+\item		UtteranceNode/ UtteranceInstanceNode
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,12 +303,12 @@ XXX简单介绍从语言到逻辑中的语言的几种表现形式；重点论�
 根据上述的理论基础，本文研究的语言和超图的转换过程可描述如下：
 
 \begin{itemize}
-\item 本文所采用的链语法分析器Link Parser（ 将在第 \ref{chap:comprehension}中具体介绍）将一个句子中的不同词节点之间的邻接关系转换成链语法中链（Links），从而产生一组链的集合。
-\item 本文所采用的语义关系抽取工作RelEx（ 将在第 \ref{chap:comprehension}中具体介绍）将上述的链集合转换成一组语义关系集合。
-\item 本文所采用的逻辑关系抽取工作RelEx2Logic（ 将在第 \ref{chap:comprehension}中具体介绍）将上述的语义关系集合转换成能适用于逻辑系统进行语义推理的更抽象的逻辑关系集合。
-\item 本文所采用的逻辑推理工具概率逻辑网PLN（将在下一节中具体介绍）将上述的从自然语言中抽取到的知识与超图知识库中的其他种类的知识相关联。
-\item 本文所采用的基于超图模糊匹配的问答系统（ 将在第 \ref{chap:dialogue}中具体介绍）将一组原子集合映射到另一组完全匹配或者近似匹配的原子集合。
-\item 本文所采用的微观规划器Microplanning（ 将在第 \ref{chap:generation}中具体介绍）将一组系统想要通过自然语言清晰应答的原子集合 $S$ 分割成需要立即应答的原子集合$S_1$ 以及可能在不久的将来要应答的原子集合$S_2$。
+\item 本文研究所使用的链语法分析器Link Parser（ 将在第 \ref{chap:comprehension}中具体介绍）将一个句子中的不同词节点之间的邻接关系转换成链语法中链（Links），从而产生一组链的集合。
+\item 本文研究的语义关系抽取工作RelEx（ 将在第 \ref{chap:comprehension}中具体介绍）将上述的链集合转换成一组语义关系集合。
+\item 本文研究的逻辑关系抽取工作RelEx2Logic（ 将在第 \ref{chap:comprehension}中具体介绍）将上述的语义关系集合转换成能适用于逻辑系统进行语义推理的更抽象的逻辑关系集合。
+\item 本文研究所使用的逻辑推理工具概率逻辑网PLN（将在下一节中具体介绍）将上述的从自然语言中抽取到的知识与超图知识库中的其他种类的知识相关联。
+\item 本文研究的基于超图模糊匹配的问答系统（ 将在第 \ref{chap:dialogue}中具体介绍）将一组原子集合映射到另一组完全匹配或者近似匹配的原子集合。
+\item 本文研究的微观规划器Microplanning（ 将在第 \ref{chap:generation}中具体介绍）将一组系统想要通过自然语言清晰应答的原子集合 $S$ 分割成需要立即应答的原子集合$S_1$ 以及可能在不久的将来要应答的原子集合$S_2$。
 \item 本文所采用的表层生成器SuReal（ 将在第 \ref{chap:generation}中具体介绍）将一组逻辑语义关系的原子集合转换成一组链语法关系集合即链集合，然后将链集合转换成词节点之间的邻接关系，从而生成相应的句子。
 \end{itemize}
 
@@ -75,10 +325,10 @@ XXX简单介绍从语言到逻辑中的语言的几种表现形式；重点论�
 
 将语言转换成逻辑形式的一个主要目的就是可以进行相应的逻辑推理，本文所采用的逻辑系统是概率逻辑网络（Probabilistic Logic Network，以下简称“PLN”）。 PLN是一个独特的推理系统，它嵌入了预测逻辑和传统逻辑的组合。\cite{Goertzel2008, RWR}中对PLN进行了全面具体的阐述及论证。在此我们仅简单介绍用于语言逻辑推理的基本相关知识。
 
-PLN是一个数学和软件框架，用于非确定推理、操作CogPrime软件框架、使概率真值与泛化逻辑推理规则的整合成为可能。具体来说，PLN包含：
+PLN是一个数学和软件框架，被运用在本文研究的智能对话系统中，用于非确定推理、使概率真值与泛化逻辑推理规则的整合成为可能。具体来说，PLN包含：
 
 \begin{itemize}
-\item 一系列推理规则（例如，演绎、贝叶斯规则、变量归一化、演绎推理，等等），每一项都有一个或多个逻辑关系或词项（以CogPrime的原子来表征）作为输入，并计算输出；
+\item 一系列推理规则（例如，演绎、贝叶斯规则、变量归一化、演绎推理，等等），每一项都有一个或多个逻辑关系或词项（以Atomspace的原子Atom来表示）作为输入，并计算输出；
 \item 特定的数学方程，基于合适的背景前提假设的概率值，计算结论的概率值。
 \end{itemize}
 PLN还涉及一条特殊的功能，评估概率值的置信度（证据的分量，或二阶的不确定性）。最后，PLN在软件中的实现需要重要的抉择，要求考虑推理规则的结构化表征、“推理控制”——这种策略要求，在每个特定的实际情况中，判断以何种顺序做何种推理。
