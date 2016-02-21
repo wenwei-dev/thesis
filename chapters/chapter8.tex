@@ -456,38 +456,27 @@ ImplicationLink <.3,.8>
 \section{一个综合的问答规划器}{A Composite Question-Answering Schema}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-综合上述对问答规划的讨论，面向CogDial的一个合理的问答规划器可以实现如下：
+综合上述对问答规划的讨论，我们还设计并实现了一个合理的综合问答规划器，其实现方法如下：
 
-XXXX下面这段需要翻译
 \begin{verbatim}
 Composite Information-Finding QA Schema:
 
-Given an information-finding question Q, and the motivation
-to answer it, and time T available to find an answer
+给定一个用于信息查找的问题Q，回答Q的动机，以及所允许的最长等待时间T
 
-If T is large, try to answer Q using inference
-    If this succeeds, send the answer obtained to
-            the microplanner for articulation
-    If this fails, try to answer Q using fuzzy matching
-          If this succeeds, use the answer obtained from
-                   fuzzy matching  as a seed for further
-                   inference, and try to answer Q using
-                   inference again
-              If this succeeds, send the answer obtained
-                       to the microplanner for articulation
-	     If this fails, send answer obtained using
-                       fuzzy matching to the microplanner
-                       for articulation
-          If this fails, invoke StumpedByQuestion schema	
+如果T的值大，则试图通过逻辑推理来回答Q
+     如果成功，则将得到的原子集合输入微观规划器用于应答
+     如果失败，则通过基于超图的模糊匹配来回答Q
+             如果成功，则将模糊匹配得到的原子集合来做为种子进行进一步推理，试图再次通过逻辑推理来回答Q
+                    如果成功，则将得到的原子集合输入微观规划器用于应答
+                    如果失败，则将模糊匹配得到的原子集合输入微观规划器用于应答
+             如果失败，则触发StumpedByQuestion规划器
+     
+如果T的值小，则试图通过浅层推理来快速回答Q
+       如果成功，则将得到的原子集合输入微观规划器用于应答
+       如果失败，则试图通过基于超图的模糊匹配来回答Q
+              如果成功，则将得到的原子集合输入微观规划器用于应答
+              如果失败，则触发StumpedByQuestion规划器
 
-If T is small:
-       Try to answer Q using quick, shallow inference
-            If this succeeds, send the answer obtained to
-                   the microplanner for articulation
-            If this fails, try to answer Q using fuzzy matching
-		If this succeeds, send the answer obtained to the
-                           microplanner for articulation
-		If this fails, invoke StumpedByQuestion schema
 \end{verbatim}
 
 \noindent 其中，StumpedByQuestion Schema可规划如下：
@@ -495,81 +484,74 @@ If T is small:
 \begin{verbatim}
 StumpedByQuestion Schema:
 
-Given a question Q (which the dialogue system has tried
-and failed to answer):
+给定一个问题Q （其中Q为智能对话系统试图回答但未成功）
 
-If the importance attached to Q is low,
-      Invoke ExpressIgnorance schema
+当Q的重要值低时，
+      触发ExpressIgnorance规划器
 				
-If the importance attached to Q is sufficiently high,
-      Use the PLN backward chainer to find P so that
-                     P ==> Q, where P is relatively simple
-                     and the truth value of the implication
-                     is sufficiently large
-		If a suitable P is found, send P to the
-                            microplanner as a question
-		If no suitable P is found, then invoke
-                            ExpressIgnorance schema
+当Q的重要值很高时，
+     使用PLN中的后向链推理找到P，使得
+              P ==> Q
+     其中，P相对简洁，且上述蕴含推理的真值很高
+
+         如果找到合适的P，将P标记为一个问题，
+                并输入到微观规划器用于应答
+         如果没有找到合适的P，则
+                触发ExpressIgnorance规划器
+		
 
 \end{verbatim}
 
-\noindent 其中，ExpressIgnorance schema可规划如下：
+\noindent 其中，ExpressIgnorance规划器可规划如下：
 
 \begin{verbatim}
 ExpressIgnorance Schema:
 
-Send Atoms representing "I don't know"  or
-        "I don't know the answer to Q"
-	to the microplanner for articulation
+将用于表示"I don't know"  或者
+        "I don't know the answer to Q"的原子集合输入微观规划器用于应答
 \end{verbatim}
 
 上面例子说明了CogDial方法的本质，我们可以将自适应的语篇管理能力分为下面三个阶段：
 
 \begin{enumerate}
 \item 用Scheme或者Python编写相应语篇管理行为代码，然后绑定在GroundedSchemaNodes里。OpenPsi可以在适当的时候调用这些语篇管理行为。
-\item 用OpenCog中统一的知识表示形式Atom来表示语篇管理行为，通过“硬编码”设置规划器参数，使其调用特定的认知处理程序（如微观规划器Microplanner或者后向推理工具Backward Chainer等）。
+\item 用基于超图的知识表示形式Atom来表示语篇管理行为，通过“硬编码”设置规划器参数，使其调用特定的认知处理程序（如微观规划器Microplanner或者后向推理工具Backward Chainer等）。
 \item 根据经验，通过强化学习和模仿等方法来自动学习语篇管理行为。
 \end{enumerate}
 
 \noindent 很显然，第三种方法是我们最终想要的能进行智能灵活对话的智能会话系统，但也无疑是最难的一种。我们CogDial首先实现第一种方法，然后在此基础上第二和第三种方法。这种增量的开发方式使我们能逐步实现智能的对话处理。使用硬编码的对话管理规划器，能使我们一种很直接的方式不断改进自然语言理解、生成和推理系统中与对话相关的处理，而不是一开始就将这些可能不能处理复杂对话的自然语言处理和推理系统集成到复杂的自动学习对话管理中。当这些模块逐渐完善后，我们将会使用自动学习得到的对话管理规则来替换我们目前使用的手工编写的对话管理规划器。
 
-对于真值和选择的查询，可用下面的类似方法来处理：
+对于是非（真值查询）问题的应答，可用下面的类似方法来处理：
 
 \begin{verbatim}
 Composite Truth-value QA Schema:
 
-Given a truth-value query Q, and the motivation to answer it, and time T available to find an answer
+给定一个真值查询问题Q，回答该问题的动机，以及所允许的最长等待时间T
 
-Try to answer Q using inference
-	If this succeeds, send the answer obtained to the microplanner for articulation
-	If this fails, try to answer Q using fuzzy matching
-		If this succeeds, use the answer obtained from fuzzy matching
-					as a seed for further inference, and try to answer Q using
-					inference again
-			If this succeeds, send the answer obtained to the microplanner for articulation
-		 	If this fails, invoke StumpedByQuestion schema	
+试图通过逻辑推理来回答Q
+      如果成功，则将得到的原子集合输入微观规划器用于应答
+      如果失败，试图通过基于超图的模糊匹配来回答Q
+             如果成功，则将模糊匹配得到的原子集合来做为种子进行进一步推理，试图再次通过逻辑推理来回答Q
+                    如果成功，则将得到的原子集合输入微观规划器用于应答
+                    如果失败，则将模糊匹配得到的原子集合输入微观规划器用于应答
+             如果失败，则触发StumpedByQuestion规划器
+
 \end{verbatim}	
 
 \begin{verbatim}
 Composite Choice QA Schema:
 
-Given a choice query Q involving choices C1-Ck,
-and the motivation to answer it, and time T available to find an answer
+给定一个选择查询问题Q，供选择的答案C1-Ck，回答该问题的动机，以及所允许的最长等待时机T
 
-Repeat until T worth of processing time has been used up, or
-			an adequately confident answer has been found:
+重复以下步骤直到T被用完，或者找到一个置信度高的有效答案
+       对k个不同的查询“Ci是否为Q的答案”进行并行评估，并对第i个查询赋上其相关的资源r_i
+       使用k臂赌博机算法持续重新计算资源分配r_i
 
- 	Evaluate, in parallel, k different truth-value queries corresponding to "Ci is an answer to Q"
-				-- assigning resources r_i to the i'th query
-				
-	Ongoingly recalculate the resource allocations r_i via treating the process
-				as a multi-armed bandit problem			
+如果上述循环返回一个置信度高的有效答案，则将得到的原子集合输入微观规划器用于应答
+如果上述循环完成，但没有返回置信度高的有效答案，
+       则触发StumpedByQuestion规划器
 
-	If an adequately confident answer has been found, send the answer obtained
-				to the microplanner for articulation
 
-If the loop completes without finding an adequately confident answer,
-			 invoke the StumpedByQuestion schema	
 \end{verbatim}	
 			
 
@@ -624,6 +606,259 @@ If the loop completes without finding an adequately confident answer,
 \section{深层语义解析的挑战}{The Challenge of Deep Semantic Understanding for Natural Language}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 XXX需要翻译
+
+在研究和设计智能对话系统中，最具挑战性的并不是上述的复杂推理过程。在给定大知识库Atomspace的情况下，上述的推理过程会变得相当困难，但是我们可以通过在OpenCog中实现的注意力经济分配算法（EConomic Attention AllocatioN, 以下简称ECAN）\cite{Goertzel2010} 来对推理过程进行实时动态规划和控制，虽然ECAN目前仍需进一步的研究和改进，但从我们目前的实验数据来看，该方法是很可行的。在智能对话系统中，比复杂的推理更具有挑战性的问题是，如何使Atomspace获取上述问答规划器中的推理前提的超图表示形式。简单的说，这个挑战也就是如何将自然语言转换成合理准确的语义解析，这恐怕也是实现高度智能化的自然语言对话系统过程中最棘手的问题了。
+
+例如，一个近乎准确的事实“如果A继承Z，那么有很多A在Z的博物馆里”可表示如下：
+
+{\tt\begin{small}\begin{lstlisting}
+
+ImplicationLink <.95,.99>
+	ANDLink
+		InheritanceLink
+			$X
+			ConceptNode "museum"
+		EvaluationLink
+			PredicateNode "of"
+			$X
+			$Z
+	EvaluationLink
+		PredicateNode "many"
+		SatisfyingSetLink
+			ANDLink
+				InheritanceLink
+					$A
+					$Z
+				EvaluationLink
+					PredicateNode "in"
+					$A
+					$X
+
+\end{lstlisting}\end{small}}
+
+\noindent 当前的自然语言系统不太可能获取上述例子中想要表达的推理形式。目前的句法分析或语义分析工具也无法根据字典中对博物馆（museum）的解释（如下）来得到上述的推理表达形式。
+
+\begin{verbatim}
+museum: a building in which objects of historical, scientific, artistic, or cultural interest are stored and exhibited.
+博物馆：珍藏和陈列历史、科学、艺术或者文化遗产的建筑
+\end{verbatim}
+
+\noindent 但是上述的推理形式可以从自然语言处理系统可以理解的各种句子中推理得出，例如：
+
+\begin{verbatim}
+The New York Museum of Modern Art has one of the world's largest collections of French Impressionist works
+纽约的现代艺术博物馆是全球收藏法国印象派作品最多的博物馆。
+
+The British Museum boasts the world's largest Egyptology exhibit, with over five hundred sarcophagi on display,
+along with some of the most perfectly preserved examples of engraved hieroglyphics.
+大英博物馆以全球珍藏最多古埃及文物闻名。其中有超过500个石棺，有些还带有保存最完整的象形雕刻文字。
+
+The US Postal Service Museum hosts enough rare stamps to satisfy even the most avid numismatist, but also
+a variety of surprisingly interesting displays recounting, for example, the roles played by various animals in
+the history of the postal service.
+美国邮政博物馆拥有足够多的稀有邮票，足以满足即便是最热心的徽章收藏家。不仅如此，该博物馆还展示很多出奇又有趣的历史回放，比如：各种动物扮演的在邮政历史上的不同角色。
+
+\end{verbatim}
+
+\noindent 从这些例子不是很难就能推出上述的推理形式。只需要
+The needed inference is not especially difficult to draw from the above sentences.   What is needed is to 
+map predicates like "large", "enough", "variety" etc. into the general concept of "many."   This connection can plausibly be
+inferred from various sentences like
+
+
+所需的推理，没有特别的困难，以从上述的句子绘制。所需要的是，以
+地图谓词喜欢“大”，“够了”，“综艺”等进入的一般概念“多”。这种连接都不可能
+各种这样的句子推断
+
+\begin{verbatim}
+The New York Museum of Modern Art has one of the world's largest collections of French Impressionist works.
+Many of these works are worth tens of millions of dollars, but their artistic value is incalculable.
+
+The dogs had more than enough steaks this morning.  Many of them were rotten but they sure didn't seem to mind.
+\end{verbatim}
+
+\noindent which explicitly connect these other quantity terms with with the quantifier "many."    For instance, among
+the relations produced by RelEx2Logic when parsing the latter sentence, we would find things like
+
+ {\tt\begin{small}\begin{lstlisting}
+EvaluationLink
+	PredicateNode "enough"
+	ConceptNode "steaks_55"
+	
+EvaluationLink
+	PredicateNode "many"
+	ConceptNode "steaks_55"
+\end{lstlisting}\end{small}}
+
+Among the relations produced by RelEx2Logic when parsing the former sentence, we would find things like
+
+ {\tt\begin{small}\begin{lstlisting}
+ 
+ ImplicationLink
+ 	PredicateNode "largest_77"
+	PredicateNode "largest"
+ 
+EvaluationLink
+	PredicateNode "largest_77"
+	ConceptNode "collection_44"
+	
+EvaluationLink
+	PredicateNode "of"
+	ConceptNode "collection_44"
+	ConceptNode "works_88"
+	
+EvaluationLink
+	PredicateNode "many"
+	ConceptNode "works_88"
+\end{lstlisting}\end{small}}
+
+\noindent So if the system knows that
+
+{\tt\begin{small}\begin{lstlisting}
+ImplicationLink
+	AndLink
+		InheritanceLink
+			$C
+			ConceptNode "collection"
+		EvaluationLink
+			PredicateNode "of"
+			ConceptNode "collection"
+			$W
+		EvaluationLink
+			PredicateNode "many"
+			$W
+	AndLink
+		EvaluationLink
+			PredicateNode "many"
+			$C
+ \end{lstlisting}\end{small}}
+
+\noindent then it can conclude
+
+ {\tt\begin{small}\begin{lstlisting}
+ImplicationLink
+ 	PredicateNode "largest_77"
+	PredicateNode "largest"
+ 
+EvaluationLink
+	PredicateNode "largest_77"
+	ConceptNode "collection_123"
+	
+EvaluationLink
+	PredicateNode "many"
+	ConceptNode "collection_123"
+\end{lstlisting}\end{small}}
+
+\noindent If it knows that
+
+ {\tt\begin{small}\begin{lstlisting}
+ImplicationLink
+	PredicateNode "largest"
+	PredicateNode "large"
+\end{lstlisting}\end{small}}
+
+\noindent it can then conclude
+
+ {\tt\begin{small}\begin{lstlisting}
+EvaluationLink
+	PredicateNode "large"
+	ConceptNode "collection_123"
+	
+EvaluationLink
+	PredicateNode "many"
+	ConceptNode "collection_123"
+\end{lstlisting}\end{small}}
+
+Putting these conclusions about enough vs. many and large vs. many, from these sentences, together with similar conclusions from other sentences, the (uncertain) conclusions
+
+  {\tt\begin{small}\begin{lstlisting}
+
+ImplicationLink
+	EvaluationLink
+		PredicateNode "large"
+		ConceptNode $X
+	EvaluationLink
+		PredicateNode "many"
+		ConceptNode $X
+		
+ImplicationLink
+	EvaluationLink
+		PredicateNode "enough"
+		ConceptNode $X
+	EvaluationLink
+		PredicateNode "many"
+		ConceptNode $X
+			
+\end{lstlisting}\end{small}}
+
+\noindent can be drawn.   These are uncertain, heuristic implications; but this sort of shaky intuitive knowledge is exactly what a lot of commonsense knowledge is based on.
+
+You may wonder where knowledge such as
+
+{\tt\begin{small}\begin{lstlisting}
+ImplicationLink
+	AndLink
+		InheritanceLink
+			$C
+			ConceptNode "collection"
+		EvaluationLink
+			PredicateNode "of"
+			ConceptNode "collection"
+			$W
+		EvaluationLink
+			PredicateNode "many"
+			$W
+	AndLink
+		EvaluationLink
+			PredicateNode "many"
+			$C
+ \end{lstlisting}\end{small}}
+
+\noindent which was assumed in the above discussion would come from -- but of course, the hypothetical answer is this can come from interpreting sentences such as 
+
+\begin{verbatim}
+His stamp collection is bigger than hers.
+
+The bigger bowl has many kinds of candy in it.
+\end{verbatim}
+
+\noindent (the first sentence associated "collection" with "bigger", the second associates "bigger" with "many"; a deduction step can then associate "collection" with "many").
+
+\noindent In general, the knowledge needed to interpret any particular sentence, can be found in other sentences.   But the interpretation of these other sentence, requires knowledge to be found in other sentences.   The challenge is to create a robust enough framework that this becomes a web of virtuous rather than vicious cycles.
+
+Part of this challenge is simply combinatorial explosion -- in an Atomspace
+containing interpretations of many difference sentences, there are many, many different inferences that can be drawn.  
+Any particular inference among the examples given above could potentially be found via backward chaining in the course of answering a query like the one 
+under consideration regarding buying glockenspiels at the store -- and if so, perhaps it would persist in the Atomspace
+a while to be used in the resolution of future queries.  Or any of these inferences might be found via forward chaining, based on the
+system's autonomous search for surprising information.   But doing these sorts of inferences, in the context of a real, complex Atomspace,
+poses a nontrivial inference control challenge.   
+
+This challenge is not specific to query processing, however; it is basically 
+the key challenge of commonsense inference \cite{RWR}.   Hand-coding of complex knowledge as done in Cyc \cite{Lenat1990}
+has proved infeasible due to the scope and complexity of the knowledge used even in simple human commonsense inferences.
+Inferring common-sense knowledge from natural language corpora seems much more promising, alongside inferring
+commonsense knowledge from embodied experience encompassing a combination of linguistic and nonlinguistic sources.
+However, the particular way knowledge is presented in one natural language sentence, is often not the way that would be most useful
+for reasoning about some other natural language sentence.  Performing the needed rearrangements of the knowledge encoded
+in a sentence, generally involves commonsense knowledge that needs to be extracted from other sentences.  One thus has a 
+huge system of simultaneous uncertain logical equations.   There is no reason to believe that this problem is intractable; nor is there
+any reason to believe it is easy.  
+
+One approach to addressing the commonsense knowledge problem, in a dialogue context, is to roughly mimic the linguistic
+and cognitive developmental trajectory of a human child.  That is: Begin by feeding the AI system text containing relatively
+simple sentences communicating relatively simple knowledge, and dialoguing with the system about this knowledge.   Once
+the system has built up commonsense knowledge based on this relatively simple network of knowledge, then feed it slightly
+more complex knowledge -- and so forth.  In this way it may be possible to ease the AI system toward a reasonable solution
+of the system of simultaneous equations constituting commonsense semantics.   
+
+Conceptually this is similar to the approach
+pursued in \cite{Spitkovsky2013} for unsupervised language learning (via feeding a learning system progressively more and more complex
+sentences), and the approach pursued in \cite{Goertzel2008w} for embodied behavioral learning; but here the developmental approach
+is being proposed specifically for learning appropriate, useful transformations of semantic knowledge extracted from natural language.
+This is also closely related to the developmental "AGI Preschool" approach proposed in an OpenCog context in \cite{Goertzel2009a}.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{本章小结}{Summary of Accomplishments and Future Work}
