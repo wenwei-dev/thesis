@@ -12,9 +12,56 @@ XXXX
 \section{基于超图模糊匹配的问答系统}{Question-Answering Via Hypergraph Fuzzy Matching}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-为了实现我们的智能对话系统的框架以及设计思路，我们构建了一个基于超图匹配的问答系统的原型，该问答系统使用前文提到的自然语言理解技术将自然语言转换成以超图表示的语义逻辑形式，利用基于超图匹配的动态编程算法，从而在问答语料库中找到最适合问题的答案来响应用户查询。
+为了实现我们的智能对话系统的框架以及设计思路，我们构建了一个基于超图模糊匹配的问答系统的原型，该问答系统使用前文提到的自然语言理解技术将自然语言转换成以超图表示的语义逻辑形式，利用基于超图匹配的动态编程算法，从而在问答语料库中找到最适合问题的答案来响应用户查询。
 
-本节我们将阐述这个基于超图的模糊匹配的启发式的问答系统的设计思路和实现方法，该系统主要针对信息查询。其基本算法很简单：给定一个查询Q，通过我们的自然语言理解流水线将其转换成Atomspace里的超图形式，然后在知识库Atomspace 里找出与其相似的表示陈述句的超图。这里我们做了一个合理的猜测，认为这些相似的超图中的其中一个包含了Q的答案。
+本节首先讨论该问答系统框架中使用的超图匹配算法，然后再讨论基于超图模糊匹配的问答系统的设计和实现。
+
+\subsection{基于超图的模式匹配器}{The Hypergraph Pattern Matcher}
+
+基于超图的模式匹配器是一个查询引擎或变数配对者，主要功用是在我们的超图知识库Atomspace中寻找特定的模式，或是一些Atom相关排列或“模板“。在轮入一个等定的Atom排列（即一个超图）后，模式匹配器会从Atomspace中寻找所有合乎条件的超图。同时一些“空白位置“，即“变数“在一个超图的位置，亦可存在于该输入的超图当中，而模式匹配器则会“填补“这些“空白位置“。例如：“John threw a \_\_\_\_).“亦可以被判断为“John threw a ball.“，前提是在查询前该句子要存在于Atomspace里，而在这个例子中“ball“就是被配对的一个答案。输入的超图中可以在不同的地方拥有多过一个的“空白位置“，同时亦可以有多过一个的答案。在这过程中，BindLink提供了一个便利的API去达到这目的，接下来会有更多的技术层面说明。
+
+模式匹配器是一个变数配对者，是在传统计算机科学中“统一“的概念，因为这是它的功能之一。它同时亦是一个查询引擎，因为这个变数配对过程某情度上是等同于用SQL在关联数据库中进行查询。其中主要的分别在于在我们这里的概念是以超图的形式表示，所以它亦可以被形容为一个超图查询语言HQL（Hypergraph Query Language）。但这些都只是以不同的名称去表示同一个程序。
+
+这个模式匹配器是结构精密应用的一个重要组件，同时也是建立逻辑推理系统中前向和后向推理链的一个重要基础。它拥有C++和Scheme的接口以供不同的应用。
+
+模式匹配器由数个不同的组件连接在一起，组成一个基础前向链接或超图重写的工具。在其核心是一个能比较和配对不同超图以及其变数的组件，而这个组件跟另一个“找寻器“一同使用便能寻找整个Atomspace中的合乎条件的超图。最后一个组件是一个“编写器“，主要功用是当有一个配对成功产生后建立一个或以上在ImplicationLink后半部列明的超图。
+
+这个模式匹配器接受有指定“规则“的BindLinks，再把这些“规则“应用到Atomspace里。每一个“规则“是一个ImplicationLink，以“if P then Q“的形式表达，当中P和Q分别代表不同的超图。如果P被实现了，那么便能得到Q。Q可以是任何种类的超图，但如果Q是一个ExecutionLink，这便意味著当P被实现了，系统便将会实行其他程序，这在整体来说可以是一个十分强大的功能，因为在一般情况下很多程序都可以以ExecutionLink来执行。
+
+模式匹配器不会更改任何超图中的真值（Truth Value）或关注值（Attention Value），有需要时使用者亦可以自行编写和执行相关的程序。
+
+在默认的回调函数中模式匹配器会搜索整个Atomspace，因此亦有需要编写特定的回调函数以限制其搜索范围，例如只寻找和接受拥有某程度短期重要性的Atom，以只获取相对重要的资讯。
+
+以下是一个使用模式匹配器的示例：
+
+\begin{verbatim}
+(define find-animals
+  (BindLink
+    ;; The variable to be bound
+    (VariableNode "$var")
+    (ImplicationLink
+      ;; The pattern to be searched for
+      (InheritanceLink
+         (VariableNode "$var")
+         (ConceptNode "animal")
+      )
+ 
+      ;; The value to be returned.
+      (VariableNode "$var")
+    )
+  )
+)
+ \end{verbatim}
+ 
+执行时，只需在我们系统的Scheme终端输入以下指令便能执行以上的模式匹配器并找出在Atomspace中所有继承“animal“的概念：
+
+\begin{verbatim}
+(cog-bind find-animals)
+\end{verbatim}
+
+\subsection{基于超图模糊匹配的问答系统}
+
+本小节我们将阐述这个基于超图的模糊匹配的启发式的问答系统的设计思路和实现方法，该系统主要针对信息查询。其基本算法可简单概括如下：给定一个查询Q，通过我们的自然语言理解流水线将其转换成Atomspace里的超图形式，然后在知识库Atomspace 里找出与其相似的表示陈述句的超图。这里我们做了一个合理的猜测，认为这些相似的超图中的其中一个包含了Q的答案。
 
 如果给定一个很大的超图H，在H的所有子图中找到与目标超图Q部分匹配的子超图是一个非常困难的计算问题。我们使用了启发式在一定程度上解决了计算难度，虽然这不能保证找到问题的正确答案，但实验发现该方法通常能找到一个很好的答案。我们的启发式涉及下面两个阶段：
 
@@ -280,7 +327,7 @@ InheritanceLink
 	ConceptNode "musical instrument"
 \end{verbatim}
 
-得到“钟琴”是一种“乐器”，那么会对“钟琴”改为“乐器”的修改操作赋值一个较低的成本值。基于这样的简单推理，系统会认为“Jim bought a musical instrument at the store.”比“ Jim bought a power tool at the store.” （Jim在商店买了一个电源工具）更符合上述查询。
+得到“钟琴”是一种“乐器”，那么会对“钟琴”改为“乐器”的修改操作赋值一个较低的成本值。基于这样的简单推理，系统会认为“Jim bought a musical instrument at the store.”（Jim在商店买了一个乐器）比“ Jim bought a power tool at the store.” （Jim在商店买了一个电源工具）更符合上述查询。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{基于后向推理的问答系统}{Question-Answering via Backward Chaining Reasoning}
@@ -289,33 +336,38 @@ InheritanceLink
 上一节中介绍的基于超图匹配的问答虽然能回答不少的查询，但是随着知识库Atomspace的不断变大，搜索匹配的工作会变得越来越复杂，也越来越耗时。而且基于超图匹配的方法只是一个粗糙的启发式搜索过程，不足以用于这些情况：对查询时间要求高、知识库数据不足或者在知识库中的答案需要经过一定推理才能找到等。例如，该方法无法将查询“Who bought a glockenspiel?”（谁买了钟琴？）从下面的句子中找到近似匹配，但是这些句子都在一定程度上暗示了此查询的答案。
 
 \begin{itemize}
-\item Bob brought his new instrument home from the mall and played it for his kids.
-\item Ling-ling's house is like a museum of obscure musical instruments.
-\item Jack always buys whatever he sees in a magazine. ... On the flight back from Guilin, there was nothing for Jack to read but a catalog of weird musical instruments.
+\item Bob brought his new instrument home from the mall and played it for his kids.（Bob从商场带了新乐器回家，并为他的孩子们演奏了几曲。）
+\item Ling-ling's house is like a museum of obscure musical instruments.（玲玲的家像一个稀有乐器博物馆）
+\item Jack always buys whatever he sees in a magazine. ... On the flight back from Guilin, there was nothing for Jack to read but a catalog of weird musical instruments.（Jack总爱买任何他在杂志上看到的东西。在从桂林回来的飞机上，只给Jack提供了一本稀奇乐器相关的杂志）
 \end{itemize}
 
 从另一方面来说，经过在适当的知识库上推理，也不难从上面的句子中找出适合此查询的答案。例如，如果想从第二个句子“Ling-ling's house is like a museum of obscure musical instruments.”中找出符合查询的答案，我们可通过如下推理得到：
 
 \begin{verbatim}
 Ling-ling's house is like a museum of obscure musical instruments
+（玲玲的家像一个稀有乐器博物馆。）
 
 The glockenspiel is obscure, and the glockenspiel is a musical instrument
+（钟琴很稀有，而且钟琴是一种乐器。）
 
 A museum of entities of type X, contains many instances of X
+（有关X的博物馆，含有很多X的实例。）
 
 If X is in Y's house, then often Y has bought X
+（如果Y的家中有X，那么通常Y买了X。）
 
 |-
 
 It is non-trivially probable that Ling-ling has bought a glockenspiel
+（玲玲很有可能买了一个钟琴。）
 \end{verbatim}
 
-在Atomspace中，这样的定性推理可以通过不同很多方式进行。下面我们将解释其中一种方式的推理过程。推理的前提可表示如下
-Ling-ling's house is like a museum of obscure musical instruments:
+在Atomspace中，这样的定性推理可以通过不同很多方式进行。下面我们将解释其中一种方式的推理过程。推理的前提可表示如下：
 
 \begin{verbatim}
 
 Ling-ling's house is like a museum of obscure musical instruments:
+（玲玲的家像一个稀有乐器博物馆。）
 
 InheritanceLink
 	ConceptNode "house_123"
@@ -352,6 +404,7 @@ InheritanceLink
 	ConceptNode "instrument"	
 	
 The glockenspiel is obscure, and the glockenspiel is a musical instrument:
+（钟琴很稀有，而且钟琴是一种乐器。）
 
 InheritanceLink
 	ConceptNode "glockenspiel"
@@ -374,6 +427,7 @@ InheritanceLink
 	ConceptNode "instrument"		
 
 A museum of entities of type X, contains many instances of X:
+（有关X的博物馆，含有很多X的实例。）
 
 ImplicationLink  <.95,.99>
 	ANDLink
@@ -397,6 +451,7 @@ ImplicationLink  <.95,.99>
 					X
 
 If X is in Y's house, then often Y has bought X:
+（如果Y的家中有X，那么通常Y买了X。）
 
 ImplicationLink <.8,.9>
 	ANDLink
@@ -421,7 +476,7 @@ ImplicationLink <.8,.9>
 
 \end{verbatim}
 
-根据上面的逻辑前提，PLN可以推理得到下面的结论：
+根据上面的推理前提，PLN可以推理得到下面的结论：
 
 \begin{verbatim}
 EvaluationLink <s,c>
@@ -605,7 +660,6 @@ Composite Choice QA Schema:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{深层语义解析的挑战}{The Challenge of Deep Semantic Understanding for Natural Language}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-XXX需要翻译
 
 在研究和设计智能对话系统中，最具挑战性的并不是上述的复杂推理过程。在给定大知识库Atomspace的情况下，上述的推理过程会变得相当困难，但是我们可以通过在OpenCog中实现的注意力经济分配算法（EConomic Attention AllocatioN, 以下简称ECAN）\cite{Goertzel2010} 来对推理过程进行实时动态规划和控制，虽然ECAN目前仍需进一步的研究和改进，但从我们目前的实验数据来看，该方法是很可行的。在智能对话系统中，比复杂的推理更具有挑战性的问题是，如何使Atomspace获取上述问答规划器中的推理前提的超图表示形式。简单的说，这个挑战也就是如何将自然语言转换成合理准确的语义解析，这恐怕也是实现高度智能化的自然语言对话系统过程中最棘手的问题了。
 
@@ -640,45 +694,40 @@ ImplicationLink <.95,.99>
 
 \begin{verbatim}
 museum: a building in which objects of historical, scientific, artistic, or cultural interest are stored and exhibited.
-博物馆：珍藏和陈列历史、科学、艺术或者文化遗产的建筑
+（博物馆：珍藏和陈列历史、科学、艺术或者文化遗产的建筑）
 \end{verbatim}
 
 \noindent 但是上述的推理形式可以从自然语言处理系统可以理解的各种句子中推理得出，例如：
 
 \begin{verbatim}
 The New York Museum of Modern Art has one of the world's largest collections of French Impressionist works
-纽约的现代艺术博物馆是全球收藏法国印象派作品最多的博物馆。
+（纽约的现代艺术博物馆是全球收藏法国印象派作品最多的博物馆之一。）
 
 The British Museum boasts the world's largest Egyptology exhibit, with over five hundred sarcophagi on display,
 along with some of the most perfectly preserved examples of engraved hieroglyphics.
-大英博物馆以全球珍藏最多古埃及文物闻名。其中有超过500个石棺，有些还带有保存最完整的象形雕刻文字。
+（大英博物馆以全球珍藏最多古埃及文物闻名。其中有超过500个石棺，有些还带有保存最完整的象形雕刻文字。）
 
 The US Postal Service Museum hosts enough rare stamps to satisfy even the most avid numismatist, but also
 a variety of surprisingly interesting displays recounting, for example, the roles played by various animals in
 the history of the postal service.
-美国邮政博物馆拥有足够多的稀有邮票，足以满足即便是最热心的徽章收藏家。不仅如此，该博物馆还展示很多出奇又有趣的历史回放，比如：各种动物扮演的在邮政历史上的不同角色。
+（美国邮政博物馆拥有足够多的稀有邮票，足以满足即便是最热心的徽章收藏家。不仅如此，该博物馆还展示很多出奇又有趣的历史回放，比如：各种动物扮演的在邮政历史上的不同角色。）
 
 \end{verbatim}
 
-\noindent 从这些例子不是很难就能推出上述的推理形式。只需要
-The needed inference is not especially difficult to draw from the above sentences.   What is needed is to 
-map predicates like "large", "enough", "variety" etc. into the general concept of "many."   This connection can plausibly be
-inferred from various sentences like
-
-
-所需的推理，没有特别的困难，以从上述的句子绘制。所需要的是，以
-地图谓词喜欢“大”，“够了”，“综艺”等进入的一般概念“多”。这种连接都不可能
-各种这样的句子推断
+\noindent 通过这些句子提供的信息，得到上述的推理形式就不是特别困难。只需要将这些“大（large）”“足够（enough）”“各种（variety）”等这些量词转换成一般概念层次上的“很多（many）”。而这样的关联完全可以从以下类似的句子中推理得出：
 
 \begin{verbatim}
 The New York Museum of Modern Art has one of the world's largest collections of French Impressionist works.
 Many of these works are worth tens of millions of dollars, but their artistic value is incalculable.
+（纽约的现代艺术博物馆是全球收藏法国印象派作品最多的博物馆之一。
+其中很多作品都值上千万美金，但是他们的艺术价值是无价的。）
 
 The dogs had more than enough steaks this morning.  Many of them were rotten but they sure didn't seem to mind.
+（狗狗们今天上午吃了太多牛排。其中很多牛排已经馊掉了，但是狗狗似乎一点也不介意。）
 \end{verbatim}
 
-\noindent which explicitly connect these other quantity terms with with the quantifier "many."    For instance, among
-the relations produced by RelEx2Logic when parsing the latter sentence, we would find things like
+\noindent 这些例句能很明确地将其他的量词和“很多（many）”联系起来。例如，解析上面最后一个例句后，RelEx2Logic输出的语义逻辑关系中含有：
+
 
  {\tt\begin{small}\begin{lstlisting}
 EvaluationLink
@@ -690,7 +739,7 @@ EvaluationLink
 	ConceptNode "steaks_55"
 \end{lstlisting}\end{small}}
 
-Among the relations produced by RelEx2Logic when parsing the former sentence, we would find things like
+在解析上面列出的第一个句子后，RelEx2Logic输出的语义逻辑关系中含有：
 
  {\tt\begin{small}\begin{lstlisting}
  
@@ -712,7 +761,7 @@ EvaluationLink
 	ConceptNode "works_88"
 \end{lstlisting}\end{small}}
 
-\noindent So if the system knows that
+\noindent 因此如果系统的知识库中含有以下推理常识：
 
 {\tt\begin{small}\begin{lstlisting}
 ImplicationLink
@@ -733,7 +782,7 @@ ImplicationLink
 			$C
  \end{lstlisting}\end{small}}
 
-\noindent then it can conclude
+\noindent 那么就能推断出：
 
  {\tt\begin{small}\begin{lstlisting}
 ImplicationLink
@@ -749,7 +798,7 @@ EvaluationLink
 	ConceptNode "collection_123"
 \end{lstlisting}\end{small}}
 
-\noindent If it knows that
+\noindent 如果系统中还有下列常识：
 
  {\tt\begin{small}\begin{lstlisting}
 ImplicationLink
@@ -757,7 +806,7 @@ ImplicationLink
 	PredicateNode "large"
 \end{lstlisting}\end{small}}
 
-\noindent it can then conclude
+\noindent 那么就能推断出：
 
  {\tt\begin{small}\begin{lstlisting}
 EvaluationLink
@@ -770,9 +819,9 @@ EvaluationLink
 \end{lstlisting}\end{small}}
 
 Putting these conclusions about enough vs. many and large vs. many, from these sentences, together with similar conclusions from other sentences, the (uncertain) conclusions
+将这些从上面例句中推理得来的“大（large）”“足够（enough）”和“很多（many）”相关的结论联合起来，不难得出下列（非确定性）结论：
 
   {\tt\begin{small}\begin{lstlisting}
-
 ImplicationLink
 	EvaluationLink
 		PredicateNode "large"
@@ -791,9 +840,9 @@ ImplicationLink
 			
 \end{lstlisting}\end{small}}
 
-\noindent can be drawn.   These are uncertain, heuristic implications; but this sort of shaky intuitive knowledge is exactly what a lot of commonsense knowledge is based on.
+\noindent 这些可以看成是非确定性的启发式的蕴含规则，而这些不确定的直观的知识也正是很多常识性推理的基础。
 
-You may wonder where knowledge such as
+上述推理中我们假设系统的知识库已存在一定的推理前提，如：
 
 {\tt\begin{small}\begin{lstlisting}
 ImplicationLink
@@ -814,17 +863,20 @@ ImplicationLink
 			$C
  \end{lstlisting}\end{small}}
 
-\noindent which was assumed in the above discussion would come from -- but of course, the hypothetical answer is this can come from interpreting sentences such as 
-
+\noindent 那么系统如何获取这些假定的直观常识呢，我们的猜想是可以通过自然语言理解系统解析一些相关句子得到，对于本例，系统可以通过解析下面句子获取相关常识：
 \begin{verbatim}
 His stamp collection is bigger than hers.
+（他的邮票收藏库比她的大。）
 
 The bigger bowl has many kinds of candy in it.
+（大一点的那个碗里有很多种糖果。）
 \end{verbatim}
 
-\noindent (the first sentence associated "collection" with "bigger", the second associates "bigger" with "many"; a deduction step can then associate "collection" with "many").
+\noindent 其中第一个句子中的“collection（收藏）”与“bigger（更大）”关联，而第二个句子中“bigger（更大）”与“many（很多）”关联，因此通过演绎推理可以得出“collection（收藏）”与“many（很多）”关联。
 
-\noindent In general, the knowledge needed to interpret any particular sentence, can be found in other sentences.   But the interpretation of these other sentence, requires knowledge to be found in other sentences.   The challenge is to create a robust enough framework that this becomes a web of virtuous rather than vicious cycles.
+\noindent 一般来说，解析某些特定句子所需要的知识都能从其他的句子中获得，但解析这些“其他的句子”可能需要从另外的其他的句子中获取相关知识。因此我们面临的挑战是如何构建一个强大的系统框架，使得获取推理常识的知识网络是一个良性而不是恶性循环。
+
+这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中
 
 Part of this challenge is simply combinatorial explosion -- in an Atomspace
 containing interpretations of many difference sentences, there are many, many different inferences that can be drawn.  
@@ -839,11 +891,19 @@ the key challenge of commonsense inference \cite{RWR}.   Hand-coding of complex 
 has proved infeasible due to the scope and complexity of the knowledge used even in simple human commonsense inferences.
 Inferring common-sense knowledge from natural language corpora seems much more promising, alongside inferring
 commonsense knowledge from embodied experience encompassing a combination of linguistic and nonlinguistic sources.
+这个挑战并不是特别针对查询处理，但是，其关键挑战基本上就是常识推理\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，
+
 However, the particular way knowledge is presented in one natural language sentence, is often not the way that would be most useful
 for reasoning about some other natural language sentence.  Performing the needed rearrangements of the knowledge encoded
 in a sentence, generally involves commonsense knowledge that needs to be extracted from other sentences.  One thus has a 
 huge system of simultaneous uncertain logical equations.   There is no reason to believe that this problem is intractable; nor is there
 any reason to believe it is easy.  
+
+然而，该特定方式知识在一个自然语言句子呈现，往往不是这样，这将是最有用
+推理有关的其他一些自然语言句子。执行编码的知识的需要重排
+在一个句子，通常涉及需要从其他句子中提取常识知识。因此，人们有一个
+同时不确定的逻辑等式的庞大体系。我们没有理由相信，这个问题是棘手的;也没有
+任何理由相信它很容易。
 
 One approach to addressing the commonsense knowledge problem, in a dialogue context, is to roughly mimic the linguistic
 and cognitive developmental trajectory of a human child.  That is: Begin by feeding the AI system text containing relatively
@@ -864,9 +924,6 @@ This is also closely related to the developmental "AGI Preschool" approach propo
 \section{本章小结}{Summary of Accomplishments and Future Work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-XXX语言需要调整修改
+本章充分利用了我们的研究成果，在第\ref{chap:dialogueModel}章中提出的智能会话系统CogDial的概念模型基础上，并结合第\ref{chap:comprehension}章中讨论的自然语言理解系统、第\ref{chap:generation}章中讨论的自然语言生成系统，以及\ref{sec:pln}中讨论的PLN推理系统，以认知模型OpenPsi中的动机机制等技术来设计并实现了几个合理有效的对话管理机制。本章还讨论了我们在智能对话系统的研究中发现的深层语义解析的挑战，也给未来的研究提供了一个明确的方向。下一步工作将进一步完善本章中提出的各种对话管理机制并开发更多新颖智能的对话控制体系结构，并最终运用到机器人或者其他智能体软件系统上。
 
-本章主要提出了一个合理有效的智能会话系统的设计模型CogDial，该模型充分利用我们的研究成果，将第\ref{chap:comprehension}章中讨论的自然语言理解系统、第\ref{chap:generation}章中讨论的自然语言生成系统，以及\ref{sec:pln}中讨论的PLN推理系统，以认知模型OpenPsi中的动机机制来实现对话管理。本章还对基于此设计模型构建的原型系统（即结合超图匹配和逻辑推理的自然语言问题系统）展开了讨论。
-
-下一步工作将进一步完善本章描述的40多种言语行为规划器和不同的对话控制机制的实现，从而使CogDial的实用性更强，并最终运用到机器人或者其他智能体软件系统上。
 
