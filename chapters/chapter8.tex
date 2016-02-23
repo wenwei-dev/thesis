@@ -879,21 +879,7 @@ The bigger bowl has many kinds of candy in it.
 
 这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中包括很多不同句子的解析结果，这很容易导致过量的不同推断。上述例子中的任何特定推断理论上都可以通过目标驱动的后向链接推理得出，如\ref{sec:backward}中讨论的回答查询问题的例子“谁在商店买钟琴”中的推理模式，这样一来，我们需要设置Atomspace能储存相对久的知识以保证推理的时候有足够多的推理前提。同样，上述例子中的任何特地推断原则上也可以通过系统自动搜索相关有趣信息来进行前向链接推理得出。不论用哪一种推理方法，不仅需要一个非常丰富复杂的知识库的支持，如果合理高效地进行推理控制更是巨大的研究挑战。
 
-However, the particular way knowledge is presented in one natural language sentence, is often not the way that would be most useful
-for reasoning about some other natural language sentence.  Performing the needed rearrangements of the knowledge encoded
-in a sentence, generally involves commonsense knowledge that needs to be extracted from other sentences.  One thus has a
-huge system of simultaneous uncertain logical equations.   There is no reason to believe that this problem is intractable; nor is there
-any reason to believe it is easy.
-
-这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排。
-
-
-
-然而，该特定方式知识在一个自然语言句子呈现，往往不是这样，这将是最有用
-推理有关的其他一些自然语言句子。执行编码的知识的需要重排
-在一个句子，通常涉及需要从其他句子中提取常识知识。因此，人们有一个
-同时不确定的逻辑等式的庞大体系。我们没有理由相信，这个问题是棘手的;也没有
-任何理由相信它很容易。
+这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排，这也就要求一个可靠的能进行实时非确定逻辑推理系统。这无疑是一个相当棘手的问题。
 
 One approach to addressing the commonsense knowledge problem, in a dialogue context, is to roughly mimic the linguistic
 and cognitive developmental trajectory of a human child.  That is: Begin by feeding the AI system text containing relatively
