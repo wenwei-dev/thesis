@@ -22,7 +22,7 @@ XXXX
 
 模式匹配器是一个变数配对者，是在传统计算机科学中“统一“的概念，因为这是它的功能之一。它同时亦是一个查询引擎，因为这个变数配对过程某情度上是等同于用SQL在关联数据库中进行查询。其中主要的分别在于在我们这里的概念是以超图的形式表示，所以它亦可以被形容为一个超图查询语言HQL（Hypergraph Query Language）。但这些都只是以不同的名称去表示同一个程序。
 
-这个模式匹配器是结构精密应用的一个重要组件，同时也是建立逻辑推理系统中前向和后向推理链的一个重要基础。它拥有C++和Scheme的接口以供不同的应用。
+这个模式匹配器是结构精密应用的一个重要组件，同时也是建立逻辑推理系统中前向和后向链接推理的一个重要基础。它拥有C++和Scheme的接口以供不同的应用。
 
 模式匹配器由数个不同的组件连接在一起，组成一个基础前向链接或超图重写的工具。在其核心是一个能比较和配对不同超图以及其变数的组件，而这个组件跟另一个“找寻器“一同使用便能寻找整个Atomspace中的合乎条件的超图。最后一个组件是一个“编写器“，主要功用是当有一个配对成功产生后建立一个或以上在ImplicationLink后半部列明的超图。
 
@@ -45,14 +45,14 @@ XXXX
          (VariableNode "$var")
          (ConceptNode "animal")
       )
- 
+
       ;; The value to be returned.
       (VariableNode "$var")
     )
   )
 )
  \end{verbatim}
- 
+
 执行时，只需在我们系统的Scheme终端输入以下指令便能执行以上的模式匹配器并找出在Atomspace中所有继承“animal“的概念：
 
 \begin{verbatim}
@@ -330,10 +330,11 @@ InheritanceLink
 得到“钟琴”是一种“乐器”，那么会对“钟琴”改为“乐器”的修改操作赋值一个较低的成本值。基于这样的简单推理，系统会认为“Jim bought a musical instrument at the store.”（Jim在商店买了一个乐器）比“ Jim bought a power tool at the store.” （Jim在商店买了一个电源工具）更符合上述查询。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{基于后向推理的问答系统}{Question-Answering via Backward Chaining Reasoning}
+\section{基于后向链接推理的问答系统}{Question-Answering via Backward Chaining Reasoning}
+\label{sec:backward}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-上一节中介绍的基于超图匹配的问答虽然能回答不少的查询，但是随着知识库Atomspace的不断变大，搜索匹配的工作会变得越来越复杂，也越来越耗时。而且基于超图匹配的方法只是一个粗糙的启发式搜索过程，不足以用于这些情况：对查询时间要求高、知识库数据不足或者在知识库中的答案需要经过一定推理才能找到等。例如，该方法无法将查询“Who bought a glockenspiel?”（谁买了钟琴？）从下面的句子中找到近似匹配，但是这些句子都在一定程度上暗示了此查询的答案。
+上一节中介绍的基于超图匹配的问答虽然能回答不少的查询，但是随着知识库Atomspace的不断变大，搜索匹配的工作会变得越来越复杂，也越来越耗时。而且基于超图匹配的方法只是一个粗糙的启发式搜索过程，不适用于这些情况：对查询时间要求高、知识库数据不足或者在知识库中的答案需要经过一定推理才能找到等。例如，该方法无法将查询“Who bought a glockenspiel?”（谁买了钟琴？）从下面的句子中找到近似匹配，但是这些句子都在一定程度上暗示了此查询的答案。
 
 \begin{itemize}
 \item Bob brought his new instrument home from the mall and played it for his kids.（Bob从商场带了新乐器回家，并为他的孩子们演奏了几曲。）
@@ -486,7 +487,7 @@ EvaluationLink <s,c>
 \end{verbatim}
 
 真值$<s,c>$的大小不仅取决于推理过程中的使用到的推理规则的具体参数，还取决于节点本身的概率大小（ “glockenspiel”节点的概率值用于表示钟琴在这世界上有多常见，这有助于估算钟琴是稀有乐器的概率）。因此，即使推理的前提给出很高的强度和置信度的真值如$<1,.95>$，推断得出的结论的真值也可能很低如$<.05,.6>$。不过由于推理的不确定性，得到的这样的低真值结论也是合理的。
-上面例子给出的前提是简化过的，比如，没有给出这样的事实：“博物馆通常有稀少的东西”，可表示如下：
+上面例子给出的前提是简化过的，比如，没有给出这样的事实：“博物馆通常有稀有的东西”，可表示如下：
 
 \begin{verbatim}
 ImplicationLink <.3,.8>
@@ -525,7 +526,7 @@ Composite Information-Finding QA Schema:
                     如果成功，则将得到的原子集合输入微观规划器用于应答
                     如果失败，则将模糊匹配得到的原子集合输入微观规划器用于应答
              如果失败，则触发StumpedByQuestion规划器
-     
+
 如果T的值小，则试图通过浅层推理来快速回答Q
        如果成功，则将得到的原子集合输入微观规划器用于应答
        如果失败，则试图通过基于超图的模糊匹配来回答Q
@@ -570,7 +571,7 @@ ExpressIgnorance Schema:
 
 \begin{enumerate}
 \item 用Scheme或者Python编写相应语篇管理行为代码，然后绑定在GroundedSchemaNodes里。OpenPsi可以在适当的时候调用这些语篇管理行为。
-\item 用基于超图的知识表示形式Atom来表示语篇管理行为，通过“硬编码”设置规划器参数，使其调用特定的认知处理程序（如微观规划器Microplanner或者后向推理工具Backward Chainer等）。
+\item 用基于超图的知识表示形式Atom来表示语篇管理行为，通过“硬编码”设置规划器参数，使其调用特定的认知处理程序（如微观规划器Microplanner或者后向链接推理工具Backward Chainer等）。
 \item 根据经验，通过强化学习和模仿等方法来自动学习语篇管理行为。
 \end{enumerate}
 
@@ -742,11 +743,11 @@ EvaluationLink
 在解析上面列出的第一个句子后，RelEx2Logic输出的语义逻辑关系中含有：
 
  {\tt\begin{small}\begin{lstlisting}
- 
+
  ImplicationLink
  	PredicateNode "largest_77"
 	PredicateNode "largest"
- 
+
 EvaluationLink
 	PredicateNode "largest_77"
 	ConceptNode "collection_44"
@@ -788,7 +789,7 @@ ImplicationLink
 ImplicationLink
  	PredicateNode "largest_77"
 	PredicateNode "largest"
- 
+
 EvaluationLink
 	PredicateNode "largest_77"
 	ConceptNode "collection_123"
@@ -876,28 +877,17 @@ The bigger bowl has many kinds of candy in it.
 
 \noindent 一般来说，解析某些特定句子所需要的知识都能从其他的句子中获得，但解析这些“其他的句子”可能需要从另外的其他的句子中获取相关知识。因此我们面临的挑战是如何构建一个强大的系统框架，使得获取推理常识的知识网络是一个良性而不是恶性循环。
 
-这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中
-
-Part of this challenge is simply combinatorial explosion -- in an Atomspace
-containing interpretations of many difference sentences, there are many, many different inferences that can be drawn.  
-Any particular inference among the examples given above could potentially be found via backward chaining in the course of answering a query like the one 
-under consideration regarding buying glockenspiels at the store -- and if so, perhaps it would persist in the Atomspace
-a while to be used in the resolution of future queries.  Or any of these inferences might be found via forward chaining, based on the
-system's autonomous search for surprising information.   But doing these sorts of inferences, in the context of a real, complex Atomspace,
-poses a nontrivial inference control challenge.   
-
-This challenge is not specific to query processing, however; it is basically 
-the key challenge of commonsense inference \cite{RWR}.   Hand-coding of complex knowledge as done in Cyc \cite{Lenat1990}
-has proved infeasible due to the scope and complexity of the knowledge used even in simple human commonsense inferences.
-Inferring common-sense knowledge from natural language corpora seems much more promising, alongside inferring
-commonsense knowledge from embodied experience encompassing a combination of linguistic and nonlinguistic sources.
-这个挑战并不是特别针对查询处理，但是，其关键挑战基本上就是常识推理\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，
+这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中包括很多不同句子的解析结果，这很容易导致过量的不同推断。上述例子中的任何特定推断理论上都可以通过目标驱动的后向链接推理得出，如\ref{sec:backward}中讨论的回答查询问题的例子“谁在商店买钟琴”中的推理模式，这样一来，我们需要设置Atomspace能储存相对久的知识以保证推理的时候有足够多的推理前提。同样，上述例子中的任何特地推断原则上也可以通过系统自动搜索相关有趣信息来进行前向链接推理得出。不论用哪一种推理方法，不仅需要一个非常丰富复杂的知识库的支持，如果合理高效地进行推理控制更是巨大的研究挑战。
 
 However, the particular way knowledge is presented in one natural language sentence, is often not the way that would be most useful
 for reasoning about some other natural language sentence.  Performing the needed rearrangements of the knowledge encoded
-in a sentence, generally involves commonsense knowledge that needs to be extracted from other sentences.  One thus has a 
+in a sentence, generally involves commonsense knowledge that needs to be extracted from other sentences.  One thus has a
 huge system of simultaneous uncertain logical equations.   There is no reason to believe that this problem is intractable; nor is there
-any reason to believe it is easy.  
+any reason to believe it is easy.
+
+这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排。
+
+
 
 然而，该特定方式知识在一个自然语言句子呈现，往往不是这样，这将是最有用
 推理有关的其他一些自然语言句子。执行编码的知识的需要重排
@@ -910,7 +900,7 @@ and cognitive developmental trajectory of a human child.  That is: Begin by feed
 simple sentences communicating relatively simple knowledge, and dialoguing with the system about this knowledge.   Once
 the system has built up commonsense knowledge based on this relatively simple network of knowledge, then feed it slightly
 more complex knowledge -- and so forth.  In this way it may be possible to ease the AI system toward a reasonable solution
-of the system of simultaneous equations constituting commonsense semantics.   
+of the system of simultaneous equations constituting commonsense semantics.
 
 Conceptually this is similar to the approach
 pursued in \cite{Spitkovsky2013} for unsupervised language learning (via feeding a learning system progressively more and more complex

@@ -12,7 +12,7 @@
 \section{基于超图的知识表示方法}{Knowledge Representation Based on Hypergraph}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-对于任何以实现复杂功能为目标的自然语言处理系统（如智能对话系统或复杂的问答系统等）来说，系统内部知识如何表示是至关重要的。高效的知识表示机制不仅能使系统不同模块之间高效地传递有用的信息，更能使系统的知识库通过与用户的交互不断完善。本节主要阐述一种高效灵活的基于超图的知识表示方法，首先会解释其理论基础和相应的数据结构等，同时为了方便对本文研究工作的解释，在这一节我们还会列出一些该知识表示体系中基本的且后文经常会用到的数据类型。
+对于任何以实现复杂功能为目标的自然语言处理系统（如智能对话系统或复杂的问答系统等）来说，系统内部知识如何表示是至关重要的。高效的知识表示机制不仅能使系统不同模块之间高效地传递有用的信息，更能使系统的知识库通过与用户的交互不断完善。本节主要阐述一种高效灵活的基于超图的知识表示方法，正如上面提到的，这里介绍的知识表示体系旨在模拟人脑的知识表示方式，因此会先讨论其记忆空间以及全局局部知识存储等问题，然后再讨论超图的数据结构以及基于超图的知识表示体系，同时为了方便后面章节对本文具体的研究工作的解释，在这一节我们还会列出一些该知识表示体系中基本的且后文经常会用到的数据类型。
 
 \subsection{知识表示和记忆空间}{Representation and Memory}
 
@@ -46,7 +46,7 @@
 \textbf{感知} & 视觉图像处理组件DeSTIN & 关联，注意力分配，创建新的模式，评分 \\ \hline
 \end{tabular}
 \caption{OpenCog中的记忆类型和认知处理过程。第三列根据模式主义理论来表示每一个特定的认知处理过程所拥有的泛化认知功能}
-\label{tab:opencog} 
+\label{tab:opencog}
 \end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +57,7 @@
 正如上述所言，Atomspace是本文所使用统一且通用的知识库，它使用包含特定类型的节点（Node）和链接（Link）的加权有向超图结构来表示知识，主要用作表示叙述性的知识，同时亦间接地表示其它类型的知识。Atomspace中使用的超图的节点和链接类型是经过包括语义层面上精挑细选得来的，以满足智能对话系统在认知过程的需要。由于Atomspace是本文研究中的知识表示核心，在这里我们会详细列出几个简单的示例予以说明。
 
 以下是一个以Atomspace中常用的表示方法去表示继承链接（InheritanceLink）的例子：
- 
+
 {\tt\begin{small}\begin{lstlisting}
 InheritanceLink Lian_Ruiting animal <.99>
 \end{lstlisting}\end{small}}
@@ -74,7 +74,7 @@ InheritanceLink <.99>
 
 {\tt\begin{small}\begin{lstlisting}
 EvaluationLink <.7>
-	chase 
+	chase
 	ListLink
 		cat
 		mouse
@@ -84,7 +84,7 @@ EvaluationLink <.7>
 
 {\tt\begin{small}\begin{lstlisting}
 EvaluationLink <.7>
-	PredicateNode "chase" 
+	PredicateNode "chase"
 	ListLink
 		ConceptNode "cat"
 		ConceptNode "mouse"
@@ -219,7 +219,7 @@ IntensionalInheritanceLink Ben monster <.5,.9>
 
 \noindent 来表示一个连接著“Ben“和“monster“的IntensionalInheritance关係中有著一个.5的强度和.9确信情度。总而言之，\ensuremath{<}tv\ensuremath{>}表示著一个平均值为tv的概率分佈。这些概念和语义将会在\cite{PLN}中作详细展述。
 
-\subsection{量词}{Quantiﬁers}  
+\subsection{量词}{Quantiﬁers}
 
 在不明确逻辑理论中，量化过程是一个比较细微的事项。PLN包含了标準的ForAll和ThereExists的量词（使用高阶概率定义的概率真值），在处理量化过程时主要会用AverageQuantifier来建构，例如：
 
@@ -277,7 +277,7 @@ w($X) F($X) / N
 
 \begin{itemize}
 \item 结合律：如果 $f : a \rightarrow b$, $g : b \rightarrow c$ 和 $h : c \rightarrow d$， 那么 $h \circ (g \circ f) = (h \circ g) \circ f$
-\item 恒等性：对每一个对象x，存在一个恒等态射(identity morphism) $1x : x \rightarrow x$，使得任意态射 $f : a \rightarrow b$，有 $1b \circ f = f = f \circ 1a$ 
+\item 恒等性：对每一个对象x，存在一个恒等态射(identity morphism) $1x : x \rightarrow x$，使得任意态射 $f : a \rightarrow b$，有 $1b \circ f = f = f \circ 1a$
 \end{itemize}
 \end{itemize}
 
@@ -374,7 +374,7 @@ X_Link B C <sBC>
 X_Link A C <sAC>
 \end{lstlisting}\end{small}}
 
-其中： 
+其中：
 
 $$
 s_{AC}=s_{AB}s_{BC}+\frac{\left(1-s_{AB}\right)\left(s_C-s_Bs_{BC}\right)}{1-s_B}
@@ -389,7 +389,7 @@ $$, $s_A$表示节点$A$的真值强度。
 \item 非确定的概率值，如（0.6，0.9， 0.95），这表示概率间的相互评分
 \end{itemize}
 
-\subsection{前向和后向链}{Forward and Backward Chaining}
+\subsection{前向和后向链接推理}{Forward and Backward Chaining}
 
 PLN中典型的模式的使用是前向链和后向链推理。
 
@@ -423,7 +423,7 @@ PLN中典型的模式的使用是前向链和后向链推理。
 
 常识推理可能涉及一个前向和后向链的组合。
 
-推理中最困难的部分是“推理控制”——在可能的推理步骤中选取哪些步骤，以获得需求的信息（在后向推理中）或获得感兴趣的新信息（在前向推理中）。在一个有大量原子的原子空间中有许多可能的和强大的启发信息需要进行选择。推理控制的最佳指导是某些基于系统的过去推理历史的归纳。当然，一个较信的系统不会有很多的历史信息。依靠非直接的相关历史是一个推理问题——这个问题的最好解决是让系统有一些历史经验。
+推理中最困难的部分是“推理控制”——在可能的推理步骤中选取哪些步骤，以获得需求的信息（在后向链接推理中）或获得感兴趣的新信息（在前向链接推理中）。在一个有大量原子的原子空间中有许多可能的和强大的启发信息需要进行选择。推理控制的最佳指导是某些基于系统的过去推理历史的归纳。当然，一个较信的系统不会有很多的历史信息。依靠非直接的相关历史是一个推理问题——这个问题的最好解决是让系统有一些历史经验。
 
 \subsection{一阶概率逻辑网络}{First Order Probabilistic Logic Networks}
 
@@ -460,7 +460,7 @@ Sub\=set $<0.9>$\\
 \>B\\
 \end{tabbing}
 
-意思是：$$P(x \mbox{ 属于集合}\ B\vert x \mbox{ 属于集合}\ A) = 0.9.$$ 
+意思是：$$P(x \mbox{ 属于集合}\ B\vert x \mbox{ 属于集合}\ A) = 0.9.$$
 
 \subsection{PLN 真值}{PLN Truth Values}
 
@@ -487,7 +487,7 @@ $$
 
 {\tt\begin{small}\begin{lstlisting}
 IntensionalInheritance <0.5>
-	Fluffy  
+	Fluffy
 	cat
 \end{lstlisting}\end{small}}
 
@@ -500,17 +500,17 @@ IntensionalInheritance <0.5>
 PLN中一个析取是通过规则和方程来达到的。PLN逻辑推理以“三段论演绎规则”的形式进行，以通过合并陈述和匹配的词项来寻找模式。PLN的规则包括但不限于以下例子：
 
 \begin{itemize}
-\item deduction $\left((A\rightarrow B) \wedge (B\rightarrow C) \Rightarrow (A\rightarrow C)\right)$,
-\item induction $\left((A\rightarrow B) \wedge (A\rightarrow C) \Rightarrow
+\item 演绎推理 $\left((A\rightarrow B) \wedge (B\rightarrow C) \Rightarrow (A\rightarrow C)\right)$,
+\item 归纳推理 $\left((A\rightarrow B) \wedge (A\rightarrow C) \Rightarrow
 (B\rightarrow C)\right)$,
-\item abduction $\left((A\rightarrow C) \wedge (B\rightarrow C) \Rightarrow
+\item  溯因推理  $\left((A\rightarrow C) \wedge (B\rightarrow C) \Rightarrow
 (A\rightarrow C)\right)$,
-  \item revision, which merges two versions of the same logical relationship that have different truth values
-\item inversion $\left((A\rightarrow B) \Rightarrow
+  \item 调整，即合并具有不同真值的同一逻辑关系的两个版本
+\item 反演推理 $\left((A\rightarrow B) \Rightarrow
   (B\rightarrow A)\right)$.
 \end{itemize}
 
-这些规则的前四项的基本设计如图\ref{fig:inference}所示。我们可以看到前三项规则表示了在三个相关联的词项上做推理的规则，同时还可以看到，归纳和回溯可以从演绎和反向的组合中获得，这是PLN真值公式使用的一项规则。
+这些规则的前四项的基本设计如图\ref{fig:inference}所示。我们可以看到前三项规则表示了在三个相关联的词项上做推理的规则，同时还可以看到，归纳和回溯可以从前向和后向链接推理的组合中获得，这是PLN真值公式使用的一项规则。
 
 \begin{figure}[htb]
   \center
@@ -538,3 +538,13 @@ $$，其中$A$和$B$由前述的成员关系$\textit{Member}\ C\ A$, $\textit{Me
 \section{本章小结}{Summary of Accomplishments and Future Work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 本章主要阐述新颖的并用于智能对话系统中的基于超图的知识表示方法及其灵活性和高效性；以及用于智能对话中的逻辑推理系统概率逻辑网PLN；并从范畴论角度高度概括分析了本文研究的大致框架。本文根据本章阐述的相关理论知识设计并实现了一个基于超图的语言逻辑推理系统，由于该系统依赖与未来章节要介绍自然语言理解系统，因此我们将会在第 \ref{chap:reasoning}章中具体介绍并给出相应的推理实例。
+
+使用这样基于超图的知识表示体系对于自然语言处理和智能对话系统的优点是不言而喻的，它能通过超图之间的关联抽取了有效的词、句子和语篇等信息，使得自然语言处理能在一个更大的上下文语境中进行，从而使计算机能更有效更智能地处理自然语言；由于该知识表示体系不仅仅适用于自然语言，还同样适用于表示其他感知信息，如可以储存视觉处理后的信息，这就很直观地将一些非自然语言信息加入到自然语言处理系统中，来解决一些通过一般自然语言处理系统无法解决的难题，或者一般自然语言处理系统很难解决的问题。最典型的问题如词义消歧和指代消解问题，一般都是需要根据上下文和相关的语境背景知识来解决，甚至有些需要通过直观的感知信息来解决。比较常用的例子如：
+
+\begin{verbatim}
+I saw a man with a telescope.
+\end{verbatim}
+
+这个句子可以表达“我用望远镜看见一个人。”，也可以表达“我看一个拿着望远镜的人。”。如果计算机想要确定具体是哪一种，可以根据上下文中是否含有“这个人是否拿着望远镜”或者“这个人是否离我很远”等提示，也可以通过图像识别来检验“我”是否拿着望远镜来判定。不管采用哪种方法来消歧，都能体现这样的基于超图的知识表示体系的优势。
+
+除了上述优势，该基于超图的知识表示体系还适用于\ref{sec:pln}中介绍的逻辑推理系统，这不仅能一定程度改进目前的自然语言处理系统，也为自然语言推理提供了一个方便有效平台，这些无疑都是提供计算机智能的有效途径。
