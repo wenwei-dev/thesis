@@ -879,22 +879,11 @@ The bigger bowl has many kinds of candy in it.
 
 这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中包括很多不同句子的解析结果，这很容易导致过量的不同推断。上述例子中的任何特定推断理论上都可以通过目标驱动的后向链接推理得出，如\ref{sec:backward}中讨论的回答查询问题的例子“谁在商店买钟琴”中的推理模式，这样一来，我们需要设置Atomspace能储存相对久的知识以保证推理的时候有足够多的推理前提。同样，上述例子中的任何特地推断原则上也可以通过系统自动搜索相关有趣信息来进行前向链接推理得出。不论用哪一种推理方法，不仅需要一个非常丰富复杂的知识库的支持，如果合理高效地进行推理控制更是巨大的研究挑战。
 
-这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排，这也就要求一个可靠的能进行实时非确定逻辑推理系统。这无疑是一个相当棘手的问题。
+这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排，这也就要求一个可靠的能进行实时不确定逻辑推理系统。这无疑是一个相当棘手的问题。
 
-One approach to addressing the commonsense knowledge problem, in a dialogue context, is to roughly mimic the linguistic
-and cognitive developmental trajectory of a human child.  That is: Begin by feeding the AI system text containing relatively
-simple sentences communicating relatively simple knowledge, and dialoguing with the system about this knowledge.   Once
-the system has built up commonsense knowledge based on this relatively simple network of knowledge, then feed it slightly
-more complex knowledge -- and so forth.  In this way it may be possible to ease the AI system toward a reasonable solution
-of the system of simultaneous equations constituting commonsense semantics.
+要解决上述的常识知识问题，对于智能对话系统来说，其中一种方法是粗略模仿人类儿童的语言和认知成长轨迹。也就是说，从相对简单的知识库知识库着手，使得智能对话系统能通过知识库中相对简单的句子和人类交流相对简单的知识。当系统已经建立了基于这些相对简单的知识网络下的常识性知识后，再开始对系统输入稍微复杂的知识--等等，依此下去，这样的对话系统很可能会发展成一个拥有相当的常识语义库并能做出实时合理应答的智能对话系统。
 
-Conceptually this is similar to the approach
-pursued in \cite{Spitkovsky2013} for unsupervised language learning (via feeding a learning system progressively more and more complex
-sentences), and the approach pursued in \cite{Goertzel2008w} for embodied behavioral learning; but here the developmental approach
-is being proposed specifically for learning appropriate, useful transformations of semantic knowledge extracted from natural language.
-This is also closely related to the developmental "AGI Preschool" approach proposed in an OpenCog context in \cite{Goertzel2009a}.
-
-
+ 从概念上讲， 上述方法和\cite{Spitkovsky2013} 中的无监督语言学习类似，即通过逐步将越来越复杂的自然语言句子输入系统，使得系统逐步理解越来越复杂的句子。 \cite{Goertzel2008w} 也提出了类似的涉身行为学习。但我们这里提出的观点更针对智能对话系统，更注重如何从自然语言中抽取出有用的合理的语义知识等的学习。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{本章小结}{Summary of Accomplishments and Future Work}

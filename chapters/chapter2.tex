@@ -141,7 +141,7 @@ ExecutionOutputLink
 
 \noindent 当执行时，会调用Python函数“plus“来把“2“和“3“加起来，然后产生一个名为“5“的NumberNode作为其输出。
 
-\subsection{內涵与外延的关系}{Intensional and Extensional Relationships}
+\subsubsection{內涵与外延的关系}{Intensional and Extensional Relationships}
 
 
 我们所使用的知识库中的链接类型中亦有多种拥有继承和相似性质的链接，例如IntensionalInheritanceLink和ExtensionalInheritanceLink，其细节将会在\cite{PLN}中详述，但简而言之，以下链接的真值：
@@ -219,9 +219,9 @@ IntensionalInheritanceLink Ben monster <.5,.9>
 
 \noindent 来表示一个连接著“Ben“和“monster“的IntensionalInheritance关係中有著一个.5的强度和.9确信情度。总而言之，\ensuremath{<}tv\ensuremath{>}表示著一个平均值为tv的概率分佈。这些概念和语义将会在\cite{PLN}中作详细展述。
 
-\subsection{量词}{Quantiﬁers}
+\subsubsection{量词}{Quantiﬁers}
 
-在不明确逻辑理论中，量化过程是一个比较细微的事项。PLN包含了标準的ForAll和ThereExists的量词（使用高阶概率定义的概率真值），在处理量化过程时主要会用AverageQuantifier来建构，例如：
+在不确定逻辑理论中，量化过程是一个比较细微的事项。PLN包含了标準的ForAll和ThereExists的量词（使用高阶概率定义的概率真值），在处理量化过程时主要会用AverageQuantifier来建构，例如：
 
 \begin{verbatim}
 AverageQuantifier $X
@@ -325,7 +325,7 @@ w($X) F($X) / N
 
 将语言转换成逻辑形式的一个主要目的就是可以进行相应的逻辑推理，本文所采用的逻辑系统是概率逻辑网络（Probabilistic Logic Network，以下简称“PLN”）。 PLN是一个独特的推理系统，它嵌入了预测逻辑和传统逻辑的组合。\cite{Goertzel2008, RWR}中对PLN进行了全面具体的阐述及论证。在此我们仅简单介绍用于语言逻辑推理的基本相关知识。
 
-PLN是一个数学和软件框架，被运用在本文研究的智能对话系统中，用于非确定推理、使概率真值与泛化逻辑推理规则的整合成为可能。具体来说，PLN包含：
+PLN是一个数学和软件框架，被运用在本文研究的智能对话系统中，用于不确定推理、使概率真值与泛化逻辑推理规则的整合成为可能。具体来说，PLN包含：
 
 \begin{itemize}
 \item 一系列推理规则（例如，演绎、贝叶斯规则、变量归一化、演绎推理，等等），每一项都有一个或多个逻辑关系或词项（以Atomspace的原子Atom来表示）作为输入，并计算输出；
@@ -359,7 +359,7 @@ X_Link A C
 
 在这里，X\_Link可以是继承性链接（InheritanceLink）、子集链接（SubsetLink）、隐含链接（ImplicationLink）或延伸隐含链接（ExtensionalImplicationLink)。
 
-一个PLN方程与一条PLN规则同时存在，它表示了输出的非确定性真值，基于输入的非确定真值。例如，如果我们有：
+一个PLN方程与一条PLN规则同时存在，它表示了输出的不确定性真值，基于输入的不确定真值。例如，如果我们有：
 
 {\tt\begin{small}\begin{lstlisting}
 X_Link A B <sAB>
@@ -380,13 +380,13 @@ $$
 s_{AC}=s_{AB}s_{BC}+\frac{\left(1-s_{AB}\right)\left(s_C-s_Bs_{BC}\right)}{1-s_B}
 $$, $s_A$表示节点$A$的真值强度。
 
-在这个例子中，每一个院子的非确定真值通过一个“强度”数值来给出。总的来说，PLN中的非确定真值可以有多种形式，比如：
+在这个例子中，每一个原子的不确定真值通过一个“强度”数值来给出。总的来说，PLN中的不确定真值可以有多种形式，比如：
 
 \begin{itemize}
 \item 单一的强度值，比如0.8，这表示概率或模糊真值，取决于具体的原子类型
 \item （强度，置信度）对，比如（0.8，0.4）
 \item （强度，数量）对，如（0.8，15）
-\item 非确定的概率值，如（0.6，0.9， 0.95），这表示概率间的相互评分
+\item 不确定的概率值，如（0.6，0.9， 0.95），这表示概率间的相互评分
 \end{itemize}
 
 \subsection{前向和后向链接推理}{Forward and Backward Chaining}
@@ -429,7 +429,7 @@ PLN中典型的模式的使用是前向链和后向链推理。
 
 我们将在这一小节中更具体介绍PLN。PLN被氛围一阶和高阶子理论（FOPLN和HOPLN）。这些词项源自NARS\cite{Wang2006}。我们首先使用了FOPLN，然后他们使用了HOPLN。
 
-FOPLN是一个传统逻辑，设计到词项和词项间的关系（链接）。它是一个非确定逻辑，词项和关系都拥有真值对象，真值对象有多种可能的类型，从单一的数值到复合的结构如非确定概率。词项可以是基本的观察，或一个符号集合$T$中的抽象的符号。
+FOPLN是一个传统逻辑，设计到词项和词项间的关系（链接）。它是一个不确定逻辑，词项和关系都拥有真值对象，真值对象有多种可能的类型，从单一的数值到复合的结构如不确定概率。词项可以是基本的观察，或一个符号集合$T$中的抽象的符号。
 
 \paragraph{核心FOPLN关系}
 
@@ -469,7 +469,7 @@ Sub\=set $<0.9>$\\
 \begin{itemize}
 \item 强度真值，包含单一数值；例如，$<s>$或$<0.8>$。强度真值通常表示概率，但不总是这样。
 \item 单一真值，包括一对数字。这些数字对以以下形式存在：$<s,\ w>$，$s$是一个强度值而$w$是一个“证据的权重值”；$<s,\ N>$，其中$N$是一个“计数”。“证据的权重值”是对信念的量化描述，而“计数”是对重复性证据的量化描述。
-\item 非确定性真值，它用区间$[L,U]$、评分水平$b$、以及一个整数$k$来量化对真值的描述。非确定性真值量化了以下的想法：在经过了$k$次观察以后，以概率$b$的可能性，推理的结论会落在区间$[L,U]$中。
+\item 不确定性真值，它用区间$[L,U]$、评分水平$b$、以及一个整数$k$来量化对真值的描述。不确定性真值量化了以下的想法：在经过了$k$次观察以后，以概率$b$的可能性，推理的结论会落在区间$[L,U]$中。
 \item 分布真值，对整个概率分布的离散化近似。
 \end{itemize}
 
