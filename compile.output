@@ -1,0 +1,1016 @@
+Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
+Startup Folder: C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChineseVersion-editing
+
+Qt: Untested Windows version 6.2 detected!
+This is XeTeX, Version 3.1415926-2.3-0.9997.5 (MiKTeX 2.9)
+entering extended mode
+
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for loaded.
+\@input{config/headinfo.aux}
+
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\config/headinfo.tex (C:\CTEX\MiKTeX\tex\latex\base\book.cls
+Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
+(C:\CTEX\MiKTeX\tex\latex\base\bk12.clo))
+(C:\CTEX\MiKTeX\tex\latex\geometry\geometry.sty
+(C:\CTEX\MiKTeX\tex\latex\graphics\keyval.sty)
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\ifpdf.sty)
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\ifvtex.sty)
+(C:\CTEX\MiKTeX\tex\generic\ifxetex\ifxetex.sty)
+(C:\CTEX\MiKTeX\tex\xelatex\xetexconfig\geometry.cfg))
+(C:\CTEX\MiKTeX\tex\latex\natbib\natbib.sty)
+(C:\CTEX\MiKTeX\tex\latex\float\float.sty)
+(C:\CTEX\MiKTeX\tex\latex\placeins\placeins.sty)
+(C:\CTEX\MiKTeX\tex\latex\tools\calc.sty)
+(C:\CTEX\MiKTeX\tex\latex\caption\caption.sty
+(C:\CTEX\MiKTeX\tex\latex\caption\caption3.sty))
+(C:\CTEX\MiKTeX\tex\latex\ams\math\amsmath.sty
+For additional information on amsmath, use the `?' option.
+(C:\CTEX\MiKTeX\tex\latex\ams\math\amstext.sty
+(C:\CTEX\MiKTeX\tex\latex\ams\math\amsgen.sty))
+(C:\CTEX\MiKTeX\tex\latex\ams\math\amsbsy.sty)
+(C:\CTEX\MiKTeX\tex\latex\ams\math\amsopn.sty))
+(C:\CTEX\MiKTeX\tex\latex\amsfonts\amsfonts.sty)
+(C:\CTEX\MiKTeX\tex\latex\makecell\makecell.sty
+(C:\CTEX\MiKTeX\tex\latex\tools\array.sty))
+(C:\CTEX\MiKTeX\tex\latex\pgf\frontendlayer\tikz.sty
+(C:\CTEX\MiKTeX\tex\latex\pgf\basiclayer\pgf.sty
+(C:\CTEX\MiKTeX\tex\latex\pgf\utilities\pgfrcs.sty
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfutil-common.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfutil-latex.def
+(C:\CTEX\MiKTeX\tex\latex\ms\everyshi.sty))
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfrcs.code.tex))
+(C:\CTEX\MiKTeX\tex\latex\pgf\basiclayer\pgfcore.sty
+(C:\CTEX\MiKTeX\tex\latex\graphics\graphicx.sty
+(C:\CTEX\MiKTeX\tex\latex\graphics\graphics.sty
+(C:\CTEX\MiKTeX\tex\latex\graphics\trig.sty)
+(C:\CTEX\MiKTeX\tex\latex\00miktex\graphics.cfg)
+(C:\CTEX\MiKTeX\tex\xelatex\xetex-def\xetex.def)))
+(C:\CTEX\MiKTeX\tex\latex\pgf\systemlayer\pgfsys.sty
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsys.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfkeys.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfkeysfiltered.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgf.cfg)
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsys-xetex.def
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsys-common-pdf.def)
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsys-common-pdf-via-dvi.def)))
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex))
+(C:\CTEX\MiKTeX\tex\latex\xcolor\xcolor.sty
+(C:\CTEX\MiKTeX\tex\latex\00miktex\color.cfg))
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcore.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmath.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathcalc.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathutil.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathparser.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.basic.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.trigonometric.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.random.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.comparison.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.base.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.round.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.misc.code.tex)))
+(C:\CTEX\MiKTeX\tex\generic\pgf\math\pgfmathfloat.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorepathconstruct.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorepathusage.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorescopes.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoregraphicstate.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoretransformations.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorequick.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoreobjects.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorepathprocessing.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorearrows.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoreshade.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoreimage.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoreexternal.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorelayers.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcoretransparency.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\basiclayer\pgfcorepatterns.code.tex)))
+(C:\CTEX\MiKTeX\tex\generic\pgf\modules\pgfmoduleshapes.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\modules\pgfmoduleplot.code.tex)
+(C:\CTEX\MiKTeX\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty)
+(C:\CTEX\MiKTeX\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty))
+(C:\CTEX\MiKTeX\tex\latex\pgf\utilities\pgffor.sty
+(C:\CTEX\MiKTeX\tex\latex\pgf\utilities\pgfkeys.sty
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgfkeys.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\utilities\pgffor.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\tikz.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\pgflibraryplothandlers.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\modules\pgfmodulematrix.code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarytopaths
+.code.tex)))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryarrows.
+code.tex (C:\CTEX\MiKTeX\tex\generic\pgf\libraries\pgflibraryarrows.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+geometric.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.geometric.cod
+e.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+misc.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.misc.code.tex
+))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+symbols.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.symbols.code.
+tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+arrows.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.arrows.code.t
+ex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+callouts.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.callouts.code
+.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.
+multipart.code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\libraries\shapes\pgflibraryshapes.multipart.cod
+e.tex)))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarychains.
+code.tex
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarypositio
+ning.code.tex))
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarymatrix.
+code.tex)
+(C:\CTEX\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryscopes.
+code.tex) (C:\CTEX\MiKTeX\tex\latex\fontspec\fontspec.sty
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\expl3.sty
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3names.sty
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3bootstrap.sty))
+(C:\CTEX\MiKTeX\tex\latex\misc\etex.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3basics.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3expan.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3tl.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3seq.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3int.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3quark.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3prg.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3clist.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3token.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3prop.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3msg.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3file.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3skip.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3keys.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3fp.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3box.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3coffins.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3color.sty)
+(C:\CTEX\MiKTeX\tex\latex\l3kernel\l3luatex.sty))
+(C:\CTEX\MiKTeX\tex\latex\l3packages\xparse\xparse.sty)
+(C:\CTEX\MiKTeX\tex\latex\fontspec\fontspec-patches.sty
+(C:\CTEX\MiKTeX\tex\latex\base\fixltx2e.sty)
+*************************************************
+* LaTeX warning: "xparse/redefine-command"
+* 
+* Redefining document command \oldstylenums with arg. spec. 'm' on line 107.
+*************************************************
+) (C:\CTEX\MiKTeX\tex\latex\fontspec\fontspec-xetex.sty
+(C:\CTEX\MiKTeX\tex\latex\base\fontenc.sty
+(C:\CTEX\MiKTeX\tex\latex\euenc\eu1enc.def)
+(C:\CTEX\MiKTeX\tex\latex\euenc\eu1lmr.fd))
+(C:\CTEX\MiKTeX\tex\xelatex\xunicode\xunicode.sty
+(C:\CTEX\MiKTeX\tex\latex\tipa\t3enc.def
+(C:\CTEX\MiKTeX\tex\latex\euenc\eu1lmss.fd)))
+(C:\CTEX\MiKTeX\tex\latex\fontspec\fontspec.cfg)))
+(C:\CTEX\MiKTeX\tex\latex\xltxtra\xltxtra.sty
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\ifluatex.sty)
+(C:\CTEX\MiKTeX\tex\latex\realscripts\realscripts.sty
+*************************************************
+* LaTeX warning: "xparse/redefine-command"
+* 
+* Redefining document command \textsubscript with arg. spec. 's' on line 25.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/redefine-command"
+* 
+* Redefining document command \textsuperscript with arg. spec. 's' on line 28.
+*************************************************
+) (C:\CTEX\MiKTeX\tex\latex\metalogo\metalogo.sty))
+(C:\CTEX\MiKTeX\tex\latex\base\doc.sty
+(C:\CTEX\MiKTeX\tex\latex\tools\multicol.sty))
+(C:\CTEX\MiKTeX\tex\latex\setspace\setspace.sty)
+(C:\CTEX\MiKTeX\tex\latex\base\ifthen.sty)
+(C:\CTEX\MiKTeX\tex\latex\hyperref\hyperref.sty
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\hobsub-hyperref.sty
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\hobsub-generic.sty))
+(C:\CTEX\MiKTeX\tex\latex\oberdiek\kvoptions.sty)
+(C:\CTEX\MiKTeX\tex\latex\hyperref\pd1enc.def)
+(C:\CTEX\MiKTeX\tex\latex\00miktex\hyperref.cfg)
+(C:\CTEX\MiKTeX\tex\xelatex\xetexurl\url.sty))
+
+Package hyperref Message: Driver (autodetected): hxetex.
+
+(C:\CTEX\MiKTeX\tex\latex\hyperref\hxetex.def
+(C:\CTEX\MiKTeX\tex\latex\hyperref\puenc.def)
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\stringenc.sty)
+(C:\CTEX\MiKTeX\tex\latex\oberdiek\rerunfilecheck.sty))
+(C:\CTEX\MiKTeX\tex\latex\fancyhdr\fancyhdr.sty)
+(C:\CTEX\MiKTeX\tex\latex\multirow\multirow.sty)
+(C:\CTEX\MiKTeX\tex\latex\tools\longtable.sty)
+(C:\CTEX\MiKTeX\tex\latex\arydshln\arydshln.sty)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\txfonts.sty)
+(C:\CTEX\MiKTeX\tex\latex\tools\indentfirst.sty)
+(C:\CTEX\MiKTeX\tex\plain\zhspacing\zhspacing.sty
+(C:\CTEX\MiKTeX\tex\plain\zhspacing\zhsusefulmacros.sty)
+(C:\CTEX\MiKTeX\tex\plain\zhspacing\zhsmyclass.sty
+(C:\CTEX\MiKTeX\tex\plain\zhspacing\zhsusefulmacros.sty)))
+(C:\CTEX\MiKTeX\tex\xelatex\zhspacing\zhfont.sty
+(C:\CTEX\MiKTeX\tex\xelatex\zhspacing\zhulem.sty
+(C:\CTEX\MiKTeX\tex\latex\ulem\ulem.sty)))
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\xCJKnumb.sty)
+(C:\CTEX\MiKTeX\tex\latex\listings\listings.sty
+(C:\CTEX\MiKTeX\tex\latex\listings\lstmisc.sty)
+(C:\CTEX\MiKTeX\tex\latex\listings\listings.cfg))
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\config/headcommon.tex))
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.aux
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\author.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/cnabstract.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/enabstract.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter1.aux
+
+LaTeX Warning: Label `fig:dialogue' multiply defined.
+
+)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter2.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter3.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter4.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter5.aux
+
+LaTeX Warning: Label `table:settings' multiply defined.
+
+
+LaTeX Warning: Label `table:settings' multiply defined.
+
+)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter6.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter7.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/publications.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/thanks.aux))
+(C:\CTEX\MiKTeX\tex\latex\txfonts\omltxmi.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\omstxsy.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\omxtxex.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\utxexa.fd)
+(C:\CTEX\MiKTeX\tex\latex\tipa\t3cmr.fd)
+*geometry* detected driver: pdftex
+(C:\CTEX\MiKTeX\tex\latex\caption\ltcaption.sty)
+ABD: EveryShipout initializing macros
+(C:\CTEX\MiKTeX\tex\latex\hyperref\nameref.sty
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\gettitlestring.sty))
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.out)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.out) zhspacing installed.
+
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\author.tex
+(C:\CTEX\MiKTeX\tex\generic\oberdiek\se-ascii-print.def))
+
+LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/bx/n' undefined
+(Font)              using `EU1/AdobeSongStd(0)/m/n' instead on input line 17.
+
+(C:\CTEX\MiKTeX\tex\latex\txfonts\utxsya.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\utxsyb.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\ot1txr.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\utxmia.fd)
+(C:\CTEX\MiKTeX\tex\latex\txfonts\utxsyc.fd)
+<use  "figures/xmu-zi-3d-600dpi.png" >
+
+LaTeX Font Warning: Font shape `EU1/AdobeHeitiStd(0)/bx/n' undefined
+(Font)              using `EU1/AdobeHeitiStd(0)/m/n' instead on input line 17.
+
+[1] [2] [3] [4] [5]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/cnabstract.tex [6] [1])
+
+LaTeX Font Warning: Font shape `EU1/TimesNewRomanPSStd(0)/m/sl' undefined
+(Font)              using `EU1/TimesNewRomanPSStd(0)/m/n' instead on input line
+ 23.
+
+
+LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/sl' undefined
+(Font)              using `EU1/AdobeSongStd(0)/m/n' instead on input line 23.
+
+[2]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/enabstract.tex [3]
+Underfull \vbox (badness 10000) has occurred while \output is active [4])
+[5] [6]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.toc [7]
+Underfull \vbox (badness 3525) has occurred while \output is active [8]
+Underfull \vbox (badness 3219) has occurred while \output is active [9])
+[10]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.eoc [11]
+Overfull \hbox (14.2027pt too wide) in paragraph at lines 32--32
+ [] [][][]\EU1/MosquitoFormalStd(0)/bx/n/14 Cognitive Dialogue System Model Bas
+ed on Speech 
+
+Underfull \vbox (badness 1320) has occurred while \output is active [12]
+Underfull \vbox (badness 3861) has occurred while \output is active [13])
+[14]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter1.tex
+第1章
+
+Package natbib Warning: Citation `Jurafsky2009' on page 1 undefined on input li
+ne 17.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [1]
+
+Package natbib Warning: Citation `Weizenbaum1966' on page 2 undefined on input 
+line 27.
+
+
+Package natbib Warning: Citation `Winograd1972' on page 2 undefined on input li
+ne 27.
+
+<use  "figures/eliza.png" >
+
+Package natbib Warning: Citation `McCorduck2004' on page 2 undefined on input l
+ine 38.
+
+
+Package natbib Warning: Citation `Woods1973' on page 2 undefined on input line 
+38.
+
+[2]
+
+Package natbib Warning: Citation `Wilensky88theberkeley' on page 3 undefined on
+ input line 40.
+
+
+Package natbib Warning: Citation `eagli' on page 3 undefined on input line 40.
+
+
+Package natbib Warning: Citation `McCorduck2004' on page 3 undefined on input l
+ine 42.
+
+
+Package natbib Warning: Citation `Hutchins2005' on page 3 undefined on input li
+ne 44.
+
+
+Package natbib Warning: Citation `Harris1957' on page 3 undefined on input line
+ 44.
+
+
+Underfull \vbox (badness 1590) has occurred while \output is active [3]
+
+Package natbib Warning: Citation `Spitkovsky2013' on page 4 undefined on input 
+line 46.
+
+
+Package natbib Warning: Citation `Abney2007' on page 4 undefined on input line 
+46.
+
+
+Package natbib Warning: Citation `Guo2014' on page 4 undefined on input line 46
+.
+
+
+Package natbib Warning: Citation `Wang2006' on page 4 undefined on input line 5
+7.
+
+[4]
+
+Package natbib Warning: Citation `Muggleton1994' on page 5 undefined on input l
+ine 71.
+
+
+Package natbib Warning: Citation `Holland1989' on page 5 undefined on input lin
+e 71.
+
+
+Package natbib Warning: Citation `Riguzzi2014' on page 5 undefined on input lin
+e 71.
+
+
+Package natbib Warning: Citation `Queiroz2005' on page 5 undefined on input lin
+e 71.
+
+
+Package natbib Warning: Citation `Menzies1996' on page 5 undefined on input lin
+e 71.
+
+
+Package natbib Warning: Citation `Muller2009' on page 5 undefined on input line
+ 81.
+
+[5]
+
+Package natbib Warning: Citation `Wang2006' on page 6 undefined on input line 1
+07.
+
+[6] <use  "figures/nars.png" >
+
+Package natbib Warning: Citation `Lenat1990' on page 7 undefined on input line 
+123.
+
+[7] [8]
+
+Package natbib Warning: Citation `Liu2004' on page 9 undefined on input line 17
+2.
+
+<use  "figures/conceptnet.png" > [9] [10]
+
+Package natbib Warning: Citation `Austin2005' on page 11 undefined on input lin
+e 241.
+
+
+Package natbib Warning: Citation `Searle1969' on page 11 undefined on input lin
+e 241.
+
+[11]
+
+Package natbib Warning: Citation `Twitchell2004' on page 12 undefined on input 
+line 262.
+
+<use  "figures/DAMSL.png" > <use  "figures/Searle.png" > [12] [13]
+
+Package natbib Warning: Citation `Arora2013' on page 14 undefined on input line
+ 292.
+
+<use  "figures/dialogue_system.png" > [14]
+
+Package natbib Warning: Citation `Young2006' on page 15 undefined on input line
+ 315.
+
+
+Package natbib Warning: Citation `Williams2010' on page 15 undefined on input l
+ine 315.
+
+<use  "figures/pomdp.png" > [15]
+
+Package natbib Warning: Citation `Hirschman2001' on page 16 undefined on input 
+line 331.
+
+<use  "figures/qa.png" >
+
+LaTeX Warning: Reference `chap:dialogue' on page 16 undefined on input line 342
+.
+
+[16]
+
+Package natbib Warning: Citation `Ferrucci2011' on page 17 undefined on input l
+ine 344.
+
+
+Package natbib Warning: Citation `Hirschman1999' on page 17 undefined on input 
+line 348.
+
+
+Package natbib Warning: Citation `Burger2002' on page 17 undefined on input lin
+e 350.
+
+[17] [18] [19] [20] <use  "figures/fcg1.png" > <use  "figures/fcg2.png" >
+[21]
+Underfull \vbox (badness 10000) has occurred while \output is active [22]
+
+Package natbib Warning: Citation `Mann1987' on page 23 undefined on input line 
+477.
+
+[23]
+
+Package natbib Warning: Citation `Stone 1997' on page 24 undefined on input lin
+e 489.
+
+
+Package natbib Warning: Citation `Elhadad1992' on page 24 undefined on input li
+ne 491.
+
+
+Package natbib Warning: Citation `Matthiessen1991' on page 24 undefined on inpu
+t line 491.
+
+
+Package natbib Warning: Citation `Langkilde1998' on page 24 undefined on input 
+line 491.
+
+[24] [25]
+
+LaTeX Warning: Reference `chap:inference' on page 26 undefined on input line 52
+0.
+
+
+LaTeX Warning: Reference `chap:dialogue' on page 26 undefined on input line 520
+.
+
+) [26]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter2.tex
+第2章
+[27]
+
+LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/it' undefined
+(Font)              using `EU1/AdobeSongStd(0)/m/n' instead on input line 21.
+
+
+Package natbib Warning: Citation `Tulving2005' on page 28 undefined on input li
+ne 29.
+
+
+LaTeX Warning: Reference `tab:opencog' on page 28 undefined on input line 29.
+
+[28]
+
+Package natbib Warning: Citation `Goertzel2010c' on page 29 undefined on input 
+line 31.
+
+
+Package natbib Warning: Citation `Goertzel2008' on page 29 undefined on input l
+ine 41.
+
+
+Package natbib Warning: Citation `Fauconnier2002' on page 29 undefined on input
+ line 41.
+
+
+Package natbib Warning: Citation `Looks2006' on page 29 undefined on input line
+ 42.
+
+
+Package natbib Warning: Citation `Goertzel2008d' on page 29 undefined on input 
+line 43.
+
+
+Package natbib Warning: Citation `Goertzel2010' on page 29 undefined on input l
+ine 44.
+
+
+Package natbib Warning: Citation `Bach2009' on page 29 undefined on input line 
+45.
+
+[29] [30] [31] [32]
+
+Package natbib Warning: Citation `PLN' on page 33 undefined on input line 147.
+
+[33] [34]
+
+Package natbib Warning: Citation `PLN' on page 35 undefined on input line 220.
+
+[35]
+
+Package natbib Warning: Citation `LawvereSchanuel97' on page 36 undefined on in
+put line 269.
+
+[36] [37]
+
+LaTeX Warning: Reference `chap:dialogue' on page 38 undefined on input line 310
+.
+
+[38]
+
+Package natbib Warning: Citation `Goertzel2008' on page 39 undefined on input l
+ine 326.
+
+
+Package natbib Warning: Citation `RWR' on page 39 undefined on input line 326.
+
+[39] [40] [41]
+
+Package natbib Warning: Citation `Wang2006' on page 42 undefined on input line 
+430.
+
+[42] [43] [44]
+
+LaTeX Warning: Reference `app:poss_worlds' on page 45 undefined on input line 4
+84.
+
+[45] <use  "figures/inference.png" >
+
+Package natbib Warning: Citation `Goertzel2008' on page 46 undefined on input l
+ine 528.
+
+
+Package natbib Warning: Citation `Goertzel2010e' on page 46 undefined on input 
+line 528.
+
+[46]
+
+LaTeX Warning: Reference `chap:reasoning' on page 47 undefined on input line 54
+0.
+
+[47]) [48]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter3.tex
+第3章
+
+Package natbib Warning: Citation `Dorner2002' on page 49 undefined on input lin
+e 14.
+
+
+Package natbib Warning: Citation `Bach2009' on page 49 undefined on input line 
+14.
+
+
+Package natbib Warning: Citation `EGI1' on page 49 undefined on input line 14.
+
+[49] <use  "figures/Psi.png" > [50] [51]
+
+LaTeX Warning: Reference `fig:mod' on page 52 undefined on input line 68.
+
+<use  "figures/PsiModulators.png" > [52] [53] [54]
+
+Package natbib Warning: Citation `Bach2012' on page 55 undefined on input line 
+115.
+
+[55]) [56]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter4.tex
+第4章
+[57] [58]
+
+Package natbib Warning: Citation `Franklin1995' on page 59 undefined on input l
+ine 47.
+
+
+Package natbib Warning: Citation `EGI2' on page 59 undefined on input line 47.
+
+[59]
+
+Package natbib Warning: Citation `EGI2' on page 60 undefined on input line 77.
+
+
+Package natbib Warning: Citation `Zhenhua2011' on page 60 undefined on input li
+ne 87.
+
+[60]
+
+Package natbib Warning: Citation `GoertzelHP' on page 61 undefined on input lin
+e 105.
+
+[61] [62] [63] [64] [65] [66]
+
+LaTeX Warning: Reference `chap:litreview' on page 67 undefined on input line 26
+6.
+
+
+Package natbib Warning: Citation `Twitchell2004' on page 67 undefined on input 
+line 266.
+
+[67] [68] [69]
+Underfull \vbox (badness 10000) has occurred while \output is active [70]
+[71]
+
+Package natbib Warning: Citation `Twitchell2004' on page 72 undefined on input 
+line 396.
+
+[72] [73] [74]
+Underfull \vbox (badness 10000) has occurred while \output is active [75]
+
+Package natbib Warning: Citation `Twitchell2004' on page 76 undefined on input 
+line 518.
+
+[76]
+
+Package natbib Warning: Citation `Weizenbaum1966' on page 77 undefined on input
+ line 522.
+
+
+Underfull \vbox (badness 1152) has occurred while \output is active [77]
+[78] [79] [80] [81]
+
+LaTeX Warning: Reference `sec:QA' on page 82 undefined on input line 649.
+
+[82] [83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96]
+[97] [98] [99] [100]) [101]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter5.tex [102]
+第5章
+
+Package natbib Warning: Citation `Sleator1993' on page 103 undefined on input l
+ine 10.
+
+[103]
+
+Package natbib Warning: Citation `Sleator1993' on page 104 undefined on input l
+ine 41.
+
+[104]
+
+Package natbib Warning: Citation `Sleator1993' on page 105 undefined on input l
+ine 54.
+
+<use  "figures/catSnake.png" > [105] [106]
+<use  "figures/schneiderFigure1.png" > [107] [108]
+
+Package natbib Warning: Citation `Chi2005' on page 109 undefined on input line 
+143.
+
+
+Package natbib Warning: Citation `Hudson2007' on page 109 undefined on input li
+ne 145.
+
+[109] [110] [111] [112] <use  "figures/RelEx.png" > [113]
+<use  "figures/catSnake.png" > [114] [115]
+<use  "figures/featureStructure.png" > [116] [117]
+<use  "figures/revisedFeatureStructure.png" >
+<use  "figures/revisedFeatureStructure_1.png" > [118] [119] [120]
+<use  "figures/finalFeatureStructure.png" > [121] [122]
+
+Package natbib Warning: Citation `Hobbs1978' on page 123 undefined on input lin
+e 497.
+
+[123] [124] [125]
+
+Package natbib Warning: Citation `Voloshin2009' on page 126 undefined on input 
+line 560.
+
+[126] [127]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 598--599
+[][][][][][][][][][][][][][][][][][] 
+
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 624--625
+[][][][][][][][][][][][][][][][][][] 
+[128]
+
+Package natbib Warning: Citation `Lian2012' on page 129 undefined on input line
+ 644.
+
+[129] [130] [131] [132] [133] <use  "figures/Socrates_1.png" > [134]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 828--829
+[][][][][][][][][][][][][][][][][][] 
+[135]
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 851--852
+[][][][][][][][][][][][][][][][][][] 
+<use  "figures/Socrates_2.png" > [136]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 901--902
+[][][][][][][][][][][][][][][][][][] 
+[137]
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 927--928
+[][][][][][][][][][][][][][][][][][] 
+<use  "figures/Socrates_3.png" > [138]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 969--970
+[][][][][][][][][][][][][][][][][][] 
+
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 995--996
+[][][][][][][][][][][][][][][][][][] 
+[139] <use  "figures/Socrates_4.png" > [140]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 1057--1058
+[][][][][][][][][][][][][][][][] 
+[141]
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 1098--1099
+[][][][][][][][][][][][][][][][] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active [142]
+<use  "figures/Socrates_5.png" > [143]
+Overfull \hbox (112.42093pt too wide) in paragraph at lines 1172--1173
+[][][][][][][][][][][][][][][][] 
+[144]
+Overfull \hbox (143.95728pt too wide) in paragraph at lines 1213--1214
+[][][][][][][][][][][][][][][][] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active [145]
+
+Package natbib Warning: Citation `lechner2004ellipsis' on page 146 undefined on
+ input line 1254.
+
+
+Package natbib Warning: Citation `Bhatt2011' on page 146 undefined on input lin
+e 1254.
+
+
+Package natbib Warning: Citation `Margaret2013' on page 146 undefined on input 
+line 1254.
+
+
+Package natbib Warning: Citation `Roumyana1995' on page 146 undefined on input 
+line 1254.
+
+[146] <use  "figures/comparativeRule.png" > [147] [148] [149] [150]
+
+LaTeX Warning: Reference `chap:learning' on page 151 undefined on input line 14
+53.
+
+[151]
+
+LaTeX Warning: Reference `chap:learning' on page 152 undefined on input line 14
+70.
+
+[152]) [153]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter6.tex [154]
+第6章
+[155] [156] [157] [158] [159]
+Overfull \hbox (5.60664pt too wide) in paragraph at lines 175--177
+\OT1/cmr/m/n/12 ([][][]\OML/txmi/m/it/12 InheritanceLink[][][]Strength\OT1/cmr/
+m/n/12 ) \OMS/txsy/m/n/12 ^^C \OT1/cmr/m/n/12 ([][]\OML/txmi/m/it/12 Inheritanc
+eLink[][][][]Confidence\OT1/cmr/m/n/12 )$ 
+[160]
+
+LaTeX Warning: Reference `chap:review' on page 161 undefined on input line 191.
+
+
+[161] [162] [163] [164] [165] [166]) [167]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter7.tex [168]
+第7章
+
+LaTeX Warning: Reference `chap:dialogue' on page 169 undefined on input line 8.
+
+
+
+LaTeX Warning: Reference `chap:representation' on page 169 undefined on input l
+ine 8.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 12.
+
+[169] [170]
+Overfull \hbox (7.29977pt too wide) in paragraph at lines 105--107
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+
+Overfull \hbox (7.29977pt too wide) in paragraph at lines 107--109
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[171] [172]
+Overfull \hbox (2.04372pt too wide) in paragraph at lines 179--180
+[][][][][][][][][][][][][][][][][][][][] 
+
+Overfull \hbox (2.04372pt too wide) in paragraph at lines 197--198
+[][][][][][][][][][][][][][][][][][][][] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active [173]
+Underfull \vbox (badness 10000) has occurred while \output is active [174]
+Overfull \hbox (2.04372pt too wide) in paragraph at lines 246--247
+[][][][][][][][][][][][][][][][][][][][] 
+
+Overfull \hbox (2.04372pt too wide) in paragraph at lines 264--265
+[][][][][][][][][][][][][][][][][][][][] 
+
+Underfull \vbox (badness 10000) has occurred while \output is active [175])
+[176]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter8.tex
+第8章
+[177] [178]
+Runaway argument?
+{\protect \numberline {\thesubsection }
+! Paragraph ended before \addcontentsline was complete.
+<to be read again> 
+                   \par 
+l.63 
+     
+? 
+! Extra }, or forgotten \endgroup.
+\subsection ...ct \numberline {\thesubsection }#2}
+                                                  \par \vspace {3.25ex\@plus...
+l.63 
+     
+? 
+[179]
+
+Package natbib Warning: Citation `Zass2008' on page 180 undefined on input line
+ 72.
+
+
+Package natbib Warning: Citation `ONeill2012' on page 180 undefined on input li
+ne 76.
+
+[180] [181]
+Underfull \vbox (badness 10000) has occurred while \output is active [182]
+[183] [184] [185] [186]
+Underfull \vbox (badness 10000) has occurred while \output is active [187]
+[188] [189] [190] [191] [192]
+
+Package natbib Warning: Citation `Goertzel2010' on page 193 undefined on input 
+line 665.
+
+[193] [194]
+Overfull \hbox (29.73964pt too wide) in paragraph at lines 716--716
+ []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The British Museum boasts the worl
+d's largest Egyptology exhibit, with over five hun-
+
+Overfull \hbox (20.95044pt too wide) in paragraph at lines 716--716
+ []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 along with some of the most perfec
+tly preserved examples of engraved hieroglyphics.[] 
+
+Overfull \hbox (29.73962pt too wide) in paragraph at lines 716--716
+ []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The US Postal Service Museum hosts
+ enough rare stamps to satisfy even the most avid n-
+[195] [196] [197] [198]
+
+LaTeX Warning: Reference `sec:backward' on page 199 undefined on input line 880
+.
+
+[199]
+
+Package natbib Warning: Citation `RWR' on page 200 undefined on input line 882.
+
+
+
+Package natbib Warning: Citation `Lenat1990' on page 200 undefined on input lin
+e 882.
+
+
+Package natbib Warning: Citation `Spitkovsky2013' on page 200 undefined on inpu
+t line 886.
+
+
+Package natbib Warning: Citation `Goertzel2008w' on page 200 undefined on input
+ line 886.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active [200])
+[201]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter9.tex [202]
+第9章
+[203]
+
+! LaTeX Error: \begin{enumerate} on input line 387 ended by \end{itemize}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.27 \end{itemize}
+                  
+? 
+[204]) [205]
+No file main.bbl.
+
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/publications.tex [206]) [207]
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/thanks.tex [208] [209]) [210]
+
+Package natbib Warning: There were undefined citations.
+
+
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\main.aux
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\author.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/cnabstract.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\abstracts/enabstract.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter1.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter2.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter3.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter4.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter5.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter6.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter7.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter8.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter9.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/publications.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\appendix/thanks.aux))
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ )
+Output written on main.pdf (230 pages).
+SyncTeX written on main.synctex.gz.
+Transcript written on main.log.
+
+
+_____________________________________________________________________
+
+ XeLaTeX Compilation Report (Pages: 0)
+
+ Errors: 0   Warnings: 0   Bad Boxes: 0
+_____________________________________________________________________
+
