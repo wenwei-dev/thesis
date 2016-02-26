@@ -1,4 +1,4 @@
-Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
+﻿Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
 Startup Folder: C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChineseVersion-editing
 
 Qt: Untested Windows version 6.2 detected!
@@ -261,9 +261,17 @@ LaTeX Warning: Label `table:settings' multiply defined.
 
 )
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter6.aux)
+neseVersion-editing\chapters/chapter6.aux
+
+LaTeX Warning: Label `sec:atoms' multiply defined.
+
+)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter7.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter8.aux)
+(C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
+neseVersion-editing\chapters/chapter9.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\appendix/publications.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
@@ -314,23 +322,22 @@ LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/sl' undefined
 
 [2]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\abstracts/enabstract.tex [3]
-Underfull \vbox (badness 10000) has occurred while \output is active [4])
-[5] [6]
+neseVersion-editing\abstracts/enabstract.tex [3]) [4]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.toc [7]
-Underfull \vbox (badness 3525) has occurred while \output is active [8]
-Underfull \vbox (badness 3219) has occurred while \output is active [9])
-[10]
+neseVersion-editing\main.toc [5]
+Underfull \vbox (badness 3219) has occurred while \output is active [6]
+Underfull \vbox (badness 3219) has occurred while \output is active [7])
+[8]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.eoc [11]
-Overfull \hbox (14.2027pt too wide) in paragraph at lines 32--32
+neseVersion-editing\main.eoc [9]
+Overfull \hbox (14.2027pt too wide) in paragraph at lines 35--35
  [] [][][]\EU1/MosquitoFormalStd(0)/bx/n/14 Cognitive Dialogue System Model Bas
 ed on Speech 
 
-Underfull \vbox (badness 1320) has occurred while \output is active [12]
-Underfull \vbox (badness 3861) has occurred while \output is active [13])
-[14]
+Underfull \vbox (badness 1199) has occurred while \output is active [10]
+Underfull \vbox (badness 4242) has occurred while \output is active [11]
+Underfull \vbox (badness 1735) has occurred while \output is active [12])
+[13] [14]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter1.tex
 第1章
@@ -468,12 +475,7 @@ ine 315.
 Package natbib Warning: Citation `Hirschman2001' on page 16 undefined on input 
 line 331.
 
-<use  "figures/qa.png" >
-
-LaTeX Warning: Reference `chap:dialogue' on page 16 undefined on input line 342
-.
-
-[16]
+<use  "figures/qa.png" > [16]
 
 Package natbib Warning: Citation `Ferrucci2011' on page 17 undefined on input l
 ine 344.
@@ -515,10 +517,6 @@ line 491.
 LaTeX Warning: Reference `chap:inference' on page 26 undefined on input line 52
 0.
 
-
-LaTeX Warning: Reference `chap:dialogue' on page 26 undefined on input line 520
-.
-
 ) [26]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter2.tex
@@ -531,9 +529,6 @@ LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/it' undefined
 
 Package natbib Warning: Citation `Tulving2005' on page 28 undefined on input li
 ne 29.
-
-
-LaTeX Warning: Reference `tab:opencog' on page 28 undefined on input line 29.
 
 [28]
 
@@ -577,12 +572,7 @@ Package natbib Warning: Citation `PLN' on page 35 undefined on input line 220.
 Package natbib Warning: Citation `LawvereSchanuel97' on page 36 undefined on in
 put line 269.
 
-[36] [37]
-
-LaTeX Warning: Reference `chap:dialogue' on page 38 undefined on input line 310
-.
-
-[38]
+[36] [37] [38]
 
 Package natbib Warning: Citation `Goertzel2008' on page 39 undefined on input l
 ine 326.
@@ -609,12 +599,7 @@ ine 528.
 Package natbib Warning: Citation `Goertzel2010e' on page 46 undefined on input 
 line 528.
 
-[46]
-
-LaTeX Warning: Reference `chap:reasoning' on page 47 undefined on input line 54
-0.
-
-[47]) [48]
+[46] [47]) [48]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter3.tex
 第3章
@@ -830,14 +815,6 @@ LaTeX Warning: Reference `chap:review' on page 161 undefined on input line 191.
 neseVersion-editing\chapters/chapter7.tex [168]
 第7章
 
-LaTeX Warning: Reference `chap:dialogue' on page 169 undefined on input line 8.
-
-
-
-LaTeX Warning: Reference `chap:representation' on page 169 undefined on input l
-ine 8.
-
-
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 12.
 
@@ -873,70 +850,63 @@ Runaway argument?
 ! Paragraph ended before \addcontentsline was complete.
 <to be read again> 
                    \par 
-l.63 
+l.64 
      
 ? 
 ! Extra }, or forgotten \endgroup.
 \subsection ...ct \numberline {\thesubsection }#2}
                                                   \par \vspace {3.25ex\@plus...
-l.63 
+l.64 
      
 ? 
 [179]
 
 Package natbib Warning: Citation `Zass2008' on page 180 undefined on input line
- 72.
+ 73.
 
 
 Package natbib Warning: Citation `ONeill2012' on page 180 undefined on input li
-ne 76.
+ne 77.
 
-[180] [181]
-Underfull \vbox (badness 10000) has occurred while \output is active [182]
-[183] [184] [185] [186]
+[180] [181] [182] [183] [184] [185] [186]
 Underfull \vbox (badness 10000) has occurred while \output is active [187]
-[188] [189] [190] [191] [192]
+Underfull \vbox (badness 10000) has occurred while \output is active [188]
+[189] [190] [191] [192] [193]
 
-Package natbib Warning: Citation `Goertzel2010' on page 193 undefined on input 
-line 665.
+Package natbib Warning: Citation `Goertzel2010' on page 194 undefined on input 
+line 666.
 
-[193] [194]
-Overfull \hbox (29.73964pt too wide) in paragraph at lines 716--716
+[194]
+Overfull \hbox (29.73964pt too wide) in paragraph at lines 717--717
  []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The British Museum boasts the worl
 d's largest Egyptology exhibit, with over five hun-
 
-Overfull \hbox (20.95044pt too wide) in paragraph at lines 716--716
+Overfull \hbox (20.95044pt too wide) in paragraph at lines 717--717
  []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 along with some of the most perfec
 tly preserved examples of engraved hieroglyphics.[] 
 
-Overfull \hbox (29.73962pt too wide) in paragraph at lines 716--716
+Overfull \hbox (29.73962pt too wide) in paragraph at lines 717--717
  []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The US Postal Service Museum hosts
  enough rare stamps to satisfy even the most avid n-
-[195] [196] [197] [198]
+[195] [196] [197] [198] [199]
 
-LaTeX Warning: Reference `sec:backward' on page 199 undefined on input line 880
-.
-
-[199]
-
-Package natbib Warning: Citation `RWR' on page 200 undefined on input line 882.
+Package natbib Warning: Citation `RWR' on page 200 undefined on input line 883.
 
 
 
 Package natbib Warning: Citation `Lenat1990' on page 200 undefined on input lin
-e 882.
+e 883.
+
+[200]
+
+Package natbib Warning: Citation `Spitkovsky2013' on page 201 undefined on inpu
+t line 887.
 
 
-Package natbib Warning: Citation `Spitkovsky2013' on page 200 undefined on inpu
-t line 886.
+Package natbib Warning: Citation `Goertzel2008w' on page 201 undefined on input
+ line 887.
 
-
-Package natbib Warning: Citation `Goertzel2008w' on page 200 undefined on input
- line 886.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active [200])
-[201]
+) [201]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter9.tex [202]
 第9章
@@ -948,7 +918,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.27 \end{itemize}
+l.28 \end{itemize}
                   
 ? 
 [204]) [205]
@@ -993,24 +963,10 @@ neseVersion-editing\appendix/publications.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\appendix/thanks.aux))
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- )
-Output written on main.pdf (230 pages).
-SyncTeX written on main.synctex.gz.
-Transcript written on main.log.
-
-
 _____________________________________________________________________
 
- XeLaTeX Compilation Report (Pages: 0)
+ XeLaTeX Compilation Report (Pages: 230)
 
- Errors: 0   Warnings: 0   Bad Boxes: 0
+ Errors: 3   Warnings: 109   Bad Boxes: 41
 _____________________________________________________________________
 
