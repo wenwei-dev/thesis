@@ -240,11 +240,7 @@ neseVersion-editing\abstracts/cnabstract.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\abstracts/enabstract.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter1.aux
-
-LaTeX Warning: Label `fig:dialogue' multiply defined.
-
-)
+neseVersion-editing\chapters/chapter1.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter2.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
@@ -322,529 +318,448 @@ LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/sl' undefined
 
 [2]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\abstracts/enabstract.tex [3]) [4]
+neseVersion-editing\abstracts/enabstract.tex [3] [4] [5] [6] [7]) [8]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.toc [5]
-Underfull \vbox (badness 3219) has occurred while \output is active [6]
-Underfull \vbox (badness 3219) has occurred while \output is active [7])
-[8]
+neseVersion-editing\main.toc [9]
+Underfull \vbox (badness 3219) has occurred while \output is active [10]
+Underfull \vbox (badness 3219) has occurred while \output is active [11])
+[12]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.eoc [9]
-Overfull \hbox (14.2027pt too wide) in paragraph at lines 35--35
+neseVersion-editing\main.eoc [13]
+Overfull \hbox (14.2027pt too wide) in paragraph at lines 31--31
  [] [][][]\EU1/MosquitoFormalStd(0)/bx/n/14 Cognitive Dialogue System Model Bas
 ed on Speech 
 
-Underfull \vbox (badness 1199) has occurred while \output is active [10]
-Underfull \vbox (badness 4242) has occurred while \output is active [11]
-Underfull \vbox (badness 1735) has occurred while \output is active [12])
-[13] [14]
+Underfull \vbox (badness 1199) has occurred while \output is active [14]
+Underfull \vbox (badness 3861) has occurred while \output is active [15])
+[16]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter1.tex
 第1章
+[1]
 
-Package natbib Warning: Citation `Jurafsky2009' on page 1 undefined on input li
-ne 17.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active [1]
-
-Package natbib Warning: Citation `Weizenbaum1966' on page 2 undefined on input 
-line 27.
+Package natbib Warning: Citation `Wang2006' on page 2 undefined on input line 3
+3.
 
 
-Package natbib Warning: Citation `Winograd1972' on page 2 undefined on input li
-ne 27.
-
-<use  "figures/eliza.png" >
-
-Package natbib Warning: Citation `McCorduck2004' on page 2 undefined on input l
-ine 38.
+Package natbib Warning: Citation `Muggleton1994' on page 2 undefined on input l
+ine 47.
 
 
-Package natbib Warning: Citation `Woods1973' on page 2 undefined on input line 
-38.
+Package natbib Warning: Citation `Holland1989' on page 2 undefined on input lin
+e 47.
+
+
+Package natbib Warning: Citation `Riguzzi2014' on page 2 undefined on input lin
+e 47.
+
+
+Package natbib Warning: Citation `Queiroz2005' on page 2 undefined on input lin
+e 47.
+
+
+Package natbib Warning: Citation `Menzies1996' on page 2 undefined on input lin
+e 47.
 
 [2]
 
-Package natbib Warning: Citation `Wilensky88theberkeley' on page 3 undefined on
- input line 40.
+Package natbib Warning: Citation `Muller2009' on page 3 undefined on input line
+ 58.
 
+[3]
 
-Package natbib Warning: Citation `eagli' on page 3 undefined on input line 40.
-
-
-Package natbib Warning: Citation `McCorduck2004' on page 3 undefined on input l
-ine 42.
-
-
-Package natbib Warning: Citation `Hutchins2005' on page 3 undefined on input li
-ne 44.
-
-
-Package natbib Warning: Citation `Harris1957' on page 3 undefined on input line
- 44.
-
-
-Underfull \vbox (badness 1590) has occurred while \output is active [3]
-
-Package natbib Warning: Citation `Spitkovsky2013' on page 4 undefined on input 
-line 46.
-
-
-Package natbib Warning: Citation `Abney2007' on page 4 undefined on input line 
-46.
-
-
-Package natbib Warning: Citation `Guo2014' on page 4 undefined on input line 46
-.
-
-
-Package natbib Warning: Citation `Wang2006' on page 4 undefined on input line 5
-7.
-
-[4]
-
-Package natbib Warning: Citation `Muggleton1994' on page 5 undefined on input l
-ine 71.
-
-
-Package natbib Warning: Citation `Holland1989' on page 5 undefined on input lin
-e 71.
-
-
-Package natbib Warning: Citation `Riguzzi2014' on page 5 undefined on input lin
-e 71.
-
-
-Package natbib Warning: Citation `Queiroz2005' on page 5 undefined on input lin
-e 71.
-
-
-Package natbib Warning: Citation `Menzies1996' on page 5 undefined on input lin
-e 71.
-
-
-Package natbib Warning: Citation `Muller2009' on page 5 undefined on input line
- 81.
-
-[5]
-
-Package natbib Warning: Citation `Wang2006' on page 6 undefined on input line 1
-07.
-
-[6] <use  "figures/nars.png" >
-
-Package natbib Warning: Citation `Lenat1990' on page 7 undefined on input line 
-123.
-
-[7] [8]
-
-Package natbib Warning: Citation `Liu2004' on page 9 undefined on input line 17
+Package natbib Warning: Citation `Wang2006' on page 4 undefined on input line 9
 2.
 
-<use  "figures/conceptnet.png" > [9] [10]
+<use  "figures/nars.png" >
 
-Package natbib Warning: Citation `Austin2005' on page 11 undefined on input lin
-e 241.
+Package natbib Warning: Citation `Lenat1990' on page 4 undefined on input line 
+108.
 
+[4] [5]
 
-Package natbib Warning: Citation `Searle1969' on page 11 undefined on input lin
-e 241.
+Package natbib Warning: Citation `Liu2004' on page 6 undefined on input line 15
+7.
 
-[11]
+<use  "figures/conceptnet.png" > [6] [7]
 
-Package natbib Warning: Citation `Twitchell2004' on page 12 undefined on input 
-line 262.
-
-<use  "figures/DAMSL.png" > <use  "figures/Searle.png" > [12] [13]
-
-Package natbib Warning: Citation `Arora2013' on page 14 undefined on input line
- 292.
-
-<use  "figures/dialogue_system.png" > [14]
-
-Package natbib Warning: Citation `Young2006' on page 15 undefined on input line
- 315.
+! LaTeX Error: \begin{description} on input line 88 ended by \end{discription}.
 
 
-Package natbib Warning: Citation `Williams2010' on page 15 undefined on input l
-ine 315.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.217 \end{discription}
+                       
+? 
 
-<use  "figures/pomdp.png" > [15]
-
-Package natbib Warning: Citation `Hirschman2001' on page 16 undefined on input 
-line 331.
-
-<use  "figures/qa.png" > [16]
-
-Package natbib Warning: Citation `Ferrucci2011' on page 17 undefined on input l
-ine 344.
+Package natbib Warning: Citation `Austin2005' on page 8 undefined on input line
+ 233.
 
 
-Package natbib Warning: Citation `Hirschman1999' on page 17 undefined on input 
-line 348.
+Package natbib Warning: Citation `Searle1969' on page 8 undefined on input line
+ 233.
+
+[8]
+
+Package natbib Warning: Citation `Austin2005' on page 9 undefined on input line
+ 237.
 
 
-Package natbib Warning: Citation `Burger2002' on page 17 undefined on input lin
-e 350.
-
-[17] [18] [19] [20] <use  "figures/fcg1.png" > <use  "figures/fcg2.png" >
-[21]
-Underfull \vbox (badness 10000) has occurred while \output is active [22]
-
-Package natbib Warning: Citation `Mann1987' on page 23 undefined on input line 
-477.
-
-[23]
-
-Package natbib Warning: Citation `Stone 1997' on page 24 undefined on input lin
-e 489.
+Package natbib Warning: Citation `Searle1969' on page 9 undefined on input line
+ 245.
 
 
-Package natbib Warning: Citation `Elhadad1992' on page 24 undefined on input li
-ne 491.
+Package natbib Warning: Citation `Twitchell2004' on page 9 undefined on input l
+ine 255.
+
+[9] <use  "figures/DAMSL.png" > <use  "figures/Searle.png" > [10] [11] [12]
+<use  "figures/fcg1.png" > <use  "figures/fcg2.png" > [13]
+Underfull \vbox (badness 1137) has occurred while \output is active [14]
+
+Package natbib Warning: Citation `Mann1987' on page 15 undefined on input line 
+382.
+
+[15]
+
+Package natbib Warning: Citation `Stone 1997' on page 16 undefined on input lin
+e 396.
 
 
-Package natbib Warning: Citation `Matthiessen1991' on page 24 undefined on inpu
-t line 491.
+Package natbib Warning: Citation `Elhadad1992' on page 16 undefined on input li
+ne 400.
 
 
-Package natbib Warning: Citation `Langkilde1998' on page 24 undefined on input 
-line 491.
+Package natbib Warning: Citation `Matthiessen1991' on page 16 undefined on inpu
+t line 400.
 
-[24] [25]
 
-LaTeX Warning: Reference `chap:inference' on page 26 undefined on input line 52
-0.
+Package natbib Warning: Citation `Langkilde1998' on page 16 undefined on input 
+line 400.
 
-) [26]
+[16]
+
+LaTeX Warning: Reference `chap:inference' on page 17 undefined on input line 43
+2.
+
+[17]) [18]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter2.tex
 第2章
-[27]
+[19]
 
 LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/it' undefined
 (Font)              using `EU1/AdobeSongStd(0)/m/n' instead on input line 21.
 
 
-Package natbib Warning: Citation `Tulving2005' on page 28 undefined on input li
+Package natbib Warning: Citation `Tulving2005' on page 20 undefined on input li
 ne 29.
 
-[28]
+[20]
 
-Package natbib Warning: Citation `Goertzel2010c' on page 29 undefined on input 
+Package natbib Warning: Citation `Goertzel2010c' on page 21 undefined on input 
 line 31.
 
 
-Package natbib Warning: Citation `Goertzel2008' on page 29 undefined on input l
+Package natbib Warning: Citation `Goertzel2008' on page 21 undefined on input l
 ine 41.
 
 
-Package natbib Warning: Citation `Fauconnier2002' on page 29 undefined on input
+Package natbib Warning: Citation `Fauconnier2002' on page 21 undefined on input
  line 41.
 
 
-Package natbib Warning: Citation `Looks2006' on page 29 undefined on input line
+Package natbib Warning: Citation `Looks2006' on page 21 undefined on input line
  42.
 
 
-Package natbib Warning: Citation `Goertzel2008d' on page 29 undefined on input 
+Package natbib Warning: Citation `Goertzel2008d' on page 21 undefined on input 
 line 43.
 
 
-Package natbib Warning: Citation `Goertzel2010' on page 29 undefined on input l
+Package natbib Warning: Citation `Goertzel2010' on page 21 undefined on input l
 ine 44.
 
 
-Package natbib Warning: Citation `Bach2009' on page 29 undefined on input line 
+Package natbib Warning: Citation `Bach2009' on page 21 undefined on input line 
 45.
 
-[29] [30] [31] [32]
+[21] [22] [23] [24]
 
-Package natbib Warning: Citation `PLN' on page 33 undefined on input line 147.
+Package natbib Warning: Citation `PLN' on page 25 undefined on input line 147.
 
-[33] [34]
+[25] [26]
 
-Package natbib Warning: Citation `PLN' on page 35 undefined on input line 220.
+Package natbib Warning: Citation `PLN' on page 27 undefined on input line 220.
 
-[35]
+[27]
 
-Package natbib Warning: Citation `LawvereSchanuel97' on page 36 undefined on in
+Package natbib Warning: Citation `LawvereSchanuel97' on page 28 undefined on in
 put line 269.
 
-[36] [37] [38]
+[28] [29] [30]
 
-Package natbib Warning: Citation `Goertzel2008' on page 39 undefined on input l
+Package natbib Warning: Citation `Goertzel2008' on page 31 undefined on input l
 ine 326.
 
 
-Package natbib Warning: Citation `RWR' on page 39 undefined on input line 326.
+Package natbib Warning: Citation `RWR' on page 31 undefined on input line 326.
 
-[39] [40] [41]
+[31] [32] [33] [34]
 
-Package natbib Warning: Citation `Wang2006' on page 42 undefined on input line 
+Package natbib Warning: Citation `Wang2006' on page 35 undefined on input line 
 430.
 
-[42] [43] [44]
+[35] [36]
 
-LaTeX Warning: Reference `app:poss_worlds' on page 45 undefined on input line 4
+LaTeX Warning: Reference `app:poss_worlds' on page 37 undefined on input line 4
 84.
 
-[45] <use  "figures/inference.png" >
+[37] <use  "figures/inference.png" >
 
-Package natbib Warning: Citation `Goertzel2008' on page 46 undefined on input l
+Package natbib Warning: Citation `Goertzel2008' on page 38 undefined on input l
 ine 528.
 
 
-Package natbib Warning: Citation `Goertzel2010e' on page 46 undefined on input 
+Package natbib Warning: Citation `Goertzel2010e' on page 38 undefined on input 
 line 528.
 
-[46] [47]) [48]
+[38] [39]) [40]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter3.tex
 第3章
 
-Package natbib Warning: Citation `Dorner2002' on page 49 undefined on input lin
+Package natbib Warning: Citation `Dorner2002' on page 41 undefined on input lin
 e 14.
 
 
-Package natbib Warning: Citation `Bach2009' on page 49 undefined on input line 
+Package natbib Warning: Citation `Bach2009' on page 41 undefined on input line 
 14.
 
 
-Package natbib Warning: Citation `EGI1' on page 49 undefined on input line 14.
+Package natbib Warning: Citation `EGI1' on page 41 undefined on input line 14.
 
-[49] <use  "figures/Psi.png" > [50] [51]
 
-LaTeX Warning: Reference `fig:mod' on page 52 undefined on input line 68.
+Underfull \vbox (badness 10000) has occurred while \output is active [41]
+<use  "figures/Psi.png" > [42]
+Underfull \vbox (badness 10000) has occurred while \output is active [43]
 
-<use  "figures/PsiModulators.png" > [52] [53] [54]
+LaTeX Warning: Reference `fig:mod' on page 44 undefined on input line 68.
 
-Package natbib Warning: Citation `Bach2012' on page 55 undefined on input line 
+[44] <use  "figures/PsiModulators.png" > [45] [46]
+
+Package natbib Warning: Citation `Bach2012' on page 47 undefined on input line 
 115.
 
-[55]) [56]
+[47]) [48]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter4.tex
 第4章
-[57] [58]
 
-Package natbib Warning: Citation `Franklin1995' on page 59 undefined on input l
+Underfull \vbox (badness 10000) has occurred while \output is active [49]
+[50]
+
+Package natbib Warning: Citation `Franklin1995' on page 51 undefined on input l
 ine 47.
 
 
-Package natbib Warning: Citation `EGI2' on page 59 undefined on input line 47.
+Package natbib Warning: Citation `EGI2' on page 51 undefined on input line 47.
 
-[59]
+[51]
 
-Package natbib Warning: Citation `EGI2' on page 60 undefined on input line 77.
+Package natbib Warning: Citation `EGI2' on page 52 undefined on input line 77.
 
 
-Package natbib Warning: Citation `Zhenhua2011' on page 60 undefined on input li
+Package natbib Warning: Citation `Zhenhua2011' on page 52 undefined on input li
 ne 87.
 
-[60]
+[52]
 
-Package natbib Warning: Citation `GoertzelHP' on page 61 undefined on input lin
+Package natbib Warning: Citation `GoertzelHP' on page 53 undefined on input lin
 e 105.
 
-[61] [62] [63] [64] [65] [66]
+[53] [54] [55] [56] [57] [58]
 
-LaTeX Warning: Reference `chap:litreview' on page 67 undefined on input line 26
+LaTeX Warning: Reference `chap:litreview' on page 59 undefined on input line 26
 6.
 
 
-Package natbib Warning: Citation `Twitchell2004' on page 67 undefined on input 
+Package natbib Warning: Citation `Twitchell2004' on page 59 undefined on input 
 line 266.
 
-[67] [68] [69]
-Underfull \vbox (badness 10000) has occurred while \output is active [70]
-[71]
+[59] [60] [61]
+Underfull \vbox (badness 10000) has occurred while \output is active [62]
+[63]
 
-Package natbib Warning: Citation `Twitchell2004' on page 72 undefined on input 
+Package natbib Warning: Citation `Twitchell2004' on page 64 undefined on input 
 line 396.
 
-[72] [73] [74]
-Underfull \vbox (badness 10000) has occurred while \output is active [75]
+[64] [65] [66]
+Underfull \vbox (badness 10000) has occurred while \output is active [67]
 
-Package natbib Warning: Citation `Twitchell2004' on page 76 undefined on input 
+Package natbib Warning: Citation `Twitchell2004' on page 68 undefined on input 
 line 518.
 
-[76]
+[68]
 
-Package natbib Warning: Citation `Weizenbaum1966' on page 77 undefined on input
+Package natbib Warning: Citation `Weizenbaum1966' on page 69 undefined on input
  line 522.
 
+[69] [70] [71] [72] [73]
 
-Underfull \vbox (badness 1152) has occurred while \output is active [77]
-[78] [79] [80] [81]
+LaTeX Warning: Reference `sec:QA' on page 74 undefined on input line 649.
 
-LaTeX Warning: Reference `sec:QA' on page 82 undefined on input line 649.
-
-[82] [83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96]
-[97] [98] [99] [100]) [101]
+[74]
+Underfull \vbox (badness 10000) has occurred while \output is active [75]
+[76] [77] [78] [79] [80] [81] [82] [83] [84] [85] [86] [87] [88] [89] [90]
+[91]) [92]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter5.tex [102]
+neseVersion-editing\chapters/chapter5.tex
 第5章
 
-Package natbib Warning: Citation `Sleator1993' on page 103 undefined on input l
-ine 10.
+Package natbib Warning: Citation `Sleator1993' on page 93 undefined on input li
+ne 10.
 
-[103]
+[93]
 
-Package natbib Warning: Citation `Sleator1993' on page 104 undefined on input l
-ine 41.
+Package natbib Warning: Citation `Sleator1993' on page 94 undefined on input li
+ne 41.
 
-[104]
+[94]
 
-Package natbib Warning: Citation `Sleator1993' on page 105 undefined on input l
-ine 54.
+Package natbib Warning: Citation `Sleator1993' on page 95 undefined on input li
+ne 54.
 
-<use  "figures/catSnake.png" > [105] [106]
-<use  "figures/schneiderFigure1.png" > [107] [108]
+<use  "figures/catSnake.png" > [95]
+Underfull \vbox (badness 10000) has occurred while \output is active [96]
+<use  "figures/schneiderFigure1.png" > [97] [98]
 
-Package natbib Warning: Citation `Chi2005' on page 109 undefined on input line 
-143.
+Package natbib Warning: Citation `Chi2005' on page 99 undefined on input line 1
+43.
 
 
-Package natbib Warning: Citation `Hudson2007' on page 109 undefined on input li
-ne 145.
+Package natbib Warning: Citation `Hudson2007' on page 99 undefined on input lin
+e 145.
 
-[109] [110] [111] [112] <use  "figures/RelEx.png" > [113]
-<use  "figures/catSnake.png" > [114] [115]
-<use  "figures/featureStructure.png" > [116] [117]
+[99] [100] [101] [102] <use  "figures/RelEx.png" > [103]
+<use  "figures/catSnake.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active [104]
+[105] <use  "figures/featureStructure.png" > [106] [107]
 <use  "figures/revisedFeatureStructure.png" >
-<use  "figures/revisedFeatureStructure_1.png" > [118] [119] [120]
-<use  "figures/finalFeatureStructure.png" > [121] [122]
+<use  "figures/revisedFeatureStructure_1.png" > [108] [109] [110]
+<use  "figures/finalFeatureStructure.png" > [111] [112]
 
-Package natbib Warning: Citation `Hobbs1978' on page 123 undefined on input lin
+Package natbib Warning: Citation `Hobbs1978' on page 113 undefined on input lin
 e 497.
 
-[123] [124] [125]
+[113]
+Underfull \vbox (badness 10000) has occurred while \output is active [114]
+[115]
 
-Package natbib Warning: Citation `Voloshin2009' on page 126 undefined on input 
+Package natbib Warning: Citation `Voloshin2009' on page 116 undefined on input 
 line 560.
 
-[126] [127]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 598--599
+[116] [117]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 598--599
 [][][][][][][][][][][][][][][][][][] 
 
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 624--625
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 624--625
 [][][][][][][][][][][][][][][][][][] 
-[128]
 
-Package natbib Warning: Citation `Lian2012' on page 129 undefined on input line
+Underfull \vbox (badness 2213) has occurred while \output is active [118]
+
+Package natbib Warning: Citation `Lian2012' on page 119 undefined on input line
  644.
 
-[129] [130] [131] [132] [133] <use  "figures/Socrates_1.png" > [134]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 828--829
+[119] [120] [121] [122] [123] <use  "figures/Socrates_1.png" >
+Underfull \vbox (badness 2197) has occurred while \output is active [124]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 828--829
 [][][][][][][][][][][][][][][][][][] 
-[135]
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 851--852
+[125]
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 851--852
 [][][][][][][][][][][][][][][][][][] 
-<use  "figures/Socrates_2.png" > [136]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 901--902
+<use  "figures/Socrates_2.png" >
+Underfull \vbox (badness 10000) has occurred while \output is active [126]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 901--902
 [][][][][][][][][][][][][][][][][][] 
-[137]
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 927--928
+[127]
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 927--928
 [][][][][][][][][][][][][][][][][][] 
-<use  "figures/Socrates_3.png" > [138]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 969--970
+<use  "figures/Socrates_3.png" > [128]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 969--970
 [][][][][][][][][][][][][][][][][][] 
-
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 995--996
+[129]
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 995--996
 [][][][][][][][][][][][][][][][][][] 
-[139] <use  "figures/Socrates_4.png" > [140]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 1057--1058
+<use  "figures/Socrates_4.png" > [130]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 1057--1058
 [][][][][][][][][][][][][][][][] 
-[141]
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 1098--1099
-[][][][][][][][][][][][][][][][] 
-
-Underfull \vbox (badness 10000) has occurred while \output is active [142]
-<use  "figures/Socrates_5.png" > [143]
-Overfull \hbox (112.42093pt too wide) in paragraph at lines 1172--1173
-[][][][][][][][][][][][][][][][] 
-[144]
-Overfull \hbox (143.95728pt too wide) in paragraph at lines 1213--1214
+[131]
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 1098--1099
 [][][][][][][][][][][][][][][][] 
 
-Underfull \vbox (badness 10000) has occurred while \output is active [145]
+Underfull \vbox (badness 10000) has occurred while \output is active [132]
+<use  "figures/Socrates_5.png" > [133]
+Overfull \hbox (83.04623pt too wide) in paragraph at lines 1172--1173
+[][][][][][][][][][][][][][][][] 
+[134]
+Overfull \hbox (114.58258pt too wide) in paragraph at lines 1213--1214
+[][][][][][][][][][][][][][][][] 
 
-Package natbib Warning: Citation `lechner2004ellipsis' on page 146 undefined on
+Underfull \vbox (badness 10000) has occurred while \output is active [135]
+
+Package natbib Warning: Citation `lechner2004ellipsis' on page 136 undefined on
  input line 1254.
 
 
-Package natbib Warning: Citation `Bhatt2011' on page 146 undefined on input lin
+Package natbib Warning: Citation `Bhatt2011' on page 136 undefined on input lin
 e 1254.
 
 
-Package natbib Warning: Citation `Margaret2013' on page 146 undefined on input 
+Package natbib Warning: Citation `Margaret2013' on page 136 undefined on input 
 line 1254.
 
 
-Package natbib Warning: Citation `Roumyana1995' on page 146 undefined on input 
+Package natbib Warning: Citation `Roumyana1995' on page 136 undefined on input 
 line 1254.
 
-[146] <use  "figures/comparativeRule.png" > [147] [148] [149] [150]
-
-LaTeX Warning: Reference `chap:learning' on page 151 undefined on input line 14
-53.
-
-[151]
-
-LaTeX Warning: Reference `chap:learning' on page 152 undefined on input line 14
-70.
-
-[152]) [153]
+[136] <use  "figures/comparativeRule.png" > [137] [138] [139] [140] [141]
+Underfull \hbox (badness 10000) in paragraph at lines 1453--1453
+[][][][][]$[][][][] [] [] [] [][][][] [] [][][][][][][] [] [][][] [] [][][][][]
+[][][] [] [][][][][] [] [][][] [] [][][][][][][][][][][][] [] [][][][][][][][] 
+[] [][][][][][][][] []
+[142]) [143]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter6.tex [154]
+neseVersion-editing\chapters/chapter6.tex [144]
 第6章
-[155] [156] [157] [158] [159]
-Overfull \hbox (5.60664pt too wide) in paragraph at lines 175--177
-\OT1/cmr/m/n/12 ([][][]\OML/txmi/m/it/12 InheritanceLink[][][]Strength\OT1/cmr/
-m/n/12 ) \OMS/txsy/m/n/12 ^^C \OT1/cmr/m/n/12 ([][]\OML/txmi/m/it/12 Inheritanc
-eLink[][][][]Confidence\OT1/cmr/m/n/12 )$ 
-[160]
 
-LaTeX Warning: Reference `chap:review' on page 161 undefined on input line 191.
+Underfull \vbox (badness 10000) has occurred while \output is active [145]
+[146] [147] [148] [149] [150]
+
+LaTeX Warning: Reference `chap:review' on page 151 undefined on input line 191.
 
 
-[161] [162] [163] [164] [165] [166]) [167]
+[151] [152] [153] [154] [155] [156]) [157]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter7.tex [168]
+neseVersion-editing\chapters/chapter7.tex [158]
 第7章
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 12.
 
-[169] [170]
-Overfull \hbox (7.29977pt too wide) in paragraph at lines 105--107
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
-
-Overfull \hbox (7.29977pt too wide) in paragraph at lines 107--109
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
-[171] [172]
-Overfull \hbox (2.04372pt too wide) in paragraph at lines 179--180
-[][][][][][][][][][][][][][][][][][][][] 
-
-Overfull \hbox (2.04372pt too wide) in paragraph at lines 197--198
-[][][][][][][][][][][][][][][][][][][][] 
-
-Underfull \vbox (badness 10000) has occurred while \output is active [173]
-Underfull \vbox (badness 10000) has occurred while \output is active [174]
-Overfull \hbox (2.04372pt too wide) in paragraph at lines 246--247
-[][][][][][][][][][][][][][][][][][][][] 
-
-Overfull \hbox (2.04372pt too wide) in paragraph at lines 264--265
-[][][][][][][][][][][][][][][][][][][][] 
-
-Underfull \vbox (badness 10000) has occurred while \output is active [175])
-[176]
+[159] [160] [161]
+Underfull \vbox (badness 2469) has occurred while \output is active [162]
+Underfull \vbox (badness 10000) has occurred while \output is active [163]
+Underfull \vbox (badness 10000) has occurred while \output is active [164]
+Underfull \vbox (badness 10000) has occurred while \output is active [165])
+[166]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter8.tex
 第8章
-[177] [178]
+
+Underfull \vbox (badness 10000) has occurred while \output is active [167]
+[168]
 Runaway argument?
 {\protect \numberline {\thesubsection }
 ! Paragraph ended before \addcontentsline was complete.
@@ -853,66 +768,123 @@ Runaway argument?
 l.64 
      
 ? 
-! Extra }, or forgotten \endgroup.
+! Too many }'s.
 \subsection ...ct \numberline {\thesubsection }#2}
                                                   \par \vspace {3.25ex\@plus...
 l.64 
      
 ? 
-[179]
+[169]
 
-Package natbib Warning: Citation `Zass2008' on page 180 undefined on input line
+Package natbib Warning: Citation `Zass2008' on page 170 undefined on input line
  73.
 
 
-Package natbib Warning: Citation `ONeill2012' on page 180 undefined on input li
+Package natbib Warning: Citation `ONeill2012' on page 170 undefined on input li
 ne 77.
 
-[180] [181] [182] [183] [184] [185] [186]
-Underfull \vbox (badness 10000) has occurred while \output is active [187]
-Underfull \vbox (badness 10000) has occurred while \output is active [188]
-[189] [190] [191] [192] [193]
+[170] [171] [172] [173] [174] [175] [176]
+Underfull \vbox (badness 10000) has occurred while \output is active [177]
+Underfull \vbox (badness 10000) has occurred while \output is active [178]
+[179] [180] [181] [182] [183]
 
-Package natbib Warning: Citation `Goertzel2010' on page 194 undefined on input 
+Package natbib Warning: Citation `Goertzel2010' on page 184 undefined on input 
 line 666.
 
-[194]
-Overfull \hbox (29.73964pt too wide) in paragraph at lines 717--717
- []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The British Museum boasts the worl
-d's largest Egyptology exhibit, with over five hun-
+[184]
+Overfull \hbox (0.36494pt too wide) in paragraph at lines 717--717
+[]\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The British Museum boasts the world
+'s largest Egyptology exhibit, with over five hun-
 
-Overfull \hbox (20.95044pt too wide) in paragraph at lines 717--717
- []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 along with some of the most perfec
-tly preserved examples of engraved hieroglyphics.[] 
+Overfull \hbox (0.36493pt too wide) in paragraph at lines 717--717
+[]\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The US Postal Service Museum hosts 
+enough rare stamps to satisfy even the most avid n-
+[185]
+Overfull \hbox (56.61597pt too wide) in paragraph at lines 717--717
+[]\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 a variety of surprisingly interesti
+ng displays recounting, for example, the roles played by var-
+[186] [187] [188] [189]
 
-Overfull \hbox (29.73962pt too wide) in paragraph at lines 717--717
- []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 The US Postal Service Museum hosts
- enough rare stamps to satisfy even the most avid n-
-[195] [196] [197] [198] [199]
-
-Package natbib Warning: Citation `RWR' on page 200 undefined on input line 883.
+Package natbib Warning: Citation `RWR' on page 190 undefined on input line 883.
 
 
 
-Package natbib Warning: Citation `Lenat1990' on page 200 undefined on input lin
+Package natbib Warning: Citation `Lenat1990' on page 190 undefined on input lin
 e 883.
 
-[200]
 
-Package natbib Warning: Citation `Spitkovsky2013' on page 201 undefined on inpu
+Underfull \vbox (badness 10000) has occurred while \output is active [190]
+
+Package natbib Warning: Citation `Spitkovsky2013' on page 191 undefined on inpu
 t line 887.
 
 
-Package natbib Warning: Citation `Goertzel2008w' on page 201 undefined on input
+Package natbib Warning: Citation `Goertzel2008w' on page 191 undefined on input
  line 887.
 
-) [201]
+) [191]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\chapters/chapter9.tex [202]
-第9章
-[203]
+neseVersion-editing\chapters/chapter9.tex [192]
+ç¬¬9ç« 
 
-! LaTeX Error: \begin{enumerate} on input line 387 ended by \end{itemize}.
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.20 \item {
+            \bf å‡è®¾1â€”â€”å…³äºŽè‡ªç„¶è¯­è¨€ç†è§£ï¼š}å€ŸåŠ©ä¸€ä¸ªè¶…å›¾è...
+
+? 
+
+Underfull \hbox (badness 10000) detected at line 20
+[][]
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.25 \item {
+            \bf å‡è®¾2â€”â€”å…³äºŽåŸºäºŽè¯­è¨€çš„æŽ¨ç†ï¼š}å€ŸåŠ©ç”±è¶…å›¾è...
+
+? 
+
+Underfull \hbox (badness 10000) detected at line 25
+[][]
+[193]
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.26 \item {
+            \bf 假设3——关于自然语言生成：} 借助一个超图...
+
+? 
+
+Underfull \hbox (badness 10000) detected at line 26
+[][]
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.27 \item  {
+             \bf å‡è®¾4â€”â€”å…³äºŽæ™ºèƒ½ä¼šè¯ç³»ç»Ÿï¼š} åˆ©ç”¨ä¸Šè¿°çš„è¯...
+
+? 
+
+Underfull \hbox (badness 10000) detected at line 27
+[][]
+
+! LaTeX Error: \begin{document} ended by \end{itemize}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -921,13 +893,19 @@ Type  H <return>  for immediate help.
 l.28 \end{itemize}
                   
 ? 
-[204]) [205]
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.28 \end{itemize}
+                  
+? 
+[194]) [195]
 No file main.bbl.
 
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\appendix/publications.tex [206]) [207]
+neseVersion-editing\appendix/publications.tex [196]) [197]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\appendix/thanks.tex [208] [209]) [210]
+neseVersion-editing\appendix/thanks.tex [198] [199]) [200]
 
 Package natbib Warning: There were undefined citations.
 
@@ -963,10 +941,24 @@ neseVersion-editing\appendix/publications.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\appendix/thanks.aux))
 
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ )
+Output written on main.pdf (222 pages).
+SyncTeX written on main.synctex.gz.
+Transcript written on main.log.
+
+
 _____________________________________________________________________
 
- XeLaTeX Compilation Report (Pages: 230)
+ XeLaTeX Compilation Report (Pages: 222)
 
- Errors: 3   Warnings: 109   Bad Boxes: 41
+ Errors: 9   Warnings: 88   Bad Boxes: 49
 _____________________________________________________________________
 
