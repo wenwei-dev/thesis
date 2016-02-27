@@ -247,37 +247,33 @@ MakeSentence(Atom-Set S_available, S_just_said, utterance type t)
 
 
 \subsection{综观SuReal及其存在的问题和改进方向}{A General View of SuReal}
-XXXX需要翻译
 
-Very broadly speaking, what this algorithm is doing is simply to reversing the various graph and hypergraph rewrite rules described in the previous sections on the Link Parser, RelEx and RelEx2Logic.   However, this is not entirely simple, because the rules create homomorphisms rather than isomorphisms.  Any one Atom structure may be produced by many different link-grammar structures, because there are many grammatical ways to produce any given idea.   But not all the grammatical structures corresponding to different subsets of a given Atom set needing articulation, will necessarily be grammatically compatible with each other.  So one has a constraint satisfaction problem, which in general will have multiple solutions, with varying levels of syntactic ambiguity and subjective human naturalness.   The above algorithm represents a heuristic approach to this problem.
+广义上来说，本文提出的SuReal的算法可以看成是一个超图的改写过程，这个改写过程和前文中阐述的自然语言理解流程（即Link Parser, RelEx and RelEx2Logic）相反。然而，在具体实现上，这一过程并非容易，因为自然语言理解流程中的语法语义规则都是同态而非同构。对于表层生成来说，任何一个知识库中的节点结构都可能由很多不同的链语法结构产生，因为对于同一种说法或句子，会有很多不同的表达方式，从而产生很多不同的链语法结构，但是并非所有这些链语法结构之间都需要相配。因此，SuReal将表层生成过程看成是一个约束满足问题（constraint satisfaction problem），而无论从句法歧义角度，还是从人类对句子是否自然的主观看法角度来看，该问题通常都有很多解答。上述的算法即是通过启发式方法去实现和解决这一问题。
 
-More precisely, suppose we have an Atom set $A = \{A_i\}$; and let $R = \{ R_{j} \}$ denote the set of all graph rewrite rules $R_j$ with the property that $R_j$ maps at least one link parse subtree into some nonempty subset of $\{A_i\}$.  Let $R^i \in R$ denote the set of rewrite rules that produce an Atom set including the particular Atom $A_i$; we may write $R^i = \{R^i_k\}$, with $R = \bigcup_i R^i$.   Let $m_g(r )$ denote the proposition that the rewrite rule $r$ matches some subgraph of the graph $g$.
 
-Given this set-up, the problem of generating a sentence expressing the Atom set $A$ boils down to finding some link parse $g$ that 
+更精确地说，假设我们有原子集合 $A = \{A_i\}$，使$R = \{ R_{j} \}$表示所有的超图改写规则$R_j$的集合；其中$R_j$至少能将一个链语法分析子树与$\{A_i\}$中某个非空原子集合匹配。假设$R^i \in R$ 表示改写规则集合中能产生包含$A_i$在内的匹配的规则的子集，因此我们可以将其表示如下 $R^i = \{R^i_k\}$, 其中 $R = \bigcup_i R^i$。 又假设 $m_g(r )$ 表示改写规则 $r$ 能匹配超图$g$中的某个子图。那么根据以上这些假设，表层生成的问题可看成是，对于表示需要表达内容的原子集合$A$，查找与其相匹配的并且满足下列条件的语法分析对应的超图$g$：
 
 \begin{itemize}
-\item parses correctly according to link grammar
-\item satisfies the expressiveness condition
+\item 必须是符合链语法的语法规则
+\item 必须满足“可表达性”的条件，即
 
 $$
 \bigwedge_i \bigvee_k m_g(R^i_k),
 $$
 
-\item satisfies an assumed "aesthetic condition", initially: that it would either not parse or not satisfy the expressiveness condition if any of its words were removed
+\item 必须满足系统规定的“审美条件”，目前我们系统将该条件定义为：删除任意一个词后，该结构依然满足上述两个条件。
 \end{itemize}
 
-\noindent Given a link parse $g$, producing the relevant sentence is trivial.  The task of generating a sentence-set expressing $A$ reduces to choosing a way to partition $A$ into subsets, so that each can be acceptably expressed via a single sentence.  
+\noindent 上述过程完成了将表示想表达的内容的原子集合 $A$中抽取了能通过一个合法自然语言句子来表达的子集，当找到这样的链语法分析结构之后，生成相应的自然语言句子就很显然。
 
-A strength and weakness of this approach is that, in most practical cases, this constraint satisfaction problem will have many solutions.  Selection among the various solutions could be approached in many ways, e.g.  via evaluating various solutions and choosing the one with the highest  word tuple probabilities relative to a large reference corpus; or via proceeding as in the current NLGen system, and choosing solutions whose fragments are known via past NL comprehension experience to have been used in real human-generated sentences.
+对于上述的SuReal使用的方法，在多数情况下，该约束满足问题都能找到很多解答，而如何从这些解答中找出最优解的方法也很多，本文采用的方法是：通过在大型语料中训练出来的语言模型来对生成的句子进行打分，从而选择得分最高的解答。
 
-Another strength and  weakness of this approach is that it is data-driven.   The system can only generate sentences whose fragments resemble previously-encountered sentences.  For this reason, from an AGI perspective, this approach can ultimately serve only as a portion of an overall language generation system.  It must be augmented by a method with less limited creative power, even if this additional method is slower.  But for medium-term practical purposes, there are many more critical challenges than expanding the creative potential of the surface realization component of our system; the current approach seems more than adequate for the time being.
-
-
-目前SuReal存在的问题有：
+那么目前SuReal存在的问题有：
 
 \begin{itemize}
 \item 受限于RelEx2Logic的输出。由于匹配所使用的三元组知识库是通过我们的自然语言理解系统产生的，那么其中的逻辑表达式中的所有Atoms类型只能来源于RelEx2Logic中定义的，因此如果输入中含有RelEx2Logic中未使用过的Atom类型，那么将无法生成句子。
-\item 尚未将OpenCog中的强化学习使用到匹配中，使匹配更智能简洁。
+\item 数据驱动，如果知识库中没有与想表达内容相关的句子，那么系统将会随机生成包含相关单词的句子，从而无法正确表达。
+\item 系统目前使用的查找匹配过程比较繁琐，并未将强化学习使用到匹配中，使匹配过程更智能简洁。
 \end{itemize}
 
 可以改进方向包括：
