@@ -318,21 +318,21 @@ LaTeX Font Warning: Font shape `EU1/AdobeSongStd(0)/m/sl' undefined
 
 [2]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\abstracts/enabstract.tex [3] [4] [5] [6] [7]) [8]
+neseVersion-editing\abstracts/enabstract.tex [3] [4] [5]) [6]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.toc [9]
-Underfull \vbox (badness 3219) has occurred while \output is active [10]
-Underfull \vbox (badness 3219) has occurred while \output is active [11])
-[12]
+neseVersion-editing\main.toc [7]
+Underfull \vbox (badness 3219) has occurred while \output is active [8]
+Underfull \vbox (badness 3219) has occurred while \output is active [9])
+[10]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
-neseVersion-editing\main.eoc [13]
+neseVersion-editing\main.eoc [11]
 Overfull \hbox (14.2027pt too wide) in paragraph at lines 31--31
  [] [][][]\EU1/MosquitoFormalStd(0)/bx/n/14 Cognitive Dialogue System Model Bas
 ed on Speech 
 
-Underfull \vbox (badness 1199) has occurred while \output is active [14]
-Underfull \vbox (badness 3861) has occurred while \output is active [15])
-[16]
+Underfull \vbox (badness 1199) has occurred while \output is active [12]
+Underfull \vbox (badness 3861) has occurred while \output is active [13])
+[14]
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\chapters/chapter1.tex
 第1章
@@ -941,23 +941,9 @@ neseVersion-editing\appendix/publications.aux)
 (C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChi
 neseVersion-editing\appendix/thanks.aux))
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- )
-Output written on main.pdf (222 pages).
-SyncTeX written on main.synctex.gz.
-Transcript written on main.log.
-
-
 _____________________________________________________________________
 
- XeLaTeX Compilation Report (Pages: 222)
+ XeLaTeX Compilation Report (Pages: 220)
 
  Errors: 9   Warnings: 88   Bad Boxes: 49
 _____________________________________________________________________
