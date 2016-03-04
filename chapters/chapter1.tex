@@ -16,12 +16,21 @@ XXXX
 \label{sec:review}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-XXX 同样blah blah对话系统的现状，然后点出这一节的结构，从哪些方面来综述等等
+对话系统简单来说就是计算机用来试图和人类通过自然语言交流的软件系统。对话系统的思想可以追溯到1950年图灵在\cite{Turing1950}中提出的图灵测试，在过去的几十年中，有关对话系统的研究大致有两个不同的方向：一个是仅在表面外观上模拟对话，也被称为聊天机器人，如著名的聊天机器人心理医生ELIZA\cite{Weizenbaum1966}等。这类系统大多数不考虑理解对话内容的含义，直接采用模板匹配的方式找到和用户输入相关的对话，目前经常被用在各类社交网站和实时通讯的社交软件中。另一个是试图模拟人类真实的对话，并动态产生合适的对话，也被称为对话管理。后者是本文的研究重点，因此这一小节我们将回顾这一类对话系统以及对话管理的相关研究。
 
+目前，对话系统的研究中有很多不同的架构体系，一个对话系统包含哪些功能模块也视不同的系统而异，但一般来说，对话系统主要包括以下几个功能模块：自然语言理解模块、对话管理模块、知识表示模块、自然语言生成模块\cite{Arora2013}。各模块之间的数据走向如图\ref{fig:dialogue}所示。接下来我们将分别就对话系统中的各个功能模块来展开综述相关研究现状。另外，由于本文的智能对话系统中使用了言语行为理论，因此也会在本节对其相关研究进行简明的阐述。
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/dialogue_system.png}
+\caption{对话系统的基本结构}
+\label{fig:dialogue}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{知识表示方法和逻辑推理研究综述}{Overview of Knowledge Representation And Logic Reasoning}
+\label{sec:representationReview}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 XXX开场白需要调整
 
@@ -216,7 +225,7 @@ ConceptNet系统的节点是自然语言碎片，这些碎片按照某个句法�
 \end{itemize}
 
 \end{description}
-<<<<<<< HEAD
+
 
 \item{Atomspace}
 
@@ -228,83 +237,37 @@ Atomspace是开源的认知体系结构OpenCog\footnote{\url{http://wiki.opencog
 
 Atomspace是开源的认知体系结构OpenCog\footnote{\url{http://wiki.opencog.org/w/The_Open_Cognition_Project}}里所使用的知识表示体系，也是本文所采用的知识表示机制，会在第\ref{chap:representation}中进一步介绍，这里只对比它和目前存在的一些知识表示方法的比较。
 
->>>>>>> origin/master
 XXX 语言要稍微调整一下
 Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记超图”，但ConceptNet只是一个“加权标记图”。此外，在可以直接表示的关系复杂性方面，Atomspace与ConceptNet有所不同。Atomspace包含与ConceptNet相似的简单节点和链接，但还有更加复杂的，且能够表示量词关系，还含有可执行程序等。它的设计原则是：先利用简单的、ConceptNet类的方法，尽可能地表示，但之后在必要的情况下使用更复杂的表示工具。大多数“表示工具”都来自传统逻辑，而不是谓语逻辑，但必要时也使用与“明确量词关系”相对应的节点和链接。
 
 \end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{言语行为理论及相关研究综述}{Overview of Speech Act Theory and related research}
-\label{sec:speechAct}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-我们认为，分析和管理对话系统需要产生的各类话语的一个有效方法是：使用由Austin\cite{Austin2005}提出，Searle\cite{Searle1969} 改进的言语行为理论（Speech Act Theory）。本文将要阐述的智能对话研究中正采用了此方法，且在研究过程中，我们发现这个理论是极其有用且方便使用的。我们在这一节先回顾言语行为理论的基本观点，并介绍一些言语行为理论在对话方面的相关研究以及更细致具体的分类体系。
-<<<<<<< HEAD
-
-言语行为理论是语言学和语用学等研究中的一个重要理论。言语行为理论的核心概念是：强调语言的意向功能，认为说话者在说话的同时是在实施某种行为。因此，根据言语行为的观点，分析说话者的语言行为的过程，也就是说话者分析为了实现某个特定目标而采用的一系列的言语行为的过程。
-
-=======
-
-言语行为理论是语言学和语用学等研究中的一个重要理论。言语行为理论的核心概念是：强调语言的意向功能，认为说话者在说话的同时是在实施某种行为。因此，根据言语行为的观点，分析说话者的语言行为的过程，也就是说话者分析为了实现某个特定目标而采用的一系列的言语行为的过程。
-
->>>>>>> origin/master
-言语行为理论探讨那些可以通过言语来表现的行为类型。Austin\cite{Austin2005}将言语行为分为以下几种：
-
-\begin{itemize}
-\item {\bf 言内行为（Locutionary Act）}：话语的外在表现形式，即：话语本身的字面意义。
-\item {\bf 言外行为（Illocutionary Act）}：话语的“言外之力”，即：说话者对受话者的影响。
-\item {\bf 言后行为（Perlocutionary Act）}：话语达到的实际效果，即：话语所导致的行为，如说服、劝说、吓唬、启发、激励，或者让受话者去做某件事，或者让受话者意识到什么，不论是有意还是无意的。
-\end{itemize}
-
-Searle对Austin提出的言语行为理论做了深入的研究和探讨。在Searle\cite{Searle1969}看来，言语行为有时仅仅指的是言外行为。他认为，说话人通过他们的言语只能获得5类言外之力，它们分别是：
-
-\begin{itemize}
-\item 断言类：说话人自己承诺事情是真的。The sky is blue. （天是蓝色的。）
-\item 指令类：说话人试图让受话人做某事。Clean your room! （打扫你的房间！）
-\item 承诺类：说话人对未来的行为做出承诺。I will do it. (我将会做这件事。)
-\item 表达类：说话者表达了某些心理状态。I’m Sorry. (对不起。)。
-\item 声明类：说话人带来了不同的状况。The meeting is adjourned.（这个会议休会了。）
-\end{itemize}
-
-受这个本体论的启发，Twitchell 和 Nunamake在他们2004年的论文（标题为：言语行为归档：分析持续谈话和其参与者的概率统计法。\cite{Twitchell2004}）中提出了更加精细的“42种言语行为”本体论，叫做SWBD-DAMSL (DAMSL = Dialogue Act Markup in Several Layers）。尽管有少量不符合Searle的观点，并被分类为“其它”，但几乎他们所有的42种言语行为类型都能够被映射到Searle的5个高级类别之一。图\ref{fig:DAMSL}和\ref{fig:Searle}描述了这42种行为和它们与Searle分类之间的关系。我们已经利用了这个Searle解析法，它给我们正在进行的自然语言对话研究带来了灵感。
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=12cm]{figures/DAMSL.png}
-\caption{SWBD-DAMSL中使用的42种言语行为}
-\label{fig:DAMSL}
-\end{figure}
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=12cm]{figures/Searle.png}
-\caption{ 42种SWBD-DAMSL言语行为类型与Searle的言语行为类型的关联}
-\label{fig:Searle}
-\end{figure}
-
-XXXX 言语行为分类
-
-总之，言语行为理论为对话管理和对话控制提供了一个新的思路，也就是将对话的话语看成是一种行为，和其他非语言的行为类似，这样一来，它不仅给对话管理和对话控制提供更多可行的用于非语言的行为控制机制，也同时能将对话与智能体的其他行为有效结合起来，从而完成更智能更人性化的对话。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{对话系统及对话管理研究综述}{Overview of Dialogue System}
+\subsection{对话管理研究综述}{Overview of Dialogue Management}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-对话系统简单来说就是计算机用来试图和人类通过自然语言交流的软件系统。对话系统的思想可以追溯到1950年图灵在\cite{Turing1950}中提出的图灵测试，在过去的几十年中，有关对话系统的研究大致有两个不同的方向：一个是仅在表面外观上模拟对话，也被称为聊天机器人，如著名的聊天机器人心理医生ELIZA\cite{Weizenbaum1966}等。这类系统大多数不考虑理解对话内容的含义，直接采用模板匹配的方式找到和用户输入相关的对话，目前经常被用在各类社交网站和实时通讯的社交软件中。另一个是试图模拟人类真实的对话，并动态产生合适的对话，也被称为对话管理。后者是本文的研究重点，因此这一小节我们将回顾这一类对话系统以及对话管理的相关研究。
+对话管理，也称为对话控制，是决定一个对话系统在对话中说什么的关键。我们会在接下来章节对各个功能模块。接下来，我们会进一步回顾在近几年的相关研究中对话管理所使用的一些常用方法。
 
-目前，对话系统的研究中有很多不同的架构体系，一个对话系统包含哪些功能模块也视不同的系统而异，但一般来说，对话系统主要包括以下几个功能模块：自然语言理解模块、对话管理模块、知识表示模块、自然语言生成模块。各模块之间的数据走向如图\ref{fig:dialogue}所示\cite{Arora2013}。其中，对话管理，也称为对话控制，是决定一个对话系统在对话中说什么的关键。接下来，我们会进一步回顾在近年相关研究中对话管理使用的一些常用方法。
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=12cm]{figures/dialogue_system.png}
-\caption{ A generic dialogue-system architecture }
-\label{fig:dialogue}
-\end{figure}
 
-=======
-\subsection{对话系统研究综述}{Overview of Dialogue System}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In general, the Dialogue Management (DM) component of a dialogue system accepts the user's intention which is represented as a semantic
+frame of  comprehension results, and outputs the system responses at a concept level. The system responses have to reflect the discourse context by maintaining the discourse
+history
+
+Although the roles of the DM may depend to some extent on the type of task
+that is involved, the key roles include :
+
+Searching and providing query results by connecting to an external knowledge
+database based on the current input and the discourse context
+Asking further  information regarding a question, aiming to enable submission of an appropriate query
+Requesting to confirm unclear  information and to rephrase if the user's input
+is not comprehensible or appropriately actinable
+Predicting the next system action at the concept level to output the system's 
+utterance via the Nl generation module
+Controlling generic conversational mechanisms (e.g., barge-ins, backchannels,
+multi-party dialogs) so as to implement more human-like
+dialog systems
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -435,6 +398,53 @@ FCG中,有关配对句法和语义结构的例子（短语“the ball”）,请�
 
 一般来说，与NL理解相比，NL生成技术要落后得多。目前的实用系统往往比较专业化，而且很粗糙。概念比较先进的系统，如FCG，尚未经过广泛地实践测试。正如第\ref{chap:generation}章中所介绍的，我们在这一领域的研究代表了“基于规则的方法”和“统计法”的融合。我们认为这种融合非常有前景，但还没有精细化，也没有经过系统性评估。
 \end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{言语行为理论及相关研究综述}{Overview of Speech Act Theory and related research}
+\label{sec:speechAct}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+我们认为，分析和管理对话系统需要产生的各类话语的一个有效方法是：使用由Austin\cite{Austin2005}提出，Searle\cite{Searle1969} 改进的言语行为理论（Speech Act Theory）。本文将要阐述的智能对话研究中正采用了此方法，且在研究过程中，我们发现这个理论是极其有用且方便使用的。我们在这一节先回顾言语行为理论的基本观点，并介绍一些言语行为理论在对话方面的相关研究以及更细致具体的分类体系。
+
+言语行为理论是语言学和语用学等研究中的一个重要理论。言语行为理论的核心概念是：强调语言的意向功能，认为说话者在说话的同时是在实施某种行为。因此，根据言语行为的观点，分析说话者的语言行为的过程，也就是说话者分析为了实现某个特定目标而采用的一系列的言语行为的过程。
+
+言语行为理论探讨那些可以通过言语来表现的行为类型。Austin\cite{Austin2005}将言语行为分为以下几种：
+
+\begin{itemize}
+\item {\bf 言内行为（Locutionary Act）}：话语的外在表现形式，即：话语本身的字面意义。
+\item {\bf 言外行为（Illocutionary Act）}：话语的“言外之力”，即：说话者对受话者的影响。
+\item {\bf 言后行为（Perlocutionary Act）}：话语达到的实际效果，即：话语所导致的行为，如说服、劝说、吓唬、启发、激励，或者让受话者去做某件事，或者让受话者意识到什么，不论是有意还是无意的。
+\end{itemize}
+
+Searle对Austin提出的言语行为理论做了深入的研究和探讨。在Searle\cite{Searle1969}看来，言语行为有时仅仅指的是言外行为。他认为，说话人通过他们的言语只能获得5类言外之力，它们分别是：
+
+\begin{itemize}
+\item 断言类：说话人自己承诺事情是真的。The sky is blue. （天是蓝色的。）
+\item 指令类：说话人试图让受话人做某事。Clean your room! （打扫你的房间！）
+\item 承诺类：说话人对未来的行为做出承诺。I will do it. (我将会做这件事。)
+\item 表达类：说话者表达了某些心理状态。I’m Sorry. (对不起。)。
+\item 声明类：说话人带来了不同的状况。The meeting is adjourned.（这个会议休会了。）
+\end{itemize}
+
+受这个本体论的启发，Twitchell 和 Nunamake在他们2004年的论文（标题为：言语行为归档：分析持续谈话和其参与者的概率统计法。\cite{Twitchell2004}）中提出了更加精细的“42种言语行为”本体论，叫做SWBD-DAMSL (DAMSL = Dialogue Act Markup in Several Layers）。尽管有少量不符合Searle的观点，并被分类为“其它”，但几乎他们所有的42种言语行为类型都能够被映射到Searle的5个高级类别之一。图\ref{fig:DAMSL}和\ref{fig:Searle}描述了这42种行为和它们与Searle分类之间的关系。我们已经利用了这个Searle解析法，它给我们正在进行的自然语言对话研究带来了灵感。
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/DAMSL.png}
+\caption{SWBD-DAMSL中使用的42种言语行为}
+\label{fig:DAMSL}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/Searle.png}
+\caption{ 42种SWBD-DAMSL言语行为类型与Searle的言语行为类型的关联}
+\label{fig:Searle}
+\end{figure}
+
+XXXX 言语行为分类
+
+总之，言语行为理论为对话管理和对话控制提供了一个新的思路，也就是将对话的话语看成是一种行为，和其他非语言的行为类似，这样一来，它不仅给对话管理和对话控制提供更多可行的用于非语言的行为控制机制，也同时能将对话与智能体的其他行为有效结合起来，从而完成更智能更人性化的对话。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{存在的问题}{Omissions of Present Research}
