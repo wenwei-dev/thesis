@@ -3,9 +3,10 @@
 \label{chap:dialogue}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-XXXX
 
+本文的智能对话系统的预期目标主要是实现面向游戏角色和人型机器人的对话系统，但同样的研究思路也完全适用于基于文本的对话系统，例如智能对话搜索接口。我们分阶段来实现这样的目标，首先以一些相对小二简单的智能对话系统为起点，通过不断改进和完善，以及结合系统本身的自学习和人只能里，最终实现一个在一定程度上接近人类智能水平的对话系统。本章就根据第\ref{chap:dialogueModel}章中提出的智能对话系统CogDial的概念模型，并结合第\ref{chap:comprehension}章的自然语言理解技术以及第\ref{chap:generation}章自然语言生成技术的研究成果，设计并实现了几个基于概率逻辑推理的问答系统。除此之外，本章还结合我们研究中的发现和遇到的难题对深层语义解析的挑战进行了讨论，也给未来的研究提供了一个明确的方向。
 
+需要说明的是，目前该系统只能处理英文对话，所以接下来介绍系统的设计和实现时所举的对话例子基本是按照英文习惯，可能不太适合中文的语言习惯，但是该系统所采用的技术和理论基础都是完全适合中文的。
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,60 +79,60 @@ XXXX
 
  {\tt\begin{tiny}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@ae443d59-33e3-453f-b77e-2c46723f584a_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@ae4_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (PredicateNode "bought@530" (stv 0.001 0.99000001))
          (PredicateNode "buy" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "glockenspiel@bf4ad4a0-d48b-4c21-b817-a361757a951d" (stv 0.001 0.99000001))
+         (ConceptNode "glockenspiel@bf4" (stv 0.001 0.99000001))
          (ConceptNode "glockenspiel" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+         (ConceptNode "store@ae4" (stv 0.001 0.99000001))
          (ConceptNode "store" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (PredicateNode "bought@530" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (VariableNode "$rIrXGzhMvgVEaXQEaFYaXhMvzNQ5RL0m32kZ" (stv 0.001 0.99000001))
-            (ConceptNode "glockenspiel@bf4ad4a0-d48b-4c21-b817-a361757a951d" (stv 0.001 0.99000001))
-            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+            (VariableNode "$rIr" (stv 0.001 0.99000001))
+            (ConceptNode "glockenspiel@bf4" (stv 0.001 0.99000001))
+            (ConceptNode "store@ae4" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (ConceptNode "at@d68" (stv 0.001 0.99000001))
          (ConceptNode "at" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
          (SatisfyingSetLink (stv 0.99000001 0.99000001)
-            (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+            (PredicateNode "bought@530" (stv 0.001 0.99000001))
          )
-         (ConceptNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (ConceptNode "at@d68" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@530d4f1a-4ad0-4b8b-b686-36f4986a0db5" (stv 0.001 0.99000001))
+         (PredicateNode "bought@530" (stv 0.001 0.99000001))
          (ConceptNode "past" (stv 0.001 0.99000001))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "definite" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+            (ConceptNode "store@ae4" (stv 0.001 0.99000001))
          )
       )
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (PredicateNode "at@d68" (stv 0.001 0.99000001))
          (PredicateNode "at" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "at@d689e641-c1f9-49a0-8e60-d2eb824f0c7a" (stv 0.001 0.99000001))
+         (PredicateNode "at@d68" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "store@ae4eb998-d091-45d7-8b3e-5fa1c222aab6" (stv 0.001 0.99000001))
+            (ConceptNode "store@ae4" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.001 0.99000001)
-         (InterpretationNode "sentence@ae443d59-33e3-453f-b77e-2c46723f584a_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@ae4_parse_0_interpretation_$X")
          (ConceptNode "InterrogativeSpeechAct" (stv 0.001 0.99000001))
       )
    )
@@ -144,89 +145,89 @@ XXXX
 
  {\tt\begin{tiny}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@47794171-b923-41e5-a03a-7fc22eb583fb_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@477_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (PredicateNode "mauled@1a0" (stv 0.001 0.99000001))
          (PredicateNode "maul" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (ConceptNode "Bob@1c3" (stv 0.001 0.99000001))
          (ConceptNode "Bob" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "glockenspiel@b1288105-63bc-4630-bf0b-e35a585647ee" (stv 0.001 0.99000001))
+         (ConceptNode "glockenspiel@b12" (stv 0.001 0.99000001))
          (ConceptNode "glockenspiel" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+         (ConceptNode "friend@e78" (stv 0.001 0.99000001))
          (ConceptNode "friend" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (PredicateNode "mauled@1a0" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
-            (ConceptNode "glockenspiel@b1288105-63bc-4630-bf0b-e35a585647ee" (stv 0.001 0.99000001))
-            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+            (ConceptNode "Bob@1c3" (stv 0.001 0.99000001))
+            (ConceptNode "glockenspiel@b12" (stv 0.001 0.99000001))
+            (ConceptNode "friend@e78" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (ConceptNode "with@8ef" (stv 0.001 0.99000001))
          (ConceptNode "with" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
          (SatisfyingSetLink (stv 0.99000001 0.99000001)
-            (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+            (PredicateNode "mauled@1a0" (stv 0.001 0.99000001))
          )
-         (ConceptNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (ConceptNode "with@8ef" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (PredicateNode "mauled@1a06458b-e649-431c-9430-5940e43bbf21" (stv 0.001 0.99000001))
+         (PredicateNode "mauled@1a0" (stv 0.001 0.99000001))
          (ConceptNode "past" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.001 0.99000001)
-         (InterpretationNode "sentence@47794171-b923-41e5-a03a-7fc22eb583fb_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@477_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct" (stv 0.001 0.99000001))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "definite" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+            (ConceptNode "friend@e78" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "his@3011b147-3e39-446d-8dee-b0b6fe67a2bf" (stv 0.001 0.99000001))
+         (ConceptNode "his@301" (stv 0.001 0.99000001))
          (ConceptNode "his" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "possession" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
-            (ConceptNode "his@3011b147-3e39-446d-8dee-b0b6fe67a2bf" (stv 0.001 0.99000001))
+            (ConceptNode "friend@e78" (stv 0.001 0.99000001))
+            (ConceptNode "his@301" (stv 0.001 0.99000001))
          )
       )
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (PredicateNode "with@8ef" (stv 0.001 0.99000001))
          (PredicateNode "with" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "with@8ef20cf6-fd2e-4f8f-ab0b-43129152e715" (stv 0.001 0.99000001))
+         (PredicateNode "with@8ef" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "friend@e780ee86-6a61-419c-a37e-a97d34c4f3eb" (stv 0.001 0.99000001))
+            (ConceptNode "friend@e78" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (SpecificEntityNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (SpecificEntityNode "Bob@1c3" (stv 0.001 0.99000001))
          (ConceptNode "male" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (SpecificEntityNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+         (SpecificEntityNode "Bob@1c3" (stv 0.001 0.99000001))
          (ConceptNode "Bob" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "definite" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "Bob@1c332525-f7a2-4b72-9256-9e32f0d5e9da" (stv 0.001 0.99000001))
+            (ConceptNode "Bob@1c3" (stv 0.001 0.99000001))
          )
       )
    )
@@ -239,78 +240,78 @@ XXXX
 
  {\tt\begin{tiny}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@d92a6c1d-bc69-4501-8ea9-e4430fc56296_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@d92_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (PredicateNode "bought@7e4" (stv 0.001 0.99000001))
          (PredicateNode "buy" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (ConceptNode "Jill@bc3" (stv 0.001 0.99000001))
          (ConceptNode "Jill" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "thimble@8a32736f-7344-44ad-b4a4-df34553954bc" (stv 0.001 0.99000001))
+         (ConceptNode "thimble@8a3" (stv 0.001 0.99000001))
          (ConceptNode "thimble" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+         (ConceptNode "store@ef6" (stv 0.001 0.99000001))
          (ConceptNode "store" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (PredicateNode "bought@7e4" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
-            (ConceptNode "thimble@8a32736f-7344-44ad-b4a4-df34553954bc" (stv 0.001 0.99000001))
-            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+            (ConceptNode "Jill@bc3" (stv 0.001 0.99000001))
+            (ConceptNode "thimble@8a3" (stv 0.001 0.99000001))
+            (ConceptNode "store@ef6" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (ConceptNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (ConceptNode "at@50d" (stv 0.001 0.99000001))
          (ConceptNode "at" (ptv 0.001 0.99000001 1))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
          (SatisfyingSetLink (stv 0.99000001 0.99000001)
-            (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+            (PredicateNode "bought@7e4" (stv 0.001 0.99000001))
          )
-         (ConceptNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (ConceptNode "at@50d" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (PredicateNode "bought@7e4b5f65-7a73-4776-94ac-156a5c3799e1" (stv 0.001 0.99000001))
+         (PredicateNode "bought@7e4" (stv 0.001 0.99000001))
          (ConceptNode "past" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.001 0.99000001)
-         (InterpretationNode "sentence@d92a6c1d-bc69-4501-8ea9-e4430fc56296_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@d92_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct" (stv 0.001 0.99000001))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "definite" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+            (ConceptNode "store@ef6" (stv 0.001 0.99000001))
          )
       )
       (ImplicationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (PredicateNode "at@50d" (stv 0.001 0.99000001))
          (PredicateNode "at" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
-         (PredicateNode "at@50d120ad-3c57-4bed-a464-9c8542a787ab" (stv 0.001 0.99000001))
+         (PredicateNode "at@50d" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "store@ef655d95-4b5d-4df4-bd12-d6af443d4bec" (stv 0.001 0.99000001))
+            (ConceptNode "store@ef6" (stv 0.001 0.99000001))
          )
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (SpecificEntityNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (SpecificEntityNode "Jill@bc3" (stv 0.001 0.99000001))
          (ConceptNode "female" (stv 0.001 0.99000001))
       )
       (InheritanceLink (stv 0.99000001 0.99000001)
-         (SpecificEntityNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+         (SpecificEntityNode "Jill@bc3" (stv 0.001 0.99000001))
          (ConceptNode "Jill" (ptv 0.001 0.99000001 1))
       )
       (EvaluationLink (stv 0.99000001 0.99000001)
          (PredicateNode "definite" (stv 0.001 0.99000001))
          (ListLink (stv 0.99000001 0.99000001)
-            (ConceptNode "Jill@bc320f63-6edf-49c4-ad1c-31ad932003f2" (stv 0.001 0.99000001))
+            (ConceptNode "Jill@bc3" (stv 0.001 0.99000001))
          )
       )
    )
@@ -371,37 +372,37 @@ Ling-ling's house is like a museum of obscure musical instruments:
 （玲玲的家像一个稀有乐器博物馆。）
 
 InheritanceLink
-	ConceptNode "house_123"
+	ConceptNode "house@123"
 	ConceptNode "house"
 	
 EvaluationLink
 	PredicateNode "own"
 	ConceptNode "Ling-ling"
-	ConceptNode "house_123"
+	ConceptNode "house@123"
 
 SimilarityLink
-	ConceptNode "house_123"
-	ConceptNode "museum_55"
+	ConceptNode "house@123"
+	ConceptNode "museum@552"
 	
 InheritanceLink
-	ConceptNode "museum_55"
+	ConceptNode "museum@552"
 	ConceptNode "museum"
 
 EvaluationLink
 	PredicateNode "of"
-	ConceptNode "museum_55"
-	ConceptNode "instruments_12"
+	ConceptNode "museum@552"
+	ConceptNode "instruments@12d"
 	
 InheritanceLink
-	ConceptNode "instruments_12"
+	ConceptNode "instruments@12d"
 	ConceptNode "obscure"
 	
 InheritanceLink
-	ConceptNode "instruments_12"
+	ConceptNode "instruments@12d"
 	ConceptNode "musical"	
 	
 InheritanceLink
-	ConceptNode "instrument_16"
+	ConceptNode "instrument@12d"
 	ConceptNode "instrument"	
 	
 The glockenspiel is obscure, and the glockenspiel is a musical instrument:
@@ -413,18 +414,18 @@ InheritanceLink
 	
 InheritanceLink
 	ConceptNode "glockenspiel"
-	ConceptNode "instrument_15"
+	ConceptNode "instrument@1c5"
 	
 InheritanceLink
-	ConceptNode "instrument_15"
+	ConceptNode "instrument@1c5"
 	ConceptNode "musical"
 	
 InheritanceLink
-	ConceptNode "instrument_15"
+	ConceptNode "instrument@1c5"
 	ConceptNode "obscure"	
 	
 InheritanceLink
-	ConceptNode "instrument_15"
+	ConceptNode "instrument@1c5"
 	ConceptNode "instrument"		
 
 A museum of entities of type X, contains many instances of X:
@@ -733,11 +734,11 @@ The dogs had more than enough steaks this morning.  Many of them were rotten but
  {\tt\begin{small}\begin{lstlisting}
 EvaluationLink
 	PredicateNode "enough"
-	ConceptNode "steaks_55"
+	ConceptNode "steaks@5v2"
 	
 EvaluationLink
 	PredicateNode "many"
-	ConceptNode "steaks_55"
+	ConceptNode "steaks@5v2"
 \end{lstlisting}\end{small}}
 
 在解析上面列出的第一个句子后，RelEx2Logic输出的语义逻辑关系中含有：
@@ -745,21 +746,21 @@ EvaluationLink
  {\tt\begin{small}\begin{lstlisting}
 
  ImplicationLink
- 	PredicateNode "largest_77"
+ 	PredicateNode "largest@737"
 	PredicateNode "largest"
 
 EvaluationLink
-	PredicateNode "largest_77"
-	ConceptNode "collection_44"
+	PredicateNode "largest@737"
+	ConceptNode "collection@a34"
 	
 EvaluationLink
 	PredicateNode "of"
-	ConceptNode "collection_44"
-	ConceptNode "works_88"
+	ConceptNode "collection@a34"
+	ConceptNode "works@8fw"
 	
 EvaluationLink
 	PredicateNode "many"
-	ConceptNode "works_88"
+	ConceptNode "works@8fw"
 \end{lstlisting}\end{small}}
 
 \noindent 因此如果系统的知识库中含有以下推理常识：
@@ -787,16 +788,16 @@ ImplicationLink
 
  {\tt\begin{small}\begin{lstlisting}
 ImplicationLink
- 	PredicateNode "largest_77"
+ 	PredicateNode "largest@737"
 	PredicateNode "largest"
 
 EvaluationLink
-	PredicateNode "largest_77"
-	ConceptNode "collection_123"
+	PredicateNode "largest@737"
+	ConceptNode "collection@a34"
 	
 EvaluationLink
 	PredicateNode "many"
-	ConceptNode "collection_123"
+	ConceptNode "collection@a34"
 \end{lstlisting}\end{small}}
 
 \noindent 如果系统中还有下列常识：
@@ -812,11 +813,11 @@ ImplicationLink
  {\tt\begin{small}\begin{lstlisting}
 EvaluationLink
 	PredicateNode "large"
-	ConceptNode "collection_123"
+	ConceptNode "collection@a34"
 	
 EvaluationLink
 	PredicateNode "many"
-	ConceptNode "collection_123"
+	ConceptNode "collection@a34"
 \end{lstlisting}\end{small}}
 
 Putting these conclusions about enough vs. many and large vs. many, from these sentences, together with similar conclusions from other sentences, the (uncertain) conclusions
@@ -879,26 +880,17 @@ The bigger bowl has many kinds of candy in it.
 
 这个挑战其中一部分是由组合爆炸引起，在我们的超图知识库Atomspace中包括很多不同句子的解析结果，这很容易导致过量的不同推断。上述例子中的任何特定推断理论上都可以通过目标驱动的后向链接推理得出，如\ref{sec:backward}中讨论的回答查询问题的例子“谁在商店买钟琴”中的推理模式，这样一来，我们需要设置Atomspace能储存相对久的知识以保证推理的时候有足够多的推理前提。同样，上述例子中的任何特地推断原则上也可以通过系统自动搜索相关有趣信息来进行前向链接推理得出。不论用哪一种推理方法，不仅需要一个非常丰富复杂的知识库的支持，如果合理高效地进行推理控制更是巨大的研究挑战。
 
-这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排，这也就要求一个可靠的能进行实时非确定逻辑推理系统。这无疑是一个相当棘手的问题。
+这个挑战并不仅仅是针对查询处理，其实，更关键挑战基本上可以归结为常识推理的问题上\cite{RWR}。考虑到即使是一个简单的常识推理，所涉及的知识领域和其复杂性不言而喻，纯粹通过手工编码构建的复杂知识库如Cyc\cite{Lenat1990}已被证实并不可行。但是随着大数据处理技术的发展，通过分析和挖掘自然语言语料库以及智能体的涉身经验中的语言和非语言信息的综合数据库，来获取常识推理所需要的知识便成为一个更可行有效的方法。然而，根据自然语言的特性，某一个自然语言句子中用于推理的逻辑表现形式，常常与其他句子的表现形式不尽相同，因此通常需要一些从额外的句子中获取的常识来对这些句子进行逻辑形式重排，这也就要求一个可靠的能进行实时不确定逻辑推理系统。这无疑是一个相当棘手的问题。
 
-One approach to addressing the commonsense knowledge problem, in a dialogue context, is to roughly mimic the linguistic
-and cognitive developmental trajectory of a human child.  That is: Begin by feeding the AI system text containing relatively
-simple sentences communicating relatively simple knowledge, and dialoguing with the system about this knowledge.   Once
-the system has built up commonsense knowledge based on this relatively simple network of knowledge, then feed it slightly
-more complex knowledge -- and so forth.  In this way it may be possible to ease the AI system toward a reasonable solution
-of the system of simultaneous equations constituting commonsense semantics.
+要解决上述的常识知识问题，对于智能对话系统来说，其中一种方法是粗略模仿人类儿童的语言和认知成长轨迹。也就是说，从相对简单的知识库知识库着手，使得智能对话系统能通过知识库中相对简单的句子和人类交流相对简单的知识。当系统已经建立了基于这些相对简单的知识网络下的常识性知识后，再开始对系统输入稍微复杂的知识--等等，依此下去，这样的对话系统很可能会发展成一个拥有相当的常识语义库并能做出实时合理应答的智能对话系统。
 
-Conceptually this is similar to the approach
-pursued in \cite{Spitkovsky2013} for unsupervised language learning (via feeding a learning system progressively more and more complex
-sentences), and the approach pursued in \cite{Goertzel2008w} for embodied behavioral learning; but here the developmental approach
-is being proposed specifically for learning appropriate, useful transformations of semantic knowledge extracted from natural language.
-This is also closely related to the developmental "AGI Preschool" approach proposed in an OpenCog context in \cite{Goertzel2009a}.
-
-
+ 从概念上讲， 上述方法和\cite{Spitkovsky2013} 中的无监督语言学习类似，即通过逐步将越来越复杂的自然语言句子输入系统，使得系统逐步理解越来越复杂的句子。 \cite{Goertzel2008w} 也提出了类似的涉身行为学习。但我们这里提出的观点更针对智能对话系统，更注重如何从自然语言中抽取出有用的合理的语义知识等的学习。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{本章小结}{Summary of Accomplishments and Future Work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+目前我们的系统还不足以达到符合人类的智能标准，但这一个介于目前相关研究水平和人类水平之间的对话系统可以看做是使用更可行的研究方法在智能对话系统中集成并完善更多的功能，而不是一味盲目地去追求达到人类水平的目标。
 
 本章充分利用了我们的研究成果，在第\ref{chap:dialogueModel}章中提出的智能会话系统CogDial的概念模型基础上，并结合第\ref{chap:comprehension}章中讨论的自然语言理解系统、第\ref{chap:generation}章中讨论的自然语言生成系统，以及\ref{sec:pln}中讨论的PLN推理系统，以认知模型OpenPsi中的动机机制等技术来设计并实现了几个合理有效的对话管理机制。本章还讨论了我们在智能对话系统的研究中发现的深层语义解析的挑战，也给未来的研究提供了一个明确的方向。下一步工作将进一步完善本章中提出的各种对话管理机制并开发更多新颖智能的对话控制体系结构，并最终运用到机器人或者其他智能体软件系统上。
 

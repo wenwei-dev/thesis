@@ -98,17 +98,17 @@ Socrates breath air.（苏格拉底呼吸空气）
 {\tt\begin{small}\begin{lstlisting}
 Concepts
 
-(ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
+(ConceptNode "Socrates@f25") ; [217]
 
 (ConceptNode "Socrates" (stv .1 1.0)) ; [218]
 
-(ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1" (stv .1 1.0)) ; [220]
+(ConceptNode "man@80d" (stv .1 1.0)) ; [220]
 
-(ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13" (stv .1 1.0)) ; [290]
+(ConceptNode "men@83d" (stv .1 1.0)) ; [290]
 
 (ConceptNode "man" (stv .1 1.0)) ; [221]
 
-(ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+(ConceptNode "air@e3f") ; [292]
 
 (ConceptNode "air") ; [293]
 
@@ -117,41 +117,41 @@ Concepts
 满足breathe(x,y)的多元组可表示如下：
 
 (ListLink (stv 1.000000 0.000000)
-  (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
-  (ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+  (ConceptNode "men@83d") ; [290]
+  (ConceptNode "air@e3f") ; [292]
 ) ; [295]
 
 breathe(x,y)
 
 (EvaluationLink (stv 1.000000 1.000000)
-  (PredicateNode "breathe@218b15b2-52a8-430c-93f6-b4bba225418c") ; [287]
+  (PredicateNode "breathe@218") ; [287]
   (ListLink (stv 1.000000 0.000000)
-    (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
-    (ConceptNode "air@e3f175ea-c3d1-45cf-883d-a6d2f6a879ac") ; [292]
+    (ConceptNode "men@83d") ; [290]
+    (ConceptNode "air@e3f") ; [292]
   ) ; [295]
 ) ; [296]
 
 "Socrates IS-A man"（“苏格拉底是人”）可表示如下：
 
 (InheritanceLink (stv 1.000000 1.000000)
-  (ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
-  (ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1") ; [220]
+  (ConceptNode "Socrates@f25") ; [217]
+  (ConceptNode "man@80d") ; [220]
 ) ; [223]
 
 具体实例继承于泛化概念：
 
 (InheritanceLink (stv 1.000000 0.990000)
-  (ConceptNode "men@83d83a2e-940c-46aa-91f1-a7d2c106ef13") ; [290]
+  (ConceptNode "men@83d") ; [290]
   (ConceptNode "man") ; [221]
 ) ; [291]
 
 (InheritanceLink (stv 1.000000 1.000000)
-  (ConceptNode "Socrates@f250f429-5078-4453-8662-c63cc8f58a22") ; [217]
+  (ConceptNode "Socrates@f25") ; [217]
   (ConceptNode "Socrates") ; [218]
 ) ; [219]
 
 (InheritanceLink (stv 1.000000 0.990000)
-  (ConceptNode "man@80d4e852-1b93-4c49-84e1-5a7352b0dcb1") ; [220]
+  (ConceptNode "man@80d") ; [220]
   (ConceptNode "man") ; [221]
 ) ; [222]
  \end{lstlisting}\end{small}}
@@ -163,23 +163,23 @@ breathe(x,y)
 1) 成员变量泛化规则（GeneralEvaluationToMemberRule）
 输入：
 (EvaluationLink (stv 1.000000 1.000000)
-  (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+  (PredicateNode "breathe@7f5") ; [350]
   (ListLink (stv 1.000000 0.000000)
-    (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
-    (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+    (ConceptNode "men@a29") ; [353]
+    (ConceptNode "air@9bf") ; [355]
   ) ; [358]
 ) ; [359]
 
 输出：(以及ListLink中其他变量被泛化后的3个其他变体）
 (MemberLink (stv 1.000000 1.000000)
-  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "men@a29") ; [353]
   (SatisfyingSetLink (stv 1.000000 1.000000)
     (VariableNode "$X0") ; [441]
     (EvaluationLink (stv 1.000000 0.000000)
-      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (PredicateNode "breathe@7f5") ; [350]
       (ListLink (stv 1.000000 0.000000)
         (VariableNode "$X0") ; [441]
-        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+        (ConceptNode "air@9bf") ; [355]
       ) ; [443]
     ) ; [444]
   ) ; [445]
@@ -190,14 +190,14 @@ breathe(x,y)
 
 输出：
 (InheritanceLink (stv 1.000000 1.000000)
-  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "men@a29") ; [353]
   (SatisfyingSetLink (stv 1.000000 1.000000)
     (VariableNode "$X0") ; [441]
     (EvaluationLink (stv 1.000000 0.000000)
-      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (PredicateNode "breathe@7f5") ; [350]
       (ListLink (stv 1.000000 0.000000)
         (VariableNode "$X0") ; [441]
-        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+        (ConceptNode "air@9bf") ; [355]
       ) ; [443]
     ) ; [444]
   ) ; [445]
@@ -206,32 +206,32 @@ breathe(x,y)
 3) 溯因推理规则（AbductionRule）
 输入：
 (InheritanceLink (stv 1.000000 0.990000)
-  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "men@a29") ; [353]
   (ConceptNode "man") ; [284]
 ) ; [354]
 
 (InheritanceLink (stv 1.000000 0.990000)
-  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
+  (ConceptNode "man@fbc") ; [283]
   (ConceptNode "man") ; [284]
 ) ; [285]
 
 输出：
 (InheritanceLink (stv 1.000000 0.988901)
-  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
-  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "man@fbc") ; [283]
+  (ConceptNode "men@a29") ; [353]
 ) ; [609]
 
 4) 演绎推理规则（DeductionRule）
 输入：上一条输出以及下面的原子集合
 (InheritanceLink (stv 1.000000 1.000000)
-  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
-  (ConceptNode "man@fbc51aff-8074-46d8-b3ba-1ccaeb1adb34") ; [283]
+  (ConceptNode "Socrates@46e") ; [280]
+  (ConceptNode "man@fbc") ; [283]
 ) ; [286]
 
 输出：
 (InheritanceLink (stv 1.000000 0.991755)
-  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
-  (ConceptNode "men@a2905bdd-9214-4717-82c6-dfe21c1263bc") ; [353]
+  (ConceptNode "Socrates@46e") ; [280]
+  (ConceptNode "men@a29") ; [353]
 ) ; [777]
 
 5) 演绎推理规则（DeductionRule）
@@ -239,14 +239,14 @@ breathe(x,y)
 
 输出：
 (InheritanceLink (stv 1.000000 0.986333)
-  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [280]
+  (ConceptNode "Socrates@46e") ; [280]
   (SatisfyingSetLink (stv 1.000000 0.000000)
     (VariableNode "$X1") ; [442]
     (EvaluationLink (stv 1.000000 1.000000)
-      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (PredicateNode "breathe@7f5") ; [350]
       (ListLink (stv 1.000000 0.000000)
         (VariableNode "$X1") ; [442]
-        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+        (ConceptNode "air@9bf") ; [355]
       ) ; [922]
     ) ; [923]
   ) ; [8605]
@@ -257,14 +257,14 @@ breathe(x,y)
 
 输出：
 (MemberLink (stv 1.000000 0.989841)
-  (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [217]
+  (ConceptNode "Socrates@46e") ; [217]
   (SatisfyingSetLink (stv 1.000000 1.000000)
     (VariableNode "$X0") ; [385]
     (EvaluationLink (stv 1.000000 0.000000)
-      (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+      (PredicateNode "breathe@7f5b") ; [350]
       (ListLink (stv 1.000000 0.000000)
         (VariableNode "$X1") ; [442]
-        (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+        (ConceptNode "air@9bf") ; [355]
       ) ; [922]
     ) ; [388]
   ) ; [389]
@@ -275,10 +275,10 @@ breathe(x,y)
 
 最终推理结论：
 (EvaluationLink (stv 1.000000 0.989841)
-  (PredicateNode "breathe@7f5b37e8-e4b3-4335-a06b-68af470cf354") ; [350]
+  (PredicateNode "breathe@7f5") ; [350]
   (ListLink (stv 1.000000 0.000000)
-    (ConceptNode "Socrates@46ec3d0f-4535-4d01-87b7-84ef65c25a23") ; [217]
-    (ConceptNode "air@9bfe790d-5446-4219-be74-845c0d145fe1") ; [355]
+    (ConceptNode "Socrates@46e") ; [217]
+    (ConceptNode "air@9bf") ; [355]
   ) ; [922]
 ) ; [388]
  \end{lstlisting}\end{small}}

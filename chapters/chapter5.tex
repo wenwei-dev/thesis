@@ -568,26 +568,26 @@ $$
 A = (EvaluationLink \ v_1 \ v_2 \ v_3)
 $$
 
-这把主语为$v_2$，宾语为$v_3$的动词$v_1$映射到一个v1为谓语，($v_2$, $v_3$)为参数列表的OpenCog EvaluationLink。例如，$S_*$ 指任何$S$的链路分析器子类型。当然，大部分规则都比这个例子复杂。
+这把主语为$v_2$，宾语为$v_3$的动词$v_1$映射到一个v1为谓语，($v_2$, $v_3$)为参数列表的EvaluationLink。例如，$S_*$ 指任何$S$的链路分析器子类型。当然，大部分规则都比这个例子复杂。
 
 在具体操作中，由于自然语言的复杂性，仍然有一些这种形式的RelEx2Logic规则无法处理的语言现象。所以，为了获取句子正确的逻辑表示而不影响其含义，我们向RelEx2Logic框架添加一个后处理步骤，这个步骤主要包含下列部分：
 
 \begin{itemize}
-\item 处理OpenCog Atomspace中的实例。根据输入的自然语言的含义，将通用概念或谓语与特定概念或谓语进行区分。
+\item 处理Atomspace中的实例。根据输入的自然语言的含义，将通用概念或谓语与特定概念或谓语进行区分。
 \item 估计模糊谓语或概念的概率。例如，如果句子是“Maybe the cat chased a snake.”，那么我们需要给最后的逻辑表示指定相较于句子“the cat chased a snake.”较低的概率。
 \item 正确处理量词。众所周知，自然语言中的量词十分复杂。不可能创建一个通用规则而以通用方式获取所有量词的正确抽象表示。而且，我们想要使得我们的规则更加通用，所以我们不想为每个量词使用单独的规则，这需要以简化的方式编写量词规则，而不是极力利用后处理方法允许的更大灵活性。
 \end{itemize}
 
-下面将解释后处理的更多细节。
+下面进一步将解释后处理的一些处理细节。需要说明的是，在我们的知识表示体系Atomspace中，系统会为每个节点随机产生一个唯一的序列号，以便用于检索和区分具有相同节点内容的不同节点。由于篇幅关系，我们这里给出的实验结果简化了每个节点的序列号，如系统产生的节点为“chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8”，在本文中会被简化为“chased@64f”。
 
 将我们当前的简单映射规则应用于上述的例句“The cat chased a snake.”，会生成以下基本输出：
 
  {\tt\begin{small}\begin{lstlisting}
 EvaluationLink 
-      PredicateNode chase@3453432
+      PredicateNode chased@64f
       ListLink
-            ConceptNode cat@1243546464
-            ConceptNode snake@564636322
+            ConceptNode cat@3a1
+            ConceptNode snake@b8a
        
 \end{lstlisting}\end{small}}
 
@@ -595,39 +595,39 @@ EvaluationLink
 
 {\tt\begin{small}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@f20_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (PredicateNode "chased@64f")
          (PredicateNode "chase" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
+         (ConceptNode "cat@3a1")
          (ConceptNode "cat" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
+         (ConceptNode "snake@b8a")
          (ConceptNode "snake" (ptv 1 0 1))
       )
       (EvaluationLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (PredicateNode "chased@64f")
          (ListLink
-            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
-            (ConceptNode "snake@b8aabaee-dfe9-4833-8b89-6d9c1d45aea0")
+            (ConceptNode "cat@3a1")
+            (ConceptNode "snake@b8a")
          )
       )
       (InheritanceLink
-         (PredicateNode "chased@64f680a3-d076-4ae1-814c-0152c3f3c8f8")
+         (PredicateNode "chased@64f")
          (ConceptNode "past")
       )
       (InheritanceLink
-         (InterpretationNode "sentence@f207bfb1-8dcf-42c8-a1d7-9d89075e8be8_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@f20_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "cat@3a186cb8-f8e2-40b1-97fc-525d51d29f57")
+            (ConceptNode "cat@3a1")
          )
       )
    )
@@ -686,10 +686,10 @@ ImplicationLink
 
 \end{verbatim}
 
-对应于上述RelEx2Logic规则的提供后处理的相应帮助函数为：
+对应于上述RelEx2Logic规则的提供后处理所需要的相应的辅助函数为：
 
 \begin{verbatim}
-帮助函数：
+辅助函数为：
 (define (tense-rule verb instance tense)
    (define new_predicate (PredicateNode instance))
    (define verb_node (PredicateNode verb)) 
@@ -700,14 +700,14 @@ ImplicationLink
    )
 )
 
-例子：
+例如：
 tense(chase, Past)
 pos(chase, verb)
 ==>
-(tense-rule "chase" "chase@3453432" "Past")
+(tense-rule "chase" "chased@64f" "Past")
 ==>
-(InheritanceLink "chase@3453432" chase)
-(InheritanceLink "chase@3453432" Past)
+(InheritanceLink "chased@64f" chase)
+(InheritanceLink "chased@64f" Past)
 
 \end{verbatim}
 
@@ -785,7 +785,7 @@ RelEx2Logic最初的设计意图是如同上述例子那样通过直接的逻辑
 %%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{实验结果举例}{Examples and Analysis}  
+\section{实验结果及分析}{Examples and Analysis}  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 本节中给出更多例子来解释我们的语言理解的理解管道，包含前面阐述的所有部分：Link Parser、RelEx和RelEx2Logic。在后面的章节中，这些特定例子也会在下一章中用来阐述基于自然语言的推理。
@@ -825,36 +825,36 @@ Attributes:
 
  {\tt\begin{small}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@f04de205-0f67-471d-84fc-2f9c6103ebca_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@f04_parse_0_interpretation_$X")
    (SetLink
       (InheritanceLink
-         (ConceptNode "Socrates@cfbb87d6-5444-4845-a673-8d70b93ffde6")
+         (ConceptNode "Socrates@cfb")
          (ConceptNode "Socrates" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "man@fe411437-7607-4169-abcf-d42ebcd50338")
+         (ConceptNode "man@fe4")
          (ConceptNode "man" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "Socrates@cfbb87d6-5444-4845-a673-8d70b93ffde6")
-         (ConceptNode "man@fe411437-7607-4169-abcf-d42ebcd50338")
+         (ConceptNode "Socrates@cfb")
+         (ConceptNode "man@fe4")
       )
       (ImplicationLink
-         (PredicateNode "is@b06a386e-0983-4bc8-bd1e-395b487faff2")
+         (PredicateNode "is@b06")
          (PredicateNode "be" (ptv 1 0 1))
       )
       (InheritanceLink
-         (PredicateNode "is@b06a386e-0983-4bc8-bd1e-395b487faff2")
+         (PredicateNode "is@b06")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (InterpretationNode "sentence@f04de205-0f67-471d-84fc-2f9c6103ebca_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@f04_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "Socrates@cfbb87d6-5444-4845-a673-8d70b93ffde6")
+            (ConceptNode "Socrates@cfb")
          )
       )
    )
@@ -898,33 +898,33 @@ Attributes:
 
 {\tt\begin{small}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@05b9ba83-e424-43c8-b5f1-8261217bc548_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@05b_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink
-         (PredicateNode "breathe@ba9dec0b-b99f-4c2c-a5cc-31cc9aa4f172")
+         (PredicateNode "breathe@ba9")
          (PredicateNode "breathe" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "men@5f6e723d-e57e-47e5-89df-ee9daaa2936d")
+         (ConceptNode "men@5f6")
          (ConceptNode "man" (ptv 1 0 2))
       )
       (InheritanceLink
-         (ConceptNode "air@98afd45c-4807-4607-a732-298c7979327f")
+         (ConceptNode "air@98a")
          (ConceptNode "air" (ptv 1 0 1))
       )
       (EvaluationLink
-         (PredicateNode "breathe@ba9dec0b-b99f-4c2c-a5cc-31cc9aa4f172")
+         (PredicateNode "breathe@ba9")
          (ListLink
-            (ConceptNode "men@5f6e723d-e57e-47e5-89df-ee9daaa2936d")
-            (ConceptNode "air@98afd45c-4807-4607-a732-298c7979327f")
+            (ConceptNode "men@5f6")
+            (ConceptNode "air@98a")
          )
       )
       (InheritanceLink
-         (PredicateNode "breathe@ba9dec0b-b99f-4c2c-a5cc-31cc9aa4f172")
+         (PredicateNode "breathe@ba9")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (InterpretationNode "sentence@05b9ba83-e424-43c8-b5f1-8261217bc548_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@05b_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
    )
@@ -966,39 +966,39 @@ Attributes:
 
 {\tt\begin{small}\begin{lstlisting}
 ((ReferenceLink
-   (InterpretationNode "sentence@a41e5f83-4a87-4c3f-ad39-833510272d90_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@a41_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink
-         (PredicateNode "breathes@0a04573a-c867-458d-baa9-0f347ee73371")
+         (PredicateNode "breathes@0a0")
          (PredicateNode "breathe" (ptv 1 0 2))
       )
       (InheritanceLink
-         (ConceptNode "Socrates@a34bbdf7-1dac-4e62-9dfa-48e1a1f9710c")
+         (ConceptNode "Socrates@a34")
          (ConceptNode "Socrates" (ptv 1 0 2))
       )
       (InheritanceLink
-         (ConceptNode "air@016cb5c7-35b7-42c4-8690-e3958030773f")
+         (ConceptNode "air@016")
          (ConceptNode "air" (ptv 1 0 2))
       )
       (EvaluationLink
-         (PredicateNode "breathes@0a04573a-c867-458d-baa9-0f347ee73371")
+         (PredicateNode "breathes@0a0")
          (ListLink
-            (ConceptNode "Socrates@a34bbdf7-1dac-4e62-9dfa-48e1a1f9710c")
-            (ConceptNode "air@016cb5c7-35b7-42c4-8690-e3958030773f")
+            (ConceptNode "Socrates@a34")
+            (ConceptNode "air@016")
          )
       )
       (InheritanceLink
-         (PredicateNode "breathes@0a04573a-c867-458d-baa9-0f347ee73371")
+         (PredicateNode "breathes@0a0")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (InterpretationNode "sentence@a41e5f83-4a87-4c3f-ad39-833510272d90_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@a41_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "Socrates@a34bbdf7-1dac-4e62-9dfa-48e1a1f9710c")
+            (ConceptNode "Socrates@a34")
          )
       )
    )
@@ -1054,66 +1054,66 @@ Attributes:
  {\tt\begin{small}\begin{lstlisting}
 
 ((ReferenceLink
-   (InterpretationNode "sentence@ec1ca4d5-20ce-465c-9686-aa3edd4dbb2f_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@ec1_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink
-         (PredicateNode "think@8be218e8-095b-44e7-b321-ee877fe4ad45")
+         (PredicateNode "think@8be")
          (PredicateNode "think" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "I@8c841336-dc92-4c3a-a5af-2e860365ff88")
+         (ConceptNode "I@8c8")
          (ConceptNode "I" (ptv 1 0 1))
       )
       (EvaluationLink
-         (PredicateNode "think@8be218e8-095b-44e7-b321-ee877fe4ad45")
+         (PredicateNode "think@8be")
          (ListLink
-            (ConceptNode "I@8c841336-dc92-4c3a-a5af-2e860365ff88")
+            (ConceptNode "I@8c8")
          )
       )
       (ImplicationLink
-         (PredicateNode "is@14df1d2f-f71e-45c9-b4a3-80eb38c6a89f")
+         (PredicateNode "is@14df")
          (PredicateNode "be" (ptv 1 0 2))
       )
       (EvaluationLink
-         (PredicateNode "think@8be218e8-095b-44e7-b321-ee877fe4ad45")
+         (PredicateNode "think@8be")
          (ListLink
-            (ConceptNode "is@14df1d2f-f71e-45c9-b4a3-80eb38c6a89f")
+            (ConceptNode "is@14d")
          )
       )
       (InheritanceLink
-         (PredicateNode "think@8be218e8-095b-44e7-b321-ee877fe4ad45")
+         (PredicateNode "think@8be")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (ConceptNode "Socrates@c1fde686-ae83-45e8-a60d-259179597e68")
+         (ConceptNode "Socrates@c1f")
          (ConceptNode "Socrates" (ptv 1 0 3))
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "Socrates@c1fde686-ae83-45e8-a60d-259179597e68")
+            (ConceptNode "Socrates@c1f")
          )
       )
       (InheritanceLink
-         (InterpretationNode "sentence@ec1ca4d5-20ce-465c-9686-aa3edd4dbb2f_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@ec1_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
       (InheritanceLink
-         (ConceptNode "man@aed74351-8482-4a5b-a6f4-3e979b537fae")
+         (ConceptNode "man@aed")
          (ConceptNode "man" (ptv 1 0 3))
       )
       (InheritanceLink
-         (ConceptNode "Socrates@c1fde686-ae83-45e8-a60d-259179597e68")
-         (ConceptNode "man@aed74351-8482-4a5b-a6f4-3e979b537fae")
+         (ConceptNode "Socrates@c1f")
+         (ConceptNode "man@aed")
       )
       (InheritanceLink
-         (PredicateNode "is@14df1d2f-f71e-45c9-b4a3-80eb38c6a89f")
+         (PredicateNode "is@14d")
          (ConceptNode "present")
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "I@8c841336-dc92-4c3a-a5af-2e860365ff88")
+            (ConceptNode "I@8c8")
          )
       )
    )
@@ -1169,74 +1169,74 @@ Attributes:
  {\tt\begin{small}\begin{lstlisting}
 
 ((ReferenceLink
-   (InterpretationNode "sentence@8c6d9ca7-abc8-4dbd-8442-669e62a32cc0_parse_0_interpretation_$X")
+   (InterpretationNode "sentence@8c6_parse_0_interpretation_$X")
    (SetLink
       (ImplicationLink
-         (PredicateNode "thinks@87f3ac28-56e7-44fc-8125-815b2e6747ee")
+         (PredicateNode "thinks@87f")
          (PredicateNode "think" (ptv 1 0 2))
       )
       (InheritanceLink
-         (ConceptNode "Bob@f16c5987-7193-4809-9a3f-94c73a77d4d4")
+         (ConceptNode "Bob@f16")
          (ConceptNode "Bob" (ptv 1 0 1))
       )
       (EvaluationLink
-         (PredicateNode "thinks@87f3ac28-56e7-44fc-8125-815b2e6747ee")
+         (PredicateNode "thinks@87f")
          (ListLink
-            (ConceptNode "Bob@f16c5987-7193-4809-9a3f-94c73a77d4d4")
+            (ConceptNode "Bob@f16")
          )
       )
       (ImplicationLink
-         (PredicateNode "is@712b5da0-e4df-4b24-9bca-e0a1114a6854")
+         (PredicateNode "is@712")
          (PredicateNode "be" (ptv 1 0 3))
       )
       (EvaluationLink
-         (PredicateNode "thinks@87f3ac28-56e7-44fc-8125-815b2e6747ee")
+         (PredicateNode "thinks@87f")
          (ListLink
-            (ConceptNode "is@712b5da0-e4df-4b24-9bca-e0a1114a6854")
+            (ConceptNode "is@712")
          )
       )
       (InheritanceLink
-         (PredicateNode "thinks@87f3ac28-56e7-44fc-8125-815b2e6747ee")
+         (PredicateNode "thinks@87f")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (ConceptNode "Socrates@eadf1215-ca8d-42ee-88b9-ac1e6471f8c1")
+         (ConceptNode "Socrates@ead")
          (ConceptNode "Socrates" (ptv 1 0 4))
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "Socrates@eadf1215-ca8d-42ee-88b9-ac1e6471f8c1")
+            (ConceptNode "Socrates@ead")
          )
       )
       (InheritanceLink
-         (InterpretationNode "sentence@8c6d9ca7-abc8-4dbd-8442-669e62a32cc0_parse_0_interpretation_$X")
+         (InterpretationNode "sentence@8c6_parse_0_interpretation_$X")
          (ConceptNode "DeclarativeSpeechAct")
       )
       (InheritanceLink
-         (ConceptNode "woman@9d719ddc-0fe5-4171-a4e5-5397a6c6e9e9")
+         (ConceptNode "woman@9d7")
          (ConceptNode "woman" (ptv 1 0 1))
       )
       (InheritanceLink
-         (ConceptNode "Socrates@eadf1215-ca8d-42ee-88b9-ac1e6471f8c1")
-         (ConceptNode "woman@9d719ddc-0fe5-4171-a4e5-5397a6c6e9e9")
+         (ConceptNode "Socrates@ead")
+         (ConceptNode "woman@9d7")
       )
       (InheritanceLink
-         (PredicateNode "is@712b5da0-e4df-4b24-9bca-e0a1114a6854")
+         (PredicateNode "is@712")
          (ConceptNode "present")
       )
       (InheritanceLink
-         (SpecificEntityNode "Bob@f16c5987-7193-4809-9a3f-94c73a77d4d4")
+         (SpecificEntityNode "Bob@f16")
          (ConceptNode "male")
       )
       (InheritanceLink
-         (SpecificEntityNode "Bob@f16c5987-7193-4809-9a3f-94c73a77d4d4")
+         (SpecificEntityNode "Bob@f16")
          (ConceptNode "Bob" (ptv 1 0 1))
       )
       (EvaluationLink
          (PredicateNode "definite")
          (ListLink
-            (ConceptNode "Bob@f16c5987-7193-4809-9a3f-94c73a77d4d4")
+            (ConceptNode "Bob@f16")
          )
       )
    )
@@ -1348,7 +1348,7 @@ TruthValueGreaterThanLink
 \hline
 \end{tabular}
 \caption{改进后的链语法分析器在该测试集上的分析结果。“几乎正确”是指分析结果中忽略了链语法词典中不存在的词，但对剩下部分解析正确。}
-\label{table:settings}
+\label{table:linkparseResult}
 \end{table}
 
 
@@ -1365,7 +1365,7 @@ TruthValueGreaterThanLink
 \hline
 \end{tabular}
 \caption{在链语法分析器解析完全正确的96个句子上，RelEx的性能分析。其中“几乎正确”是指输出中忽略或错误输出了1个以内的依存关系。}
-\label{table:settings}
+\label{table:relexResult}
 \end{table}
 
 \begin{table}
@@ -1381,7 +1381,7 @@ TruthValueGreaterThanLink
 \hline
 \end{tabular}
 \caption{在链语法分析器和RelEx都解析完全正确的80个句子上，RelEx2Logic的性能分析。其中“几乎正确”是指输出中忽略或错误输出了1个以内的语义关系。'}
-\label{table:settings}
+\label{table:rel2logResult}
 \end{table}
 
 \FloatBarrier
@@ -1450,7 +1450,7 @@ The expression has become quite a cliche.
  \noindent RelEx2Logic没有产生与”but“相关的语义关系，这是因为有关“but”的RelEx2Logic规则还没写入规则库
 it does not produce a relation for ``but'' because at this time no ``but'' rule has been coded.   Similarly in
  
-总的来说，在该简单的测试集上的结果是鼓舞人心的，它能说明，本章阐述的自然语言系统在简单句子上的表现性能是不错的，其中大部分错误也都能通过添加相关的规则来解决。当然，基于规则的系统的本质也在于能通过不断添加和修改规则来提高系统的性能，但总归是很耗时的，而且也很不灵活，因此，我们希望能使机器自动从无标注或者半标注的语料库中学习相关的语法规则来替换我们所使用的人工编写的规则库。本文第\ref{chap:learning}章也提出了一个无监督的语言学习的思路。
+总的来说，在该简单的测试集上的结果是鼓舞人心的，它能说明，本章阐述的自然语言系统在简单句子上的表现性能是不错的，其中大部分错误也都能通过添加相关的规则来解决。当然，基于规则的系统的本质也在于能通过不断添加和修改规则来提高系统的性能，但总归是很耗时的，而且也很不灵活，因此，我们希望能使机器自动从无标注或者半标注的语料库中学习相关的语法规则来替换我们所使用的人工编写的规则库。目前我们已着手研究无监督的语言学习的算法 \footnote {\url{http://wiki.opencog.org/wikihome/index.php/Unsupervised_Language_Learning_Experimentation}}，但这并不是本文的重点，因此不在这里介绍。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{本章小结}{Summary of Accomplishments and Future Work}
@@ -1467,7 +1467,7 @@ it does not produce a relation for ``but'' because at this time no ``but'' rule 
 \item 设计并实现了RelEx2Logic中所使用的转换规则及相应的规则引擎。
 \end{itemize}
 
-总的来说，本章搭建的自然语言理解系统已经能被用在一些用户定义的实际应用中，但仍然有很多遗留问题有待解决。在接下来的工作中，我们会在我们的自然语言理解系统中引入概率逻辑推理引擎PLN，这样不仅可以通过一些基本常识推理来改进语法分析中的结果，还可用于指导对语法分析器产生的多种结果进行排序，以及用于指导各种歧义消除和指代消解等方面。除此之外，我们还致力通过无监督的机器学习方法从大型文本语料学习相关的语法规则，来替代当前系统中使用的人工编写的规则库，本文会在第\ref{chap:learning}章中对此做更深入的讨论。最后，本章还在一个小的测试集上对我们的自然语言理解系统进行了测试并做了相应的评价分析。
+总的来说，本章搭建的自然语言理解系统已经能被用在一些用户定义的实际应用中，但仍然有很多遗留问题有待解决。在接下来的工作中，我们会在我们的自然语言理解系统中引入概率逻辑推理引擎PLN，这样不仅可以通过一些基本常识推理来改进语法分析中的结果，还可用于指导对语法分析器产生的多种结果进行排序，以及用于指导各种歧义消除和指代消解等方面。最后，本章还在一个小的测试集上对我们的自然语言理解系统进行了测试并做了相应的评价分析。
 
 
 
