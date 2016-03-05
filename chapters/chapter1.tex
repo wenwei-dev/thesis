@@ -18,7 +18,7 @@ XXXX
 
 对话系统简单来说就是计算机用来试图和人类通过自然语言交流的软件系统。对话系统的思想可以追溯到1950年图灵在\cite{Turing1950}中提出的图灵测试，在过去的几十年中，有关对话系统的研究大致有两个不同的方向：一个是仅在表面外观上模拟对话，也被称为聊天机器人，如著名的聊天机器人心理医生ELIZA\cite{Weizenbaum1966}等。这类系统大多数不考虑理解对话内容的含义，直接采用模板匹配的方式找到和用户输入相关的对话，目前经常被用在各类社交网站和实时通讯的社交软件中。另一个是试图模拟人类真实的对话，并动态产生合适的对话，也被称为对话管理。后者是本文的研究重点，因此这一小节我们将回顾这一类对话系统以及对话管理的相关研究。
 
-目前，对话系统的研究中有很多不同的架构体系，一个对话系统包含哪些功能模块也视不同的系统而异，但一般来说，对话系统主要包括以下几个功能模块：自然语言理解模块、对话管理模块、知识表示模块、自然语言生成模块\cite{Arora2013}。各模块之间的数据走向如图\ref{fig:dialogue}所示。接下来我们将分别就对话系统中的各个功能模块来展开综述相关研究现状。另外，由于本文的智能对话系统中使用了言语行为理论，因此也会在本节对其相关研究进行简明的阐述。
+目前，对话系统的研究中有很多不同的架构体系，一个对话系统包含哪些功能模块也视不同的系统而异，但一般来说，对话系统主要包括以下几个功能模块：自然语言理解模块、对话管理模块、知识表示模块、自然语言生成模块\cite{Arora2013}。各模块之间的数据走向如图\ref{fig:dialogue}所示。接下来我们将分别就对话系统中的各个功能模块来展开综述相关研究现状。【XXX另外，由于本文的智能对话系统中使用了言语行为理论，因此也会在本节对其相关研究进行简明的阐述。】需要说明的是，本文研究的对话系统暂时只是基于文本的，所以这里暂且不讨论语音识别和语音合成模块。
 
 \begin{figure}[htb]
 \centering
@@ -247,27 +247,173 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 \subsection{对话管理研究综述}{Overview of Dialogue Management}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-对话管理，也称为对话控制，是决定一个对话系统在对话中说什么的关键。我们会在接下来章节对各个功能模块。接下来，我们会进一步回顾在近几年的相关研究中对话管理所使用的一些常用方法。
+对话管理，也称为对话控制，是决定一个对话系统在对话中说什么的关键。一般来说，对话系统首先利用自然语言处理模块将用户的输入转换成系统所使用的知识表示形式，即该系统所能理解的语义形式，而对话管理模块会结合当前的语境、对话历史以及自身的知识库等因素输出一个概念层次上的应答。最终，自然语言生成模块会对这些概念层次上的应答转换成自然语言输出。
+
+对话管理模块在不同的对话系统中完成的任务是不同的，但其主要功能可以归纳为以下几个方面：
+
+\begin{itemize}
+
+\item 搜索和查询：根据当前的输入以及语篇上下文，在知识数据库中搜索查询和用户输入相关的知识或可能应答内容。
+\item 询问：如果无法查询，针对某一问题，询问更多相关信息，直到能提交一个合适有效的查询。
+\item 确认：当用户的输入无法被理解时，反复请求确认语焉不详的信息，使得用户输入的信息更具有操作性。
+\item 应答：为对话系统的下一步操作即自然语言生成模块提供概念层次上的应答内容。
+\item 控制：为了能实现自然流畅的类似人类的对话，采用一定的对话控制策略，如：介入对话；回应惯用语；多方对话等。
+\end{itemize}
+
+在目前的研究现状下，对话管理模块在几乎所有目前存在的对话系统中起到了关键的作用。在实现方面，对话管理必须找到并返回能使对话保持与对话历史协调的最合适的响应。迄今为止，随着越来越多的相关研究和发展，对话管理的处理方法已经有很多，目前主流的对话管理方法可以分为三类：基于知识的对话管理；数据驱动的对话管理；基于混合方法的对话管理。下面会分别介绍这些对话管理方法的研究现状。
+
+\begin{enumerate}
+
+\item 基于知识的对话管理
 
 
 
-In general, the Dialogue Management (DM) component of a dialogue system accepts the user's intention which is represented as a semantic
-frame of  comprehension results, and outputs the system responses at a concept level. The system responses have to reflect the discourse context by maintaining the discourse
-history
+Early dialog systems such as SUNDIAL [Peckham 1993] and ARISE [Lamel et al.
+1999] were designed by application developers who have domain-specific knowledge.
+These systems are usually confined to both highly structured tasks and system-
+initiative dialogs, where a restricted and regularized language set can be expected.
+This knowledge-based approach generally uses finite-state automata which often
+involve handcrafted rules. These are dictated by the knowledge of the application, and
+by continuous experiments with real users. It has been used for rapid prototyping of
+dialog systems for strong-typed interactions with clearly-defined structures and goals
+[McTear 1998] (Figure 3). This approach has also been deployed in many practical
+applications because of its simplicity. However, hand-crafting rules in advance is
+difficult, and its flow is inflexible. For example, if the users provide more information
+that was requested by the system's question (over-informative), the system cannot
+manage the dialog flow because it was not designed in such a case. It also suffers from
+poor domain portability: when the designers develop a new application for a different
+domain, the entire design process must be restarted from the beginning.
 
-Although the roles of the DM may depend to some extent on the type of task
-that is involved, the key roles include :
+To overcome these limitations, several groups [Rich and Sidner 1998; Bohus and
+Rudnicky 2003; Bui et al. 2004; Larsson and Traum 2006] have explored generic
+dialog modeling approaches based on agenda or task models, which are powerful
+representations for segmenting large tasks into smaller and more easily handled
+subtasks. Several extensions are being investigated by using this approach. For
+example, RavenClaw is one of the most popular dialog management frameworks
+based on the agenda-based approach [Bohus and Rudnicky 2009]. The RavenClaw is
+a two-tier dialog management framework that enforces a clear separation between the
+domain-dependent and the domain-independent aspects of the dialog control logic
 
-Searching and providing query results by connecting to an external knowledge
-database based on the current input and the discourse context
-Asking further  information regarding a question, aiming to enable submission of an appropriate query
-Requesting to confirm unclear  information and to rephrase if the user's input
-is not comprehensible or appropriately actinable
-Predicting the next system action at the concept level to output the system's 
-utterance via the Nl generation module
-Controlling generic conversational mechanisms (e.g., barge-ins, backchannels,
-multi-party dialogs) so as to implement more human-like
-dialog systems
+
+
+The domain-dependent aspects are captured by the dialog task specification, essentially
+a hierarchical tree structure for the interaction (Figure 4), provided by the system
+developer. A reusable, domain-independent dialog engine manages the conversation
+by executing the given dialog task specification. However, the design process is still
+time-consuming and expensive because the knowledge sources (e.g., hierarchical task
+structure and plan recipes) are usually designed by human experts. To address this
+problem, there are some approaches to automatically model prior knowledge from
+dialog corpus [Roy and Subramaniam 2006; Bangalore et al. 2006; Lee et al. 2009a;
+Griol et al. 2009]. For example, an unsupervised clustering technique was used to
+automatically build a domain model (or topic structure) from call transcriptions in a
+call routing domain [Roy and Subramaniam 2006].
+
+\item 数据驱动的对话管理 
+
+More recently, the research community for DM has exploited the benefits of data-
+driven approaches to speech recognition and  comprehension. Although a data-driven approach requires time-
+consuming data annotation, the training is done automatically and requires little
+human supervision. In addition, new systems can be developed at only the cost of
+collecting new data for moving to a new domain; this requires less time and effort
+than the knowledge-based approach. 
+
+These advantages have motivated the development of stochastic dialog modeling
+using reinforcement learning (RL) based on Markov decision processes (MDPs) [Levin
+et al. 2000] or partially observable MDPs (POMDPs) [Williams and Young 2007; Young, M. Gasic, B. Thomson, and J. D. Williams. POMDP-based statistical spoken dialog systems: A review. Proceedings of the IEEE, 101(5):1160–1179, 2013; refs Williams et al.,2013;
+Kim et al.,2015;Henderson et al.,2013)  from Serban paper   ].  These frameworks apply statistically data-driven and theoretically-principled dialog
+modeling to dynamically allow changes to the dialog strategy. They accomplish this
+by optimizing some reward or cost functions given the current dialog state using some
+RL algorithms. In addition, POMDP-based DMs have the robustness to correct speech recognition and  comprehension errors by supporting best recognition hypotheses to estimate the belief state. The
+belief state is a distribution over the dialog states in the absence of knowing its state
+exactly because the system makes only observations (e.g., speech recognition and  comprehension results)
+about the real world which give incomplete information about the true current state.
+The error handling can be easily implemented by maintaining the belief distribution
+with no need of special mechanism. The variables of user context (e.g., expertise and
+emo ti on ) can  also be naturally  ncorporated into the state space by the factored model.
+
+However, practical deployment of RL-based dialog systems has encountered several
+obstacles [Paek 2006]. For example, the optimized policy may remove control from
+application developers and the refinement of the dialog control is difficult. These are
+serious problems because the developers should have the opportunity to easily control
+the dialog flow in practical systems. Many researchers are solving these problems in
+their ongoing work [Williams and Young 2005; Lemon et al. 2006; Young et al. 2007;
+Thomson et al. 2008; Williams 2008b]. For example, there are some studies on how
+to mix traditional knowledge-based DM design with RL-based DM to reflect domain-
+dependent business rules and to reduce the large policy space [Lemon et al. 2006, Williams 2008b]. However, this approach still needs improvement before it can be
+applied to developing practical dialog systems.
+
+A supervised approach to DM has been developed which uses maximum likelihood
+estimation of a stochastic model from human-human dialog corpus [Hurtado et al.
+2005]. To avoid the data sparseness problem, this approach uses dialog register (DR)
+representation, which is a data structure for keeping track of discourse history as
+dialog state sequences. The DR contains the informationprovided by the user throughout the previous history of the dialog.
+
+Some example-based approaches have been presented that perform dialog modeling
+using prepared dialog examples [Murao et al. 2003; Inui et al. 2001; Lee et al. 2009c].
+These approaches assume that the same system actions are triggered in a similar
+dialog state. Therefore, the next system action can be predicted when the DM finds
+the dialog examples having a similar dialog state to the current dialog state. Although
+the keyword spotting technique was commonly used to find the similar examples, the
+dialog examples can be semantically indexed to generalize the data using semantic
+constraints  to represent the dialog
+state [Lee et al. 2009c]. The best example is then selected among the candidate
+examples by calculating heuristic similarity measures between the current input and prior examples.
+
+This area has been advancing rapidly, leveraging general progress in the area of deep neural networks.  Recent neural network architectures trained for dialogue control on large-scale corpora have shown promising results (
+Shang et al., 2015 ; Sordoni et al. ,2015b ;Vinyals and Le ,2015 ;).  There has also been recent work in the construction of “end to end” data-driven dialogue systems, using hierarchical neural nets to create probabilistic models handling all aspects of the dialogue process from speech input to speech output and everything inbetween [
+I. V. Serban, A. Sordoni, Y. Bengio, A. Courville, and J. Pineau. Building End-To-End Dialogue Systems Using Generative Hierarchical Neural Networks. In AAAI Conference on Artificial Intelligence, 2015. In press. – published by now I guess].  However, all of these methods require having a sufficiently large dataset -- in the hundreds of millions or even billions of words -- in order to achieve worthwhile results
+
+
+
+\item 基于混合方法的对话管理
+
+In order to overcome the current limitations of both data-driven and traditional dialogue model based approaches to DM, a variety of hybrid methods have been introduced.
+
+Traditional RL-based DMs require huge dialog corpora to learn an
+optimal policy because of a very large state space and a very large policy space.  Various approaches to handling this issue have been proposed over the years.  For instance, user simulation techniques have been widely used to generate
+a large number of simulated dialogs which are generalized from limited real corpora
+based on specific user models [Pietquin and Dutoit 2006; Schatzmann et al. 2007]. In
+a recent research, a hybrid approach to integrate reinforcement and supervised
+learning has been also proposed to optimize dialog policies with a fixed dialog corpus
+[Henderson et al. 2008]. This approach can eliminate the need for a large number of
+dialog corpora to optimize the dialog policies in traditional RL-based dialog systems.
+In this approach, RL is used to optimize a measure of dialog reward, while supervised
+learning is used to restrict the learnt policy to the portion of the space for which data
+are available.
+
+In the classical POMDP formulation, the optimization process is free to choose any
+action at any time. As a result, there is no obvious way to incorporate domain
+knowledge or constraints such as business rules. For example, it is obvious that the
+system should never prescribe any medicine before it has asked for the patient's
+symptoms in a medical domain. However, there is no direct way to consider this to
+the optimization process.  To surmount this problem, it has been proposed to constrain the set of
+possible actions based on conventional rules in the POMDP framework [Lemon et al.
+2006; Williams 2008b]. In this approach, the optimization process runs faster and
+more reliably than in a classical POMDP because spurious action choices are pruned
+by the conventional rules.
+
+In addition, traditional example-based DMs have critical problems in deploying
+practical spoken dialog systems such as both lack of prior knowledge and weaknes
+to speech recognition and  comprehension errors. To solve these problems, a novel hybrid approach in which both dialog examples and a priori knowledge are used has been presented to improve
+the robustness of example-based DM [Lee et al. 2009b]. In this approach, an agenda
+graph as prior knowledge is one of the subtask flows to encode the domain-dependent
+dialog control to complete the task. This knowledge is used to predict the next system
+action and to handle an unexpected focus shift by keeping track of the dialog state
+using the agenda graph. In addition, n-best recognition hypotheses are re-ranked by
+reflecting heuristics for computing both utterance-level and discourse-level scores.
+
+An exciting recent approach to hybrid dialogue management is based upon
+the concept of probabilistic rules.   [Ref, http://folk.uio.no/plison/pdfs/cl/probrules-plison-csl2015.pdf]
+Probabilistic rules are defined as structured mappings between logical
+conditions and probabilistic effects.
+They function as high-level templates
+for probabilistic graphical models and may include unknown parameters whose values are estimated probabilistically from data.   Due to their use of logical abstractions, these probabilistic rules are able to encode the probability models utilized in data-driven POMDP based dialogue systems in a compact and human-readable form.  In the ideal case, they require less  parameter estimation and hence less training data than typical POMDP-based dialogue management methods, and ease the incorporation of human-coded expert dialogue control rules.   However, this is a new approach and its practical utility largely remains to be explored.
+
+\end{enumerate}
+
+
+Out of the variety of prior approaches, the approach we will describe here is most closely related to prior work in general dialogue modeling, and to the recently-introduced use of probabilistic rules for dialogue management.   However, our approach to general dialogue modeling is different than ones pursued previously, being based on a fairly sophisticated model of the system's motivations, and the relationships of speech acts (and other communicative acts) to these motivations.   Also, due to use of a knowledge representation based on probabilistic logic rules, our framework is able to adapt its dialogue model based on observed data (though we have not experimented much with this aspect yet).  Thus our approach may be considered hybrid in concept, with a primary initial foundation in general dialogue modeling.   In the long run, a system built according to the approach we outline here might end up with dialogue control driven primarily via empirical probabilistic analysis of observed dialogue.  But from the start its in-built approach to genreal dialogue modeling will dominate its behavior, and that has been the case with the simple experiments we have done to date.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -350,6 +496,16 @@ FCG中,有关配对句法和语义结构的例子（短语“the ball”）,请�
 我们的形式化体系与FCG的着重点不同。FCG主要是用作探索问题的理论工具，而我们所做的OpenCog系统则是用于真实世界的实际应用。
 
 \item{自然语言生成}{Natural Language Generation}
+XXXX
+
+
+P.S. this reference should go in the lit review on NLG, it's recent POMDP-NLGen stuff
+
+T. Wen, M. Gasic, D. Kim, N. Mrksic, P. Su, D. Vandyke, and S. Young. Stochastic language generation in dialogue using
+recurrent neural networks with convolutional sentence reranking.
+Special Interest Group on Discourse and Dialogue
+(SIGDIAL)
+, 2015
 
 自然语言生成（NLG）是NL的反向过程。NLG是从信息的计算表示中自动生成人类（自然的）语言。大体上，NLG系统与以下问题有关：
 
