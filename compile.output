@@ -1,4 +1,4 @@
-﻿Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
+﻿GCommand Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
 Startup Folder: C:\Users\deepf_000\Downloads\ThesisChineseVersion-editing-2016-02-20\ThesisChineseVersion-editing
 
 Qt: Untested Windows version 6.2 detected!
