@@ -268,79 +268,38 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 早期的对话系统都是由具备特定领域知识的开发者来设计，如SUNDIAL\cite{Peckham1993}以及ARISE\cite{Lamel1999}。这类系统通常仅限用于完成高度结构化的任务，其中的对话也仅限于特定领域以及规范化的对话。基于知识的对话管理方法一般采用自动有限机来实现，往往涉及很多手工编写的规则，而这些规则通常与应用所需的知识密切相关，而且需要通过用户的不断使用来改进和完善。基于知识的对话管理方法常被用于具有明确结构和目标的强类型对话系统的快速建模，如\cite{McTear1998}。该方法也因其简单易实现的特点而被一些实际应用系统采纳，如自动服务热线等。然而，该方法也有很多局限性：第一，由于规则的限定性和对话的灵活性，扩展其中的手工编写规则是非常困难的。第二，其对话流程也是比较刻板的，因为该方法的对话必须按照系统定义的结构化流程来进行。例如，当用户通过系统提出的问题而提供多余的信息时，系统受其限定结构流程限制，将无法处理这些信息而忽略用户提供的补充信息或者无法产生应答。第三，该方法的可移植性很差，其对话规则往往依赖于特定领域的知识，因此无法被用在其他领域甚至相似领域的对话系统上。
 
-为了克服这些局限性，\cite{RichSidner1998}，\cite{BohusRudnicky2003}，\cite{Bui2004}，\cite{LarssonTraum2006]} 提出并改进了更通用的基于议程或任务的对话建模方法，该方法通过更强大的知识表示方法，将大任务或大议程分解为更小更容易处理的子任务或子议程，而这些子任务和子议程也能使用该通用的对话管理模式。目前最流行的对话管理框架之一RavenClaw\cite{BohusRudnicky2009}中使用的便是基于议程的对话建模，它采用了双层对话管理框架，其中一层用于受限领域的对话控制，另一层用于非受限领域的对话控制。其中受限领域的对话控制通过分层的树结构来实现对话交互，如图\ref{fig: knowledgeDM}；而非受限领域的对话任务则可通过使用非受限领域对话管理层来执行给定的对话任务来完成。虽然这种通过双层对话管理框架来实现的基于知识对话管理在一定程度上提高其灵活性和可移植性，但是其仍然摆脱不了知识源的受限，需要相关领域的专家来设计其中的任务分层结构以及议程计划等等，因此实现过程仍然是很费时间的。针对该问题，随着语料库语言学技术的发展，从对话语料库中自动获取相关知识源以及对话结构的方法兴起并发展起来，如\cite{RoySubramaniam2006}，\cite{Bangalore2006}，\cite{Lee2009a}，\cite{Griol2009}。其中\cite{RoySubramaniam2006}使用了无监督聚类算法从通话转录的数据库中抽取相关信息并构建了一个呼叫路由领域的对话管理模型（或称为话题结构）。
+为了克服这些局限性，\cite{RichSidner1998, BohusRudnicky2003, Bui2004, LarssonTraum2006} 提出并改进了更通用的基于议程或任务的对话建模方法，该方法通过更强大的知识表示方法，将大任务或大议程分解为更小更容易处理的子任务或子议程，而这些子任务和子议程也能使用该通用的对话管理模式。目前最流行的对话管理框架之一RavenClaw\cite{BohusRudnicky2009}中使用的便是基于议程的对话建模，它采用了双层对话管理框架，其中一层用于受限领域的对话控制，另一层用于非受限领域的对话控制。其中受限领域的对话控制通过分层的树结构来实现对话交互，如图\ref{fig: knowledgeDM}；而非受限领域的对话任务则可通过使用非受限领域对话管理层来执行给定的对话任务来完成。虽然这种通过双层对话管理框架来实现的基于知识对话管理在一定程度上提高其灵活性和可移植性，但是其仍然摆脱不了知识源的受限，需要相关领域的专家来设计其中的任务分层结构以及议程计划等等，因此实现过程仍然是很费时间的。针对该问题，随着语料库语言学技术的发展，从对话语料库中自动获取相关知识源以及对话结构的方法兴起并发展起来，如\cite{RoySubramaniam2006, Bangalore2006, Lee2009a, Griol2009}。其中\cite{RoySubramaniam2006}使用了无监督聚类算法从通话转录的数据库中抽取相关信息并构建了一个呼叫路由领域的对话管理模型（或称为话题结构）。
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=12cm]{figures/knowledgeDM.png}
-\caption{RavenClaw中对特定对话任务RoomLine的对话管理策略树}
+\caption{基于RavenClaw框架的RoomLine对话管理策略树}
 \label{fig:knowledgeDM}
 \end{figure}
 
 
 \item 数据驱动的对话管理 
 
-More recently, the research community for DM has exploited the benefits of data-
-driven approaches to speech recognition and  comprehension. Although a data-driven approach requires time-
-consuming data annotation, the training is done automatically and requires little
-human supervision. In addition, new systems can be developed at only the cost of
-collecting new data for moving to a new domain; this requires less time and effort
-than the knowledge-based approach. 
+最近几年，对话管理的研究趋势逐步转向数据驱动的方法，即通过语料库来训练相关对话结构和知识库。虽然这种数据驱动的方法需要消耗很大的时间和人力进行语料库标注，但是对话管理模型的训练几乎不需人工干涉，而且在可移植性方面，如果需要在其他领域建立一个对话系统，也只需要重新训练新的语料库，与基于知识的对话管理相比，这显然是更简便的方法。
 
-These advantages have motivated the development of stochastic dialog modeling
-using reinforcement learning (RL) based on Markov decision processes (MDPs) [Levin
-et al. 2000] or partially observable MDPs (POMDPs) [Williams and Young 2007; Young, M. Gasic, B. Thomson, and J. D. Williams. POMDP-based statistical spoken dialog systems: A review. Proceedings of the IEEE, 101(5):1160–1179, 2013; refs Williams et al.,2013;
-Kim et al.,2015;Henderson et al.,2013)  from Serban paper   ].  These frameworks apply statistically data-driven and theoretically-principled dialog
-modeling to dynamically allow changes to the dialog strategy. They accomplish this
-by optimizing some reward or cost functions given the current dialog state using some
-RL algorithms. In addition, POMDP-based DMs have the robustness to correct speech recognition and  comprehension errors by supporting best recognition hypotheses to estimate the belief state. The
-belief state is a distribution over the dialog states in the absence of knowing its state
-exactly because the system makes only observations (e.g., speech recognition and  comprehension results)
-about the real world which give incomplete information about the true current state.
-The error handling can be easily implemented by maintaining the belief distribution
-with no need of special mechanism. The variables of user context (e.g., expertise and
-emo ti on ) can  also be naturally  ncorporated into the state space by the factored model.
+这些优势驱动了使用无监督增强学习的随机对话建模的发展，如\cite{Levin2000}使用了基于马尔可夫决策过程（MDP）的增强学习算法，\cite{WilliamsYoung2007, Young2013, Williams2013, Kim2015, Henderson2013}使用了基于部分可观测马尔可夫决策过程（POMDP）的增强学习算法来进行对话建模。这些对话管理框架都使用数据驱动的统计机器学习算法，通过增强学习算法来优化系统的奖励或者惩罚函数，允许系统有理论原则性地根据当前的对话状态来动态修改对话策略。此外，基于POMDP的对话管理还能通过支持最优语音识别和自然语言理解结果来评估信念状态（belief state），从而达到纠正语音识别以及自然语言理解模块中出现的错误。对于基于POMDP的对话管理，系统只观测在当前状态下的有关现实世界（在对话系统中指的是语音识别和自然语言理解结果）的不完整的信息，系统必须利用当前对话状态下寻求一种最优策略将当前的信念状态映射到对话管理策略上。因此，基于POMDP的对话管理可以通过维持信念状态（即最优语音识别和自然语言理解结果）分布来实现语音识别和自然语言理解结果的纠错处理，而无需其他特殊方法。同时，有关用户的背景知识（如用户的特长以及情感状态等）也能通过可分解的增强学习模型映射到状态空间中，从而使得对话管理更人性化。
 
-However, practical deployment of RL-based dialog systems has encountered several
-obstacles [Paek 2006]. For example, the optimized policy may remove control from
-application developers and the refinement of the dialog control is difficult. These are
-serious problems because the developers should have the opportunity to easily control
-the dialog flow in practical systems. Many researchers are solving these problems in
-their ongoing work [Williams and Young 2005; Lemon et al. 2006; Young et al. 2007;
-Thomson et al. 2008; Williams 2008b]. For example, there are some studies on how
-to mix traditional knowledge-based DM design with RL-based DM to reflect domain-
-dependent business rules and to reduce the large policy space [Lemon et al. 2006, Williams 2008b]. However, this approach still needs improvement before it can be
-applied to developing practical dialog systems.
+尽管增强学习算法在理论上为对话管理提供了有效的途径，但在实现过程中，基于增强学习的对话系统依然困难重重\cite{Paek2006}，首先，增强学习使得对话控制的精细改进过程变得困难；其次，增强学习得到的最优策略也剥夺了对话系统开发者对对话流程的监督指导权利。\cite{WilliamsYoung2005, Lemon2006, Young2007, Thomson2008, Williams2008b}对这些问题在一定程度上进行了改进。\cite{Lemon2006, Williams2008b}中研究了如何将传统的基于知识的对话管理和基于增强学习的对话管理结合起来构建商务领域的对话管理规则库，在一定程度上给开发人员留下了对对话管理的监督和指导的空间。然而，目前该方法仍在研究中，尚未用到实用性的对话系统中。
 
-A supervised approach to DM has been developed which uses maximum likelihood
-estimation of a stochastic model from human-human dialog corpus [Hurtado et al.
-2005]. To avoid the data sparseness problem, this approach uses dialog register (DR)
-representation, which is a data structure for keeping track of discourse history as
-dialog state sequences. The DR contains the informationprovided by the user throughout the previous history of the dialog.
+数据驱动的对话管理方法还包括使用最大似然估计等有监督的机器学习算法从对话语料库中训练对话模型\cite{Hurtado2005}。为了避免数据稀疏的问题，\cite{Hurtado2005}中采用了对话寄存器来表示对话状态序列用于跟踪对话历史，其中对话寄存器包含用户在整个对话历史中提供的各项信息。
 
-Some example-based approaches have been presented that perform dialog modeling
-using prepared dialog examples [Murao et al. 2003; Inui et al. 2001; Lee et al. 2009c].
-These approaches assume that the same system actions are triggered in a similar
-dialog state. Therefore, the next system action can be predicted when the DM finds
-the dialog examples having a similar dialog state to the current dialog state. Although
-the keyword spotting technique was commonly used to find the similar examples, the
-dialog examples can be semantically indexed to generalize the data using semantic
-constraints  to represent the dialog
-state [Lee et al. 2009c]. The best example is then selected among the candidate
-examples by calculating heuristic similarity measures between the current input and prior examples.
+基于实例的对话管理方法也是数据驱动的对话管理中的一个流行的研究方向，具有代表性的系统有\cite{Murao2003, Inui2001, Lee2009c}。该方法假定类似的对话状态会引发类似的回应，因此可以通过匹配对话实例库中的与当前对话状态最相似的对话状态来构建相应的对话模型。目前搜索与当前对话状态最相似的对话实例大多数都使用关键词来检索，对话实例库中的对话实例的表示通常采用语义约束的形式，从而整个对话实例库可以通过语义索引来概括\cite{Lee2009c}。对话管理模块首先将当前的对话状态也表示为语义约束的形式，并试图从对话实例库中找到与之相近的对话实例，如果没有返回结果，系统会放松语义约束后再一次从对话实例库中查找相近的对话实例；如果返回结果不止一个，那么系统会采用启发式算法来计算返回结果中的每一个实例与当前输入的相似度，然后选择相似度最高的返回作为应答。
 
-This area has been advancing rapidly, leveraging general progress in the area of deep neural networks.  Recent neural network architectures trained for dialogue control on large-scale corpora have shown promising results (
-Shang et al., 2015 ; Sordoni et al. ,2015b ;Vinyals and Le ,2015 ;).  There has also been recent work in the construction of “end to end” data-driven dialogue systems, using hierarchical neural nets to create probabilistic models handling all aspects of the dialogue process from speech input to speech output and everything inbetween [
-I. V. Serban, A. Sordoni, Y. Bengio, A. Courville, and J. Pineau. Building End-To-End Dialogue Systems Using Generative Hierarchical Neural Networks. In AAAI Conference on Artificial Intelligence, 2015. In press. – published by now I guess].  However, all of these methods require having a sufficiently large dataset -- in the hundreds of millions or even billions of words -- in order to achieve worthwhile results
-
-
+数据驱动的对话管理的相关研究在近几年来发展可以说是突飞猛进，当下流行的深度机器学习也被用于对话管理领域，通过深度神经网络在大型对话语料库上训练对话模型的研究也取得了比较有前景的实验结果\cite{Shang2015, Sordoni2015b, VinyalsLe2015}。近期的相关研究还包括“端到端”的数据驱动对话管理框架，也就是利用多层次的神经网络对整个对话过程中的每一个组件以及每一个阶段都进行训练，从而得到包含从语音输入到语音输出，以及对话过程中各个阶段的一系列概率模型\cite{Serban2015}。然而，这些数据驱动的方法都严重依赖于足够大的数据集，为了取得有价值的实验结果，动辄需要上千万甚至上亿则对话。
 
 \item 基于混合方法的对话管理
 
-In order to overcome the current limitations of both data-driven and traditional dialogue model based approaches to DM, a variety of hybrid methods have been introduced.
+为了克服上述提到的基于知识以及数据驱动的对话管理方法中的各种不足，基于混合方法的对话管理的研究逐渐发展起来。
 
-Traditional RL-based DMs require huge dialog corpora to learn an
-optimal policy because of a very large state space and a very large policy space.  Various approaches to handling this issue have been proposed over the years.  For instance, user simulation techniques have been widely used to generate
+传统的基于增强学习的对话管理受很大的状态空间和很大的策略空间的影响，往往需要庞大的对话语料库来学习一个最优策略。\cite{Pietquin2006, Schatzmann2007}
+
+
+  Various approaches to handling this issue have been proposed over the years.  For instance, user simulation techniques have been widely used to generate
 a large number of simulated dialogs which are generalized from limited real corpora
 based on specific user models [Pietquin and Dutoit 2006; Schatzmann et al. 2007]. In
 a recent research, a hybrid approach to integrate reinforcement and supervised
@@ -350,6 +309,18 @@ dialog corpora to optimize the dialog policies in traditional RL-based dialog sy
 In this approach, RL is used to optimize a measure of dialog reward, while supervised
 learning is used to restrict the learnt policy to the portion of the space for which data
 are available.
+
+传统的基于RL-DMS需要庞大的语料库对话框来学习的
+因为一个非常大的状态空间和一个非常大的政策空间最优策略。各种方法来处理这个问题已经提出多年了。例如，用户模拟技术已被广泛地用于产生
+大量模拟对话的它是由有限的真实语料库广义
+根据特定的用户模型[Pietquin和2006年迪图瓦; Schatzmann等。 2007]。 在
+最近的研究，混合方法，整合强化和监督
+学习已经提出具有固定对话框语料库来优化对话政策
+[Henderson等。 2008]。这种方法可以消除对大量的需要
+对话语料库来优化传统的基于RL-对话系统的对话政策。
+在这种方法中，RL被用来优化对话框奖励的量度，而监督
+学习用于将了解到政策限制的空间的部分，用于将数据
+是可用的。
 
 In the classical POMDP formulation, the optimization process is free to choose any
 action at any time. As a result, there is no obvious way to incorporate domain

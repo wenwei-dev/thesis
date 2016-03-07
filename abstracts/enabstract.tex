@@ -2,17 +2,7 @@
 
 Emulation of the human capability for natural language dialogue has been central to the enterprise of Artificial Intelligence since the very beginning of the field, going back to Alan Turing's identification of fully human-like dialogue as a litmus test for successful AI (i.e. what is now called the "Turing Test").  In recent years, natural language dialogue has also become important in the commercial AI sphere, with high profile offerings such as Apple's Siri, and Microsoft's Cortana and Xiaoice.  However, the state of the art in natural language dialogue remains far below the human level.  
 
-<<<<<<< HEAD
 There have been dramatic recent advances in many related, supporting areas of computational linguistics and AI, such as speech recognition and generation, machine translation, information retrieval, parsing, semantic analysis, sentiment and opinion mining, and many others.  In spite of this related progress, however, there have been no truly fundamental breakthroughs in the area of dialogue systems proper.  Even the best existing systems operate mainly based on surface-level linguistic cues and simple heuristics, rather than based on richly mapping and responding to the semantic and pragmatic intentions implicit in the human portions of the dialogue.  The result of these internal deficits in semantics and pragmatics are externally manifested as dialogue performance that generally becomes tiresome to the human user after a brief period.  For example, few people currently use the Siri/Cortana/Xiaoice/etc. dialogue systems on their smartphones as their principal means of interaction with the devices, because these dialogue systems understand things sufficiently poorly that using them for most purposes is objectionably laborious, even when in principle possible.
-
-With the above in mind, we have designed and implemented in software a "cognitive dialogue model" that represents both linguistic and non-linguistic knowledge using a weighted, labeled hypergraph store called the Atomspace.  The Atomspace representation is relatively simple and commonsensical in nature, but also maps formally into probabilistic logic, enabling it to serve as a flexible and robust foundation for automated reasoning and learning.  Our cognitive dialogue  model works via  mapping natural language utterances into the Atomspace, which providea a medium for "deep representation" of the semantics and pragmatics of an utterance.  Probabilistic reasoning and learning, integration of linguistic and nonlinguistic knowledge, and motivated dialogue control then operate via manipulating Atomspace-based deep representations.  Language generation then occurs via reverse-mapping of cognitively-selected sub-hypergraphs of the Atomspace into natural language utterances.  We have implemented our prototype cognitive dialogue model for English, but the underlying principles are language-independent.
-
-The major works and contributions of this thesis can be summarized as follows:
-
-\begin{itemize}
-
-=======
-There have been dramatic recent advances in many related, supporting areas of computational linguistics and AI, such as speech recognition and generation, machine translation, information retrieval, parsing, semantic analysis, sentiment and opinion mining, and many others.  In spite of this related progress, however, there have been no truly fundamental breakthroughs in the area of dialogue systems proper.  Even the best existing systems operate mainly based on surface-level linguistic cues and simple heuristics, rather than based on richly mapping and responding to the semantic and pragmatic intentions implicit in the human portions of the dialogue.  The result of these internal deficits in semantics and pragmatics are externally  manifested as dialogue performance that generally becomes tiresome to the human user after a brief period.  For example, few people currently use the Siri/Cortana/Xiaoice/etc. dialogue systems on their smartphones as their principal means of interaction with the devices, because these dialogue systems understand things sufficiently poorly that using them for most purposes is objectionably laborious, even when in principle possible.
 
 Creating truly human-level dialogue systems is a huge project, as witnessed by the large teams and large sums of money that technology firms have recently devoted to creating dialogue systems with rather severely limited functionality.   Our goal in this thesis is not to fully solve the problem, but to lay a new conceptual and practical foundation for ongoing work.  The key hypothesis underlying our work is that, to achieve a broadly useful level of functionality (and as well to ultimately achieve a truly human-level functionality), a dialogue system must be constructed according to the following four principles:
 
@@ -39,7 +29,6 @@ The major works and contributions of this thesis can be summarized as follows:
 
 \begin{itemize}
 
->>>>>>> origin/master
 \item We have created a comprehensive "cognitive dialogue model" embodying the four principles serving as the foundation of our investigation (deep representation, uncertain logical inference, speech act theory, motivated dialogue control)
 \item Within this cognitive dialogue model, we have
 \begin{itemize}
@@ -54,17 +43,9 @@ The major works and contributions of this thesis can be summarized as follows:
 
 Via these specific accomplishments, we have demonstrated the theoretical and practical viability of creating natural language dialogue systems based upon the four principles of deep representation, uncertain inference, speech act theory, and motivated dialogue control.  
 
-<<<<<<< HEAD
 The research reported here is merely the beginning of what is sure to be a long-term exploration; the long-term goal of a natural language dialogue system with full human-level functionality remains a significant way off.  However, the theoretical and practical tools created in the course of this thesis work possess value both as tools for use in real-world software applications, and as demonstrations of what kind of natural language processing it is possible to do using a framework based on the four principles with which we began.
 
 
 
 \englishkeywords{Dialogue Act; Language Reasoning; Dialogue System}
-=======
-The research  reported here is merely the beginning of what is sure to be a long-term exploration; the long-term goal of a natural language dialogue system with full human-level functionality remains a significant way off.    However, the theoretical and practical tools created in the course of this thesis work possess value both as tools for use in real-world software applications, and as demonstrations of what kind of natural language processing it is possible to do using a framework based on the four principles with which we began.
-
-
-
-\englishkeywords{Knowledge Representation; Language Reasoning; Dialogue System; Natural Language Comprehension; Natural Language Generation}
->>>>>>> origin/master
 \end{englishabstract}
