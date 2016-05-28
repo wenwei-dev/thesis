@@ -278,7 +278,7 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 \end{figure}
 
 
-\item 数据驱动的对话管理 
+\item 数据驱动的对话管理
 
 最近几年，对话管理的研究趋势逐步转向数据驱动的方法，即通过语料库来训练相关对话结构和知识库。虽然这种数据驱动的方法需要消耗很大的时间和人力进行语料库标注，但是对话管理模型的训练几乎不需人工干涉，而且在可移植性方面，如果需要在其他领域建立一个对话系统，也只需要重新训练新的语料库，与基于知识的对话管理相比，这显然是更简便的方法。
 
@@ -288,7 +288,7 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 数据驱动的对话管理方法还包括使用最大似然估计等有监督的机器学习算法从对话语料库中训练对话模型\cite{Hurtado2005}。为了避免数据稀疏的问题，\cite{Hurtado2005}中采用了对话寄存器来表示对话状态序列用于跟踪对话历史，其中对话寄存器包含用户在整个对话历史中提供的各项信息。
 
-另一类数据驱动的对话管理方法是基于实例的对话管理，具有代表性的系统有\cite{Murao2003, Inui2001, Lee2009c}。该方法假定类似的对话状态会引发类似的回应，因此可以通过匹配对话实例库中的与当前对话状态最相似的对话状态来构建相应的对话模型。目前搜索与当前对话状态最相似的对话实例大多数都使用关键词来检索，对话实例库中的对话实例的表示通常采用语义约束的形式，从而整个对话实例库可以通过语义索引来概括\cite{Lee2009c}。对话管理模块首先将当前的对话状态也表示为语义约束的形式，并试图从对话实例库中找到与之相近的对话实例，如果没有返回结果，系统会放松语义约束后再一次从对话实例库中查找相近的对话实例；如果返回结果不止一个，那么系统会采用启发式算法来计算返回结果中的每一个实例与当前输入的相似度，然后选择相似度最高的返回作为应答。
+基于实例的对话管理方法也是数据驱动的对话管理中的一个流行的研究方向，具有代表性的系统有\cite{Murao2003, Inui2001, Lee2009c}。该方法假定类似的对话状态会引发类似的回应，因此可以通过匹配对话实例库中的与当前对话状态最相似的对话状态来构建相应的对话模型。目前搜索与当前对话状态最相似的对话实例大多数都使用关键词来检索，对话实例库中的对话实例的表示通常采用语义约束的形式，从而整个对话实例库可以通过语义索引来概括\cite{Lee2009c}。对话管理模块首先将当前的对话状态也表示为语义约束的形式，并试图从对话实例库中找到与之相近的对话实例，如果没有返回结果，系统会放松语义约束后再一次从对话实例库中查找相近的对话实例；如果返回结果不止一个，那么系统会采用启发式算法来计算返回结果中的每一个实例与当前输入的相似度，然后选择相似度最高的返回作为应答。
 
 数据驱动的对话管理的相关研究在近几年来发展可以说是突飞猛进，当下流行的深度机器学习也被用于对话管理领域，通过深度神经网络在大型对话语料库上训练对话模型的研究也取得了比较有前景的实验结果\cite{Shang2015, Sordoni2015b, VinyalsLe2015}。近期的相关研究还包括“端到端”的数据驱动对话管理框架，也就是利用多层次的神经网络对整个对话过程中的每一个组件以及每一个阶段都进行训练，从而得到包含从语音输入到语音输出，以及对话过程中各个阶段的一系列概率模型\cite{Serban2015}。然而，这些数据驱动的方法都严重依赖于足够大的数据集，为了取得有价值的实验结果，动辄需要上千万甚至上亿则对话。
 
@@ -296,11 +296,38 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 为了克服上述提到的基于知识以及数据驱动的对话管理方法中的各种不足，基于混合方法的对话管理的研究逐渐发展起来。
 
-传统的基于增强学习的对话管理受很大的状态空间和很大的策略空间的影响，往往需要庞大的对话语料库来学习一个最优策略。针对这问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟器技术，用机器模拟的用户来代替人和对话系统的交互。该方法首先通过有限的对话语料库来训练出一个用户模拟器，然后利用这个用户模拟器来和对话系统进行很多轮的对话，这样就能生成一个海量的模拟对话组成的庞大的对话语料库，使得基于增强学习的对话管理成为可能。在近几年的相关研究中，也有将有监督学习和增强学习方法结合来在固定对话语料库上训练最优对话策略\cite{Henderson2008}，这种方法通过增强学习来优化对话的奖励函数的评估，而有监督学习则根据可用的数据来对学习到的策略状态进行约束和剪枝，从而减小了传统的增强学习的对话管理所需大量对话语料的要求。
+传统的基于增强学习的对话管理受很大的状态空间和很大的策略空间的影响，往往需要庞大的对话语料库来学习一个最优策略。为了解决该问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟的技术，
 
-在精确的POMDP策略优化算法中，优化过程是可以在任何时刻选择任何操作的，但是在真实对话系统中，往往需要一些常识来约束以完成合理的对话。比如，对于一个医疗领域的对话系统，一般都要先咨询病人的症状然后再对症下药对病人开药方，然而对于传统的POMDP来说是无法直接将这些领域常识加入到优化过程中的。
 
-To surmount this problem, it has been proposed to constrain the set of
+  Various approaches to handling this issue have been proposed over the years.  For instance, user simulation techniques have been widely used to generate
+a large number of simulated dialogs which are generalized from limited real corpora
+based on specific user models [Pietquin and Dutoit 2006; Schatzmann et al. 2007]. In
+a recent research, a hybrid approach to integrate reinforcement and supervised
+learning has been also proposed to optimize dialog policies with a fixed dialog corpus
+[Henderson et al. 2008]. This approach can eliminate the need for a large number of
+dialog corpora to optimize the dialog policies in traditional RL-based dialog systems.
+In this approach, RL is used to optimize a measure of dialog reward, while supervised
+learning is used to restrict the learnt policy to the portion of the space for which data
+are available.
+
+传统的基于RL-DMS需要庞大的语料库对话框来学习的
+因为一个非常大的状态空间和一个非常大的政策空间最优策略。各种方法来处理这个问题已经提出多年了。例如，用户模拟技术已被广泛地用于产生
+大量模拟对话的它是由有限的真实语料库广义
+根据特定的用户模型[Pietquin和2006年迪图瓦; Schatzmann等。 2007]。 在
+最近的研究，混合方法，整合强化和监督
+学习已经提出具有固定对话框语料库来优化对话政策
+[Henderson等。 2008]。这种方法可以消除对大量的需要
+对话语料库来优化传统的基于RL-对话系统的对话政策。
+在这种方法中，RL被用来优化对话框奖励的量度，而监督
+学习用于将了解到政策限制的空间的部分，用于将数据
+是可用的。
+
+In the classical POMDP formulation, the optimization process is free to choose any
+action at any time. As a result, there is no obvious way to incorporate domain
+knowledge or constraints such as business rules. For example, it is obvious that the
+system should never prescribe any medicine before it has asked for the patient's
+symptoms in a medical domain. However, there is no direct way to consider this to
+the optimization process.  To surmount this problem, it has been proposed to constrain the set of
 possible actions based on conventional rules in the POMDP framework [Lemon et al.
 2006; Williams 2008b]. In this approach, the optimization process runs faster and
 more reliably than in a classical POMDP because spurious action choices are pruned
@@ -340,7 +367,7 @@ Out of the variety of prior approaches, the approach we will describe here is mo
 
 \item{自然语言理解}
 
-XXX语言需要调整改进XXX 
+XXX语言需要调整改进XXX
 
 从上一节中对对话系统的回顾可看出，智能对话系统离不开自然语言理解和自然语言生成的支持。
 
