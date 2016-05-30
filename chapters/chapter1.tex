@@ -276,9 +276,9 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 最近几年，对话管理的研究趋势逐步转向数据驱动的方法，即通过语料库来训练相关对话结构和知识库。虽然这种数据驱动的方法需要消耗很大的时间和人力进行语料库标注，但是对话管理模型的训练几乎不需人工干涉，而且在可移植性方面，如果需要在其他领域建立一个对话系统，也只需要重新训练新的语料库，与基于知识的对话管理相比，这显然是更简便的方法。
 
-这些优势驱动了使用无监督增强学习的随机对话建模的发展，如\cite{Levin2000}使用了基于马尔可夫决策过程（MDP）的增强学习算法，\cite{WilliamsYoung2007, Young2013, Williams2013, Kim2015, Henderson2013}使用了基于部分可观测马尔可夫决策过程（POMDP）的增强学习算法来进行对话建模。这些对话管理框架都使用数据驱动的统计机器学习算法，通过增强学习算法来优化系统的奖励或者惩罚函数，允许系统有理论原则性地根据当前的对话状态来动态修改对话策略。此外，基于POMDP的对话管理还能通过支持最优语音识别和自然语言理解结果来评估信念状态（belief state），从而达到纠正语音识别以及自然语言理解模块中出现的错误。对于基于POMDP的对话管理，系统只观测在当前状态下的有关现实世界（在对话系统中指的是语音识别和自然语言理解结果）的不完整的信息，系统必须利用当前对话状态下寻求一种最优策略将当前的信念状态映射到对话管理策略上。因此，基于POMDP的对话管理可以通过维持信念状态（即最优语音识别和自然语言理解结果）分布来实现语音识别和自然语言理解结果的纠错处理，而无需其他特殊方法。同时，有关用户的背景知识（如用户的特长以及情感状态等）也能通过可分解的增强学习模型映射到状态空间中，从而使得对话管理更人性化。
+这些优势驱动了使用无监督强化学习的随机对话建模的发展，如\cite{Levin2000}使用了基于马尔可夫决策过程（MDP）的强化学习算法，\cite{WilliamsYoung2007, Young2013, Williams2013, Kim2015, Henderson2013}使用了基于部分可观测马尔可夫决策过程（POMDP）的强化学习算法来进行对话建模。这些对话管理框架都使用数据驱动的统计机器学习算法，通过强化学习算法来优化系统的奖励或者惩罚函数，允许系统有理论原则性地根据当前的对话状态来动态修改对话策略。此外，基于POMDP的对话管理还能通过支持最优语音识别和自然语言理解结果来评估信念状态（belief state），从而达到纠正语音识别以及自然语言理解模块中出现的错误。对于基于POMDP的对话管理，系统只观测在当前状态下的有关现实世界（在对话系统中指的是语音识别和自然语言理解结果）的不完整的信息，系统必须利用当前对话状态下寻求一种最优策略将当前的信念状态映射到对话管理策略上。因此，基于POMDP的对话管理可以通过维持信念状态（即最优语音识别和自然语言理解结果）分布来实现语音识别和自然语言理解结果的纠错处理，而无需其他特殊方法。同时，有关用户的背景知识（如用户的特长以及情感状态等）也能通过可分解的强化学习模型映射到状态空间中，从而使得对话管理更人性化。
 
-尽管增强学习算法在理论上能解决基于不确定性的推理和决策，从而为对话管理提供了有效的途径，但在实现过程中，基于增强学习的对话系统依然困难重重\cite{Paek2006}，首先，对话系统中的状态包含大量语义项和项值、用户意图、理解结果和对话历史的各种可能组合，使得状态空间的规模指数增长\cite{yukai2014}，因此使得增强学习的过程计算复杂度巨大，也使得对话控制的精细改进过程变得困难；其次，增强学习得到的最优策略也剥夺了对话系统开发者对对话流程的监督指导权利。\cite{WilliamsYoung2005, Lemon2006, Young2007, Thomson2008, Williams2008b}对这些问题在一定程度上进行了改进。\cite{Lemon2006, Williams2008b}中研究了如何将传统的基于知识的对话管理和基于增强学习的对话管理结合起来构建商务领域的对话管理规则库，在一定程度上给开发人员留下了对对话管理的监督和指导的空间。然而，目前该方法仍在研究中，尚未用到实用性的对话系统中。
+尽管强化学习算法在理论上能解决基于不确定性的推理和决策，从而为对话管理提供了有效的途径，但在实现过程中，基于强化学习的对话系统依然困难重重\cite{Paek2006}，首先，对话系统中的状态包含大量语义项和项值、用户意图、理解结果和对话历史的各种可能组合，使得状态空间的规模指数增长\cite{yukai2014}，因此使得强化学习的过程计算复杂度巨大，也使得对话控制的精细改进过程变得困难；其次，强化学习得到的最优策略也剥夺了对话系统开发者对对话流程的监督指导权利。\cite{WilliamsYoung2005, Lemon2006, Young2007, Thomson2008, Williams2008b}对这些问题在一定程度上进行了改进。\cite{Lemon2006, Williams2008b}中研究了如何将传统的基于知识的对话管理和基于强化学习的对话管理结合起来构建商务领域的对话管理规则库，在一定程度上给开发人员留下了对对话管理的监督和指导的空间。然而，目前该方法仍在研究中，尚未用到实用性的对话系统中。
 
 数据驱动的对话管理方法还包括使用最大似然估计等有监督的机器学习算法从对话语料库中训练对话模型\cite{Hurtado2005}。为了避免数据稀疏的问题，\cite{Hurtado2005}中采用了对话寄存器来表示对话状态序列用于跟踪对话历史，其中对话寄存器包含用户在整个对话历史中提供的各项信息。
 
@@ -290,89 +290,43 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 为了克服上述提到的基于知识以及数据驱动的对话管理方法中的各种不足，基于混合方法的对话管理的研究逐渐发展起来。
 
-传统的基于增强学习的对话管理受很大的状态空间和很大的策略空间的影响，往往需要庞大的对话语料库来学习一个最优策略。为了解决该问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟的技术，用户
+传统的基于强化学习的对话管理方法需要通过用户和系统的反复交互来学习一个好的对话策略，而且目前的强化学习算法的泛化能力很弱，往往需要通过大量人力去和系统交互或者庞大规模的对话语料库去归纳一个很小语境条件下的对话策略。为了解决该问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟器的技术，也就是说，通过用户模拟器来代替人和对话管理器进行交互。根据有限的真实语料概括学习得到特定的用户模型，用户模拟器可产生大量的模拟对话。除此之外，\cit{Henderson2008}中还提出了将强化学习和有监督学习结合起来并在有限固定的对话语料库上学习和优化对话策略的混合方法，有监督学习的引入在一定程度降低了传统强化学习方法中对巨大对话语料库的需求程度。在该方法中，强化学习用于优化对话策略中对话奖惩的度量，而有监督学习用于指导对学习到的对话策略状态空间的剪枝，从而得到更高效有用的状态空间。
 
-  Various approaches to handling this issue have been proposed over the years.  For instance, user simulation techniques have been widely used to generate
-a large number of simulated dialogs which are generalized from limited real corpora
-based on specific user models [Pietquin and Dutoit 2006; Schatzmann et al. 2007]. In
-a recent research, a hybrid approach to integrate reinforcement and supervised
-learning has been also proposed to optimize dialog policies with a fixed dialog corpus
-[Henderson et al. 2008]. This approach can eliminate the need for a large number of
-dialog corpora to optimize the dialog policies in traditional RL-based dialog systems.
-In this approach, RL is used to optimize a measure of dialog reward, while supervised
-learning is used to restrict the learnt policy to the portion of the space for which data
-are available.
+在传统的POMDP算法中，优化过程可以在任何时刻选择任意的行为，因此，没有简洁易操作的方式引入一些领域相关的常识性知识来约束和指导优化过程。例如，一个医疗相关的对话系统不应该在问病人症状之前就提供用药建议，然而，传统的POMDP算法却不存在直接的方法将该常识引入到优化过程中。近年来，也有相关研究提出来改进该问题，如\cite{Lemmon2006, Williams2008b}中提出了在POMDP框架中基于传统规则来约束策略状态中的可能对话行为的集合，这样通过传统规则来对状态空间中的一些不合理的行为进行剪枝，不但加速了强化学习的优化过程，也使优化过程往更可靠的方向进行。
 
-传统的基于RL-DMS需要庞大的语料库对话框来学习的
-因为一个非常大的状态空间和一个非常大的政策空间最优策略。各种方法来处理这个问题已经提出多年了。例如，用户模拟技术已被广泛地用于产生
-大量模拟对话的它是由有限的真实语料库广义
-根据特定的用户模型[Pietquin和2006年迪图瓦; Schatzmann等。 2007]。 在
-最近的研究，混合方法，整合强化和监督
-学习已经提出具有固定对话框语料库来优化对话政策
-[Henderson等。 2008]。这种方法可以消除对大量的需要
-对话语料库来优化传统的基于RL-对话系统的对话政策。
-在这种方法中，RL被用来优化对话框奖励的量度，而监督
-学习用于将了解到政策限制的空间的部分，用于将数据
-是可用的。
+目前，传统的基于实例的对话管理方法应用在实用口语对话系统中还存在很多关键问题，比如先验知识的缺乏，语音识别的错误，以及语义解析的不确定性等。针对这些问题，\cite{Lee2009b}中提出了将对话实例与先验知识同时用在基于实例的对话管理中，从而提高系统的鲁棒性。该方法使用了基于议程的模型，将先验知识表示为议程图，并作为对话管理的子任务流之一来对领域相关的对话控制进行编码。这些先验知识不仅被用于预测系统的下一个对话行为，还通过议程图来跟踪对话状态，以便于处理一些话题焦点转移的意外情况。另外，该方法还通过在话语层次和语篇层次上的打分作为启发，来对当前对话状态下的N-best的对话行为假设进行重排。
 
-In the classical POMDP formulation, the optimization process is free to choose any
-action at any time. As a result, there is no obvious way to incorporate domain
-knowledge or constraints such as business rules. For example, it is obvious that the
-system should never prescribe any medicine before it has asked for the patient's
-symptoms in a medical domain. However, there is no direct way to consider this to
-the optimization process.  To surmount this problem, it has been proposed to constrain the set of
-possible actions based on conventional rules in the POMDP framework [Lemon et al.
-2006; Williams 2008b]. In this approach, the optimization process runs faster and
-more reliably than in a classical POMDP because spurious action choices are pruned
-by the conventional rules.
-
-In addition, traditional example-based DMs have critical problems in deploying
-practical spoken dialog systems such as both lack of prior knowledge and weaknes
-to speech recognition and  comprehension errors. To solve these problems, a novel hybrid approach in which both dialog examples and a priori knowledge are used has been presented to improve
-the robustness of example-based DM [Lee et al. 2009b]. In this approach, an agenda
-graph as prior knowledge is one of the subtask flows to encode the domain-dependent
-dialog control to complete the task. This knowledge is used to predict the next system
-action and to handle an unexpected focus shift by keeping track of the dialog state
-using the agenda graph. In addition, n-best recognition hypotheses are re-ranked by
-reflecting heuristics for computing both utterance-level and discourse-level scores.
-
-An exciting recent approach to hybrid dialogue management is based upon
-the concept of probabilistic rules.   [Ref, http://folk.uio.no/plison/pdfs/cl/probrules-plison-csl2015.pdf]
-Probabilistic rules are defined as structured mappings between logical
-conditions and probabilistic effects.
-They function as high-level templates
-for probabilistic graphical models and may include unknown parameters whose values are estimated probabilistically from data.   Due to their use of logical abstractions, these probabilistic rules are able to encode the probability models utilized in data-driven POMDP based dialogue systems in a compact and human-readable form.  In the ideal case, they require less  parameter estimation and hence less training data than typical POMDP-based dialogue management methods, and ease the incorporation of human-coded expert dialogue control rules.   However, this is a new approach and its practical utility largely remains to be explored.
+基于混合方法的对话管理的最新研究趋势还包括在强化学习模型中引入概率规则的概念，\cite{Lison2015}中将概率规则定义为逻辑条件和概率事件之间的结构映射，并作为高层次的模板用于概率图模型中，其中可能包含未知参数，其值可以通过数据进行贝叶斯推断来估计得出。由于使用了逻辑的抽象化，这些概率规则可以对数据驱动的基于POMDP的对话管理中使用的概率模型进行编码成更紧凑更可读的形式。在理想情况下他们需要较少的参数估计，因此，与典型的基于POMDP的对话管理方法相比，要求较少的训练数据，也允许开发者在对话管理过程中使用人工编写的对话控制规则。然而，该方法还未成熟和完善，其实用价值在很大程度上还有待考察。
 
 \end{enumerate}
 
-
-Out of the variety of prior approaches, the approach we will describe here is most closely related to prior work in general dialogue modeling, and to the recently-introduced use of probabilistic rules for dialogue management.   However, our approach to general dialogue modeling is different than ones pursued previously, being based on a fairly sophisticated model of the system's motivations, and the relationships of speech acts (and other communicative acts) to these motivations.   Also, due to use of a knowledge representation based on probabilistic logic rules, our framework is able to adapt its dialogue model based on observed data (though we have not experimented much with this aspect yet).  Thus our approach may be considered hybrid in concept, with a primary initial foundation in general dialogue modeling.   In the long run, a system built according to the approach we outline here might end up with dialogue control driven primarily via empirical probabilistic analysis of observed dialogue.  But from the start its in-built approach to genreal dialogue modeling will dominate its behavior, and that has been the case with the simple experiments we have done to date.
-
+在这些繁多的对话管理研究技术中，本文提出的方法更接近于现有技术中的通用对话建模技术，以及最新的在对话管理中引入概率规则的相关研究。然而，与这些研究又不同，本文由系统的动机出发，结合言语行为以及其他的交际行为与这些动机之间的关系来构建一个相当复杂的对话管理模型。此外，由于使用了基于概率逻辑规则的知识表示方法，本文的认知对话管理框架也能通过观测数据来进行对话模式的自适应。因此，本文的方法可以被认为是基于混合方法的对话管理。
+从长远角度来看，本文提出的对话管理框架将实现以通过观测数据来进行经验概率分析为主的对话控制，不过目前，我们的研究集中于将其内置的通用对话建模将作为对话行为控制的主导。
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{自然语言理解、生成研究综述}{Overview of Natural Language Understanding and Generation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-自然语言理解是NLP的分支领域，它是通过使用软件来理解自然语言的意义（语音，或者本文更关注的“文本”）。自然语言理解主要是将自然语言转换成抽象的语义形式，以获取语言的含义；或者是转换为某种响应（例如对某个问题的回答），以说明其理解了语言的含义。
+智能对话系统的研究、开发和使用都离不开自然语言理解和自然语言生成的支持，因此本小节将分别对自然语言理解和自然语言生成方面的现有研究技术以及存在的问题等进行简要的回顾。
 
 \begin{enumerate}
 
 \item{自然语言理解}
 
-XXX语言需要调整改进XXX
+自然语言理解是自然语言处理（NLP）的分支领域，它是通过使用软件来理解自然语言的意义（语音，或者本文更关注的“文本”）。自然语言理解主要是将自然语言转换成抽象的语义形式，以获取语言的含义；或者是转换为某种响应（例如对某个问题的回答），以说明其理解了语言的含义。
 
-从上一节中对对话系统的回顾可看出，智能对话系统离不开自然语言理解和自然语言生成的支持。
+在20世纪80年代之前，自然语言理解的方法通常是基于人工编写的复杂规则。紧随着机器学习技术的发展，基于统计的自然语言理解方法也开始兴起\cite{Tan1992}。乔姆斯基的形式语法理论以及摩尔定律使得通过语料库来进行统计学习的自然语言理解技术成为可能\cite{Gupta2014}。近些年来，越来越多的相关研究投入到无监督学习或者半监督学习方法上，这些技术能使自然语言理解不那么依靠需要大量人力获得的人工标注的语料库。一般来说，与有监督学习相比，无监督学习或者半监督学习的难度相当大\cite{Gupta2014}。
 
-目前主流的自然语言理解主要是通过以下流程逐步完成：词法分析、句法分析、语义关系抽取、语义理解。词法分析主要是XXXX，并不是本文的研究重点，因此这里从其他几方面来介绍各流程的研究现状。
+在目前主流的智能对话系统中，自然语言理解模块通常通过以下流程逐步完成：词法分析、句法分析、语义关系抽取、语义理解。词法分析主要是将字符序列转换为标记序列的过程，并非本文的研究内容，因此这里从其他几方面来介绍各流程的研究现状。
 
 
 \begin{description}
 \item[(1)]{句法分析}
-通常自然语言理解是通过对句子的某些，或全部句法法进行分析来完成的。大量的形式化体系和算法通过它们自己的独特方式对句子的句法结构进行解析。大体来说，这些可以归类为“依存语法（DG）”（XXX参考文献XXX）对“短语结构语法（PSG）”（XXX参考文献加进去XXX）。PSG首先对句子进行短语分析，然后指出单词和短语之间的关系，以及短语之间的关系；另一方面，DG仅仅在句子中的单词之间标注（有标记的）连接关系。后者（DG）是我们要在本文中探讨的语法类型。
+通常自然语言理解是通过对句子的某些，或全部句法法进行分析来完成的。大量的形式化体系和算法通过特定的语法体系对句子的句法结构进行解析。大体来说，主流的句法分析包括“依存句法分析” \cite{Eisner1996a, Eisner1996b, Yamada2003} 以及 “短语结构句法分析” \cite{Chomsky1957, Pollard1994}。短语结构句法分析依据短语结构文法\cite{Thompson1981, Charniak1997, Makino1998, Charniak2006}，首先对句子进行短语分析，然后指出单词和短语之间的关系，以及短语之间的关系；而依存句法分析依据依存文法\cite{Tesniere1959, Melchunk1988}，仅仅在句子中的单词之间标注（有标记的）连接关系。依存句法分析是我们要在本文中探讨的语法类型。
 
 
-这里的“依存”是指语言单位（如单词）由有向链接相互联系在一起。一般来说，在DG中，（限定）动词被视为句子或子句结构的中心，其它所有句法单位（单词）是直接或间接地与动词通过有向链接相连。这种有向链接被称为“依存”。句子结构是由一个词（中心词）与它的依存词之间的关系而决定的。
+这里的“依存”是指语言单位（如单词）由有向链接相互联系在一起。一般来说，在依存语法中，（限定）动词被视为句子或子句结构的中心，其它所有句法单位（单词）是直接或间接地与动词通过有向链接相连。这种有向链接被称为“依存”。句子结构是由一个词（中心词）与它的依存词之间的关系而决定的。
 
 
 “依存”关系是一对一的对应关系：对于句子中的每个元素（例如：单词或语素）来说，实际上句子中都有一个与其相对应的节点。这种一对一的对应关系决定了“依存语法”就是单词（或语素）的语法。所有的句子都有元素和将元素组成结构的依存关系，这种情况应该与短语结构语法的“成分关系”进行比较，“成分关系”是一对一，或一对多的对应关系，也就是说，对于句子中的每个元素来说，有一个或多个与其对应的节点。这种不同带来的结果是：相比短语结构，依存结构非常紧凑，因为它往往包含很多小的节点。从计算机处理的角度来说，这种简洁的结构是有益的。
@@ -388,7 +342,7 @@ XXX语言需要调整改进XXX
 father-of(Richard Li, Li Ka-Shing)
 \end{verbatim}
 
-抽取“高阶关系”也非常有意义。例如这个句子：``At codons 12, the occurence of point mutations from G to T were observed'' (“在密码子12，观察到从G到T的点突变”)。句子中出现了一个4进制生物医学关系，可以描述为：
+抽取“高阶关系”也非常有意义。例如这个句子："At codons 12, the occurence of point mutations from G to T were observed'' (“在密码子12，观察到从G到T的点突变”)。句子中出现了一个4进制生物医学关系，可以描述为：
 
 \begin{verbatim}
 point mutation(codon, 12, G, T)
@@ -425,33 +379,71 @@ FCG中,有关配对句法和语义结构的例子（短语“the ball”）,请�
 所有的FCG规则都是双向的。通常在产生过程中，所要表达的语义内容是与语义结构相统一的，有可能产生一组绑定。如果成功了，绑定会与语义结构相融合。这种融合可以理解为“部分统一”，但它利用结构中那些遗漏部分扩展了结构。在句法分析过程中，被分析的句子与句法结构是统一的，同时，结果中的某些部分被添加到语义结构中。
 \end{description}
 
-这篇论文所提出的形式化体系在概念上有些类似FCG。 此外，我们有配对句法和语义结构，而且还进行双向处理。在第\ref{chap:comprehension}章中，我们将论述链语法，它将句子转换成句法结构，以及RelEx和RelEx2Logic模块，它们将句法结构转换成语义结构。在第 \ref{chap:generation}章中，我们将论述Microplanner 和SuReal模块，从另一个方向，将语义结构转换成句法结构，再生成句子。OpenCog中的模式匹配器（Pattern Matcher）使用我们的句法和语义结构时，也将这些结构视为有效的程序，同样实现了“程序性语义”。
-
-我们的形式化体系与FCG的着重点不同。FCG主要是用作探索问题的理论工具，而我们所做的OpenCog系统则是用于真实世界的实际应用。
+本文所使用的形式化体系在概念上有些类似FCG。 此外，我们有配对句法和语义结构，而且还进行双向处理。在第\ref{chap:comprehension}章中，我们将论述链语法，它将句子转换成句法结构，以及RelEx和RelEx2Logic模块，它们将句法结构转换成语义结构。在第 \ref{chap:generation}章中，我们将阐述另一个方向的Microplanner 和SuReal模块，也就是将语义结构转换成句法结构，再生成句子。本文研究的平台OpenCog中的模式匹配器（Pattern Matcher）在使用这些句法和语义结构时，也将这些结构视为有效的程序，同样实现了“程序化语义”。但我们的形式化体系与FCG的着重点不同。FCG主要是用作探索问题的理论工具，而本文的研究更侧重用于真实世界的实际应用。
 
 \item{自然语言生成}{Natural Language Generation}
 XXXX
 
 
-P.S. this reference should go in the lit review on NLG, it's recent POMDP-NLGen stuff
 
-T. Wen, M. Gasic, D. Kim, N. Mrksic, P. Su, D. Vandyke, and S. Young. Stochastic language generation in dialogue using
-recurrent neural networks with convolutional sentence reranking.
-Special Interest Group on Discourse and Dialogue
-(SIGDIAL)
-, 2015
+\cite{Wen2015}
 
-自然语言生成（NLG）是NL的反向过程。NLG是从信息的计算表示中自动生成人类（自然的）语言。大体上，NLG系统与以下问题有关：
+In the past decade, significant progress has been made in applying statistical methods to automate the speech understanding and dialogue management components of an SDS, including making them more easily extensible
+to other application domains (Young et al., 2013; Gasiˇc et al., 2014; Henderson et al.,2014). However, due to the difficulty of collecting
+semantically-annotated corpora, the use of data-driven NLG for SDS remains relatively unexplored and rule-based generation remains the
+norm for most systems (Cheyer and Guzzoni,
+2007; Mirkovic and Cavedon, 2011).
+
+在过去的十年中，显著的进步已经在应用统计方法来自动的SDS的言语理解与对话管理部件制成，包括使他们更容易扩展
+其他应用领域。然而，由于回收的难度
+语义标注语料，进行SDS采用数据驱动的前起落架保持相对未开发的和基于规则的产生仍然是
+规范对于大多数系统
+
+随着统计机器学习技术的不断成熟，近十几年来，针对对话系统的自然语言理解研究已经有了显著的进步
+
+
+The goal of the NLG component of an SDS is
+to map an abstract dialogue act consisting of an
+act type and a set of attribute-value pairs1
+into  an appropriate surface text (see Table 1 below for some examples). An early example of a statistical
+NLG system is HALOGEN by Langkilde
+and Knight (1998) which uses an n-gram language
+model (LM) to rerank a set of candidates generated
+by a handcrafted generator. In order to reduce
+the amount of handcrafting and make the
+approach more useful in SDS, Oh and Rudnicky
+(2000) replaced the handcrafted generator with a
+set of word-based n-gram LM-based generators,
+one for each dialogue type and then reranked the
+generator outputs using a set of rules to produce
+the final response. Although Oh and Rudnicky
+(2000)’s approach limits the amount of handcrafting
+to a small set of post-processing rules, their
+system incurs a large computational cost in the
+over-generation phase and it is difficult to ensure
+that all of the required semantics are covered
+by the selected output. More recently, a
+phrase-based NLG system called BAGEL trained
+from utterances aligned with coarse-grained semantic
+concepts has been described (Mairesse et
+al., 2010; Mairesse and Young, 2014). By implicitly
+modelling paraphrases, Bagel can generate
+linguistically varied utterances. However, collecting
+semantically-aligned corpora is expensive and
+time consuming, which limits Bagel’s scalability
+to new domains.
+
+自然语言生成（NLG）是自然语言理解（NLU）的反向过程。总的来说，自然语言生成是从信息的计算表示中自动生成人类（自然的）语言。由于语义知识表示体系的差异化，造成自然语言生成系统的输入多样化，因此不同的自然语言生成系统所包含的组块一般都不尽相同。概括地说，自然语言生成系统可以表示为解决下列两项任务：
 
 \begin{itemize}
 \item What should I say?（我应该说什么？）
 \item How should I say it?（我应该怎么说？）
 \end{itemize}
 
-这涉及许多相互关联的计划过程，如：
+为了解决这些问题，自然语言生成系统可能涉及许多相互关联的规划模块，如：
 \begin{itemize}
-\item 决定要说的信息
-\item 构建语篇计划
+\item 确定要表达的信息
+\item 构建语篇规划
 \item 将信息块转换为语篇单位
 \item 选择适当的短语和单词
 \item 输出正确的语法
@@ -460,15 +452,15 @@ Special Interest Group on Discourse and Dialogue
 将这个流程分解为阶段的方法如下：
 \begin{description}
 
-\item [1)] 宏观计划
+\item [1)] 宏观规划
 
-宏观计划涉及选择和组织内容。它输入的是一个或多个沟通目标：解释、描述，或提问；引起听众的某种行动或思考等。宏观计划输出的是一种知识架构，这个架构不一定是语言的属性，而是体现智能体所要沟通的信息。除了一般性内容，这种知识架构可能包含一些与沟通过程有关的信息，例如：不同的知识块应该以什么样的顺序来传达。
+宏观规划涉及选择和组织内容。它输入的是一个或多个沟通目标：解释、描述，或提问；引起听众的某种行动或思考等。宏观规划输出的是一种知识架构，这个架构不一定是语言的属性，而是体现智能体所要沟通的信息。除了一般性内容，这种知识架构可能包含一些与沟通过程有关的信息，例如：不同的知识块应该以什么样的顺序来传达。
 
-有些宏观计划法涉及语篇结构的特定理论，例如：修辞结构理论\cite{Mann1987}。在本文所介绍的研究中，我们采用了宏观计划，利用名为“OpenPsi”的“动机认知模型”（这个模型的构建密切遵循人类心理学）。
+目前宏观规划的研究主要基于一些语篇结构层次上特定的理论体系，例如：修辞结构理论\cite{Mann1987}。在本文所介绍的研究中，我们采用了基于动机认知模型Psi的宏观规划，该模型的构建非常符合人类的心理特征。
 
-\item [2)] 微观计划
+\item [2)] 微观规划
 
-微观计划则运用知识架构，并将它们分为句块。微观计划必须处理多种语言问题，例如：
+微观规划则运用知识架构，并将它们分为句块。微观规划必须处理多种语言问题，例如：
 
 \begin{itemize}
 \item 句子范围：是否可以将两片叶子接在一起，怎样接在一起。(“我今天饿了。我去了 Burger King。” VS “我今天饿了,所以我去了Burger King。”)
@@ -478,15 +470,15 @@ Special Interest Group on Discourse and Dialogue
 \item 主题排序
 \end{itemize}
 
-到目前为止，我们的大多数微观计划都是为特定的应用而专门制定的。有一个名为SPUD\cite{Stone 1997}的多用途微观计划框架，它利用的是一个基于逻辑的计划流程形式。尽管在细节上有所不同（原来的SPUD是基于树-邻近语法），但我们所描述的微观计划在概念上受到了SPUD的很大影响。
+到目前为止，我们的大多数微观规划都是为特定的应用而专门制定的。有一个名为SPUD\cite{Stone 1997}的多用途微观规划框架，它利用的是一个基于逻辑的规划流程形式。尽管在细节上有所不同（原来的SPUD是基于树-邻近语法），但我们所描述的微观规划在概念上受到了SPUD的很大影响。
 
-\item [3)] 表层实现
+\item [3)] 表层生成
 
-最后，“表面实现”涉及的是文本表层的生成，例如：把知识结构转换为句子。经典的表层生成器，例如FUF/SURGE\cite{Elhadad1992}和 Penman/KPML\cite{Matthiessen1991}，都是以深层语言学理论为基础的。其他知名的系统，例如Nitrogen\cite{Langkilde1998}则采用的是统计法。所有基于规则的方法和统计法现在仍然流行。
+最后，“表面生成”涉及的是文本表层的生成，例如：把知识结构转换为句子。经典的表层生成器，例如FUF/SURGE\cite{Elhadad1992}和 Penman/KPML\cite{Matthiessen1991}，都是以深层语言学理论为基础的。其他知名的系统，例如Nitrogen\cite{Langkilde1998}则采用的是统计法。所有基于规则的方法和统计法现在仍然流行。
 
 \end{description}
 
-一般来说，与NL理解相比，NL生成技术要落后得多。目前的实用系统往往比较专业化，而且很粗糙。概念比较先进的系统，如FCG，尚未经过广泛地实践测试。正如第\ref{chap:generation}章中所介绍的，我们在这一领域的研究代表了“基于规则的方法”和“统计法”的融合。我们认为这种融合非常有前景，但还没有精细化，也没有经过系统性评估。
+一般来说，与自然语言理解相比，自然语言生成技术要落后得多。目前的实用系统往往比较专业化，而且很粗糙。概念比较先进的系统，如FCG，尚未经过广泛地实践测试。正如第\ref{chap:generation}章中所介绍的，我们在这一领域的研究代表了“基于规则的方法”和“统计法”的融合。我们认为这种融合非常有前景，但还没有精细化，也没有经过系统性评估。
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -532,9 +524,8 @@ Searle对Austin提出的言语行为理论做了深入的研究和探讨。在Se
 \label{fig:Searle}
 \end{figure}
 
-XXXX 言语行为分类
 
-总之，言语行为理论为对话管理和对话控制提供了一个新的思路，也就是将对话的话语看成是一种行为，和其他非语言的行为类似，这样一来，它不仅给对话管理和对话控制提供更多可行的用于非语言的行为控制机制，也同时能将对话与智能体的其他行为有效结合起来，从而完成更智能更人性化的对话。
+总之，言语行为理论为对话管理和对话控制提供了一个新的思路，也就是将对话的话语看成是一种行为，这样不仅能通过对不同言语行为的定义来猜测说话人的意图，还能将对话行为看成和其他非语言的行为类似。不难看出，它不仅给对话管理和对话控制提供更多可行的用于非语言的行为控制机制，也同时能将对话与智能体的其他行为有效结合起来，从而完成更智能更人性化的对话。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{存在的问题}{Omissions of Present Research}
