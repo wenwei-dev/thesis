@@ -63,10 +63,19 @@ XXXX
 知识表示的任务比较繁琐，所涉及的领域比较广，
 
 \begin{enumerate}
-\item[1]  {传统的知识表示方法Traditional and Compositional Representation}
+\item {传统的知识表示方法Traditional and Compositional Representation}
+
+XXX这节需要用到的参考文献:  
+DSC树\cite{Liang2013}  
+
+Using PCFG to Capture utterance to First Order Logic Representation\cite{Piantadosi2008}
+
+ConceptNet's new reference, Representing General Relational Knowledge in ConceptNet 5\cite{Robert2012}  
+
+Follow-up Research for "no complex FOL statements to be captured\cite{Titov2011}
 
 \begin{enumerate}
-\item1) 一阶逻辑表示法：CYC
+\item[1)] 一阶逻辑表示法：CYC
 谓词逻辑既包括一阶逻辑也包括高阶逻辑（如量词）
 
 在NLP系统中，开发最彻底的“谓词逻辑”要属由Cycorp公司开发的商用系统Cyc\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓词逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓语逻辑公式，但到目前为止，似乎只对一小部分人类常识进行了编码。 不过，作为智能应用系统，Cyc已经相当成功了。
@@ -115,9 +124,9 @@ Cyc知识库被分为多个“微理论”库，它们是概念和事实的集�
 
 Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系统将自然语言句子映射为Cyc逻辑形式。由于这个系统本身的特性，我们尚不清楚它到底具有什么样的优点和缺点。
 
-\item2) 基于框架的知识表示法 Frame based Representation
+\item[2)] 基于框架的知识表示法 Frame based Representation
 
-\item3) 语义网络表示法：ConceptNet \cite{Robert2012}
+\item[3)] 语义网络表示法：ConceptNet \cite{Robert2012}
 
 知识表示的另一个模式是由ConceptNet提供的\cite{Liu2004}。它从Cyc系统和形式逻辑中借鉴了一些理念，但没有考虑复杂的位元，如量词,并且比较接近自然语言层面。ConceptNet 是个大规模的语义网络，它表达概念（由单词或短语表述）之间的关系。图\ref{fig:concept}是关于子网络的例子。
 
@@ -131,7 +140,24 @@ Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系�
 
 \end{enumerate}
 
-\item[2]  {基于概率逻辑的知识表示法}
+\item {基于概率逻辑的知识表示法}
+
+XXX这节需要用到的文献列表XXX
+
+Probabilistic Representation \cite{Poon2009}  
+
+Markov Logic\cite{Domingos2007} 
+
+efficient logical inference & entailment in the form of contraint satisfaction\cite{Giordani2010a},\cite{Giordani2010b}, \cite{Giordani2009}
+
+PLP, BLP\cite{Kersting2007}
+
+Probabilistic Similarity Logic\cite{Brocheler2012}  
+
+Probablistic Logic Representation has two contrasting interpretations\cite{DaRaett2003} 
+
+
+
 
 \begin{figure}[htb]
 \centering
@@ -142,13 +168,13 @@ Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系�
 
 \begin{enumerate}
 
-\item1) Probabilities over different worlds
+\item[1)] Probabilities over different worlds
 XXXX
 
-2) Probablities over derivations
+\item[2)] Probablities over derivations
 XXXX
 
-3) Probablities over experience: PLN, NARS
+\item[3)] Probablities over experience: PLN, NARS
 XXX语言需要调整XXX
 Pei Wang的NARS引擎运用了传统逻辑推理法\cite{Wang2006}，并引入了独特的数学运算，用于管理与“传统逻辑关系”有关的不确定性。NARS是建构在经验的基础上，而不是模型论语义学。
 
@@ -167,13 +193,17 @@ Pei Wang的NARS引擎运用了传统逻辑推理法\cite{Wang2006}，并引入�
 
 \end{enumerate}
 
-\item[3]  {分布式知识表示法}
+\item  {分布式知识表示法}
 
 
 
-\item[4]  {Compositional Distributional Representation}
+\item  {Compositional Distributional Representation}
 
+XXX这节需要用到的参考文献
 
+Nouns as vectors, Adjectives as matrices linearly transforming these nouns\cite{Baroni2010} 
+
+For Compistional Distributional Representation, the use of linear projections can be identified with non-quantified FOL\cite{Grefenstette2013}
 
 \end{enumerate}
 
@@ -249,7 +279,7 @@ Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记�
 
 为了克服上述提到的基于知识以及数据驱动的对话管理方法中的各种不足，基于混合方法的对话管理的研究逐渐发展起来。
 
-传统的基于强化学习的对话管理方法需要通过用户和系统的反复交互来学习一个好的对话策略，而且目前的强化学习算法的泛化能力很弱，往往需要通过大量人力去和系统交互或者庞大规模的对话语料库去归纳一个很小语境条件下的对话策略。为了解决该问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟器的技术，也就是说，通过用户模拟器来代替人和对话管理器进行交互。根据有限的真实语料概括学习得到特定的用户模型，用户模拟器可产生大量的模拟对话。除此之外，\cit{Henderson2008}中还提出了将强化学习和有监督学习结合起来并在有限固定的对话语料库上学习和优化对话策略的混合方法，有监督学习的引入在一定程度降低了传统强化学习方法中对巨大对话语料库的需求程度。在该方法中，强化学习用于优化对话策略中对话奖惩的度量，而有监督学习用于指导对学习到的对话策略状态空间的剪枝，从而得到更高效有用的状态空间。
+传统的基于强化学习的对话管理方法需要通过用户和系统的反复交互来学习一个好的对话策略，而且目前的强化学习算法的泛化能力很弱，往往需要通过大量人力去和系统交互或者庞大规模的对话语料库去归纳一个很小语境条件下的对话策略。为了解决该问题，\cite{Pietquin2006, Schatzmann2007}中引入了用户模拟器的技术，也就是说，通过用户模拟器来代替人和对话管理器进行交互。根据有限的真实语料概括学习得到特定的用户模型，用户模拟器可产生大量的模拟对话。除此之外，\cite{Henderson2008}中还提出了将强化学习和有监督学习结合起来并在有限固定的对话语料库上学习和优化对话策略的混合方法，有监督学习的引入在一定程度降低了传统强化学习方法中对巨大对话语料库的需求程度。在该方法中，强化学习用于优化对话策略中对话奖惩的度量，而有监督学习用于指导对学习到的对话策略状态空间的剪枝，从而得到更高效有用的状态空间。
 
 在传统的POMDP算法中，优化过程可以在任何时刻选择任意的行为，因此，没有简洁易操作的方式引入一些领域相关的常识性知识来约束和指导优化过程。例如，一个医疗相关的对话系统不应该在问病人症状之前就提供用药建议，然而，传统的POMDP算法却不存在直接的方法将该常识引入到优化过程中。近年来，也有相关研究提出来改进该问题，如\cite{Lemon2006, Williams2008b}中提出了在POMDP框架中基于传统规则来约束策略状态中的可能对话行为的集合，这样通过传统规则来对状态空间中的一些不合理的行为进行剪枝，不但加速了强化学习的优化过程，也使优化过程往更可靠的方向进行。
 
