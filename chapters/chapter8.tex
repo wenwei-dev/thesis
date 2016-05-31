@@ -513,11 +513,18 @@ ImplicationLink <.3,.8>
 \section{一个综合的问答规划器}{A Composite Question-Answering Schema}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-综合上述对问答规划的讨论，我们还设计并实现了一个合理的综合问答规划器，其实现方法如下：
+综合上述对问答规划的讨论，我们还针对信息查找问题设计并实现了一个合理的综合问答规划器，设计思路可参考图\ref{fig:QA-schema}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/QA-schema.png}
+\caption{信息查找问答规划器的流程 }
+\label{fig:QA-schema}
+\end{figure}
+
+其实现方法如下：
 
 \begin{verbatim}
-Composite Information-Finding QA Schema:
-
 给定一个用于信息查找的问题Q，回答Q的动机，以及所允许的最长等待时间T
 
 如果T的值大，则试图通过逻辑推理来回答Q

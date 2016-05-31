@@ -80,6 +80,52 @@ OpenCog中的行为选择机制的关键部分在于：
 \end{itemize}
 \end{itemize}
 
+XXX下面部分要翻译XXX
+
+Let $I(C,A,G)$ denote the implication schematically denoted
+
+\begin{verbatim}
+ImplicationLink
+    ANDLink
+        Context
+        Schema
+    Goal
+\end{verbatim}
+
+\noindent as used by OpenPsi.   Then we may let
+
+$$
+w_I = s * c
+$$
+
+\noindent where $s$ and $c$ denote the strength and confidence of the implication $I$; and let $STI_G$ 
+denote the ShortTermImportance (STI) of G.   
+
+One may then define the weight of the schema $S$ as
+
+
+$$
+w_S = \frac{v_S} {\sum_R v_R}
+$$
+
+\noindent where
+
+$$
+v_S = \sum_{I_i(C_i, S, G_i)} w_{I_i} STI_{G_i}
+$$
+
+More complex forms are also interesting, e.g.
+
+$$
+v_S = \sum_{I_i(C_i, S, G_i)} w_{I_i} STI_{I_i} STI_{G_i}  w_{G_i}
+$$
+ 
+ \noindent where $STI(I)$ refers to the STI of the implication I, and
+ $w(G_i)$ refers to the general, persistent importance of the goal $G_i$
+ to that particular system (which is different than the short-term importance
+ of the goal to the system at that moment).
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Psi在OpenCog中的使用}{Psi in OpenCog}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
