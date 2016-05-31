@@ -29,93 +29,47 @@ XXXX
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{知识表示方法和逻辑推理研究综述}{Overview of Knowledge Representation And Logic Reasoning}
+\subsection{知识表示及相关逻辑推理研究综述}{Overview of Knowledge Representation And Logic Reasoning}
 \label{sec:representationReview}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-XXX开场白需要调整
 
-对于任何以实现复杂功能（如对话系统或复杂的问答系统）为目标的NLP系统来说，该系统如何表达内部知识是非常关键的。先进的NLP功能一般要求从多个句子中获得互相关的信息，这通常需要持续存储那些从多个句子中抽取的信息。这种存储机制必须能够支持相当灵活的语义知识操作。上节我们看到的例子是FCG使用的基于逻辑的语义表达形式。在本文的研究中，我们将使用一种不同的逻辑表达形式，即OpenCog中概率逻辑网PLN（Probabilistic Logic Networks）的形式体系。
+对于任何以实现复杂功能为目标的自然语言处理系统（如对话系统或复杂的问答系统）来说，该系统内部的知识表示形式，即如何表示语义处理后的自然语言，往往是系统的各方面性能表现的关键所在。本小节将介绍知识表示目前的研究现状并回顾一些典型的知识表示方法及相应的优缺点，我们也会在本节重点介绍与本文所采用的知识表示相关联的几个具有代表性的知识库。
 
+如何合理有效地表示自然语言话语的含义是过去50年来一直被争议的问题，这也是从一个句子中抽取信息的语义建模问题所面临的第一步。然而目前，“知识表示”需要满足哪些条件仍然处于争论状态。\cite{Jurafsky2008}中从不同方面总结了一个完整的知识表示体系的必要条件的列表，其中包括：
+
+\begin{itemize}
+\item determine the truth of a proposition
+\item support umambiguous representation
+\item support logical inference
+\item to be sufficiently expressive
+\end{itemize}
+
+直到最近，该列表一直被当做是知识表示的一个相当完善的权威标准。\cite{Yarin2013}中指出了这个必要条件列表并不完整，并提出了一个完善的知识表示体系还需要满足从以下几要素：
+
+\begin{itemize}
+\item no uncertainty or connotation
+\item not allowed to extract the utterance in a manageable way (i.e. no algorithm for parsing representation from data)
+\item infer the sentiment of an utterrance 
+\item capture uncertainty in different proposition
+\item relate utterances of similar meaning to one-another while distinguishing distinct ones
+\item capture activities as well as agents taking part in these activities,
+\item answer questions using meaning in addition to knowledge
+\item generate new utterances of the same meaning
+\end{itemize}
+
+
+而近几年提出的一些知识表示方法及相关研究也在试图满足其中的部分或所有需求。下面我们将简单回顾一些具有代表性的知识表示方法以及相应的优缺点，从中也不难看出未来知识表示领域的研究方向。
+
+知识表示的任务比较繁琐，所涉及的领域比较广，
 
 \begin{enumerate}
-\item {逻辑知识表示的优缺点}
+\item[1]  {传统的知识表示方法Traditional and Compositional Representation}
 
-根据Pei Wang \cite{Wang2006}的理论，总体来说，逻辑推理系统通常包括以下组成部分：
+\begin{enumerate}
+\item1) 一阶逻辑表示法：CYC
+谓词逻辑既包括一阶逻辑也包括高阶逻辑（如量词）
 
-\begin{itemize}
-\item 一种形式化语言， 能用于知识表示，以及系统与其环境之间的沟通。
-\item 一个语义系统，用于决定词的意义和句子真值。
-\item 一套推理规则，匹配问题和知识，能从前提推出结论等。
-\item 一个存储器，可以储存问题和知识，并提供推理的工作空间。
-\item 一个控制机制，负责选择前提和每一步推理中需要的推理法则。
-\end{itemize}
-
-\noindent 前3个通常被认为是逻辑，或推理系统中的逻辑部分，最后的2个则被认为是推理系统中的控制部分。
-
-使用逻辑来表达自然语言的语义，这涉及精确度和灵活度之间的平衡。逻辑是精确的，它的标志是“确定”。它带来一种用作定理证明的思考方式。它的优势在于稳定和系统的方式对表达式赋值并保持表达式的真值。在几乎没有歧义的技术领域，精确度是非常重要的，而逻辑显然是一个极好的架构。但是，当逻辑在意思和真值都比较模糊和模棱两可的领域中应用时，其适用性就不那么明显了，而且在人工智能和NLP领域中，逻辑的应用也常常引起争议。
-
-进一步来说，逻辑领域中最长和最丰富的传统是以演绎推理为中心的。演绎推理是有限的推理形式，而且人们很少做关于自然语言的常识性推理，但仍然有大量的“归纳逻辑”\cite{Muggleton1994} \cite{Holland1989}工作（包括最近人们重视的“概率归纳逻辑编程” \cite{Riguzzi2014}和溯因推理\cite{Queiroz2005} \cite{Menzies1996}）。这些推理方法也大量存在于我们所用的PLN系统中。
-
-%%%%%%%%%%%
-\item {谓词逻辑 VS 传统逻辑}
-%%%%%%%%%%%
-
-在数学和NLP环境下，最普遍的逻辑形式是“谓词逻辑”。它的独特之处是对变量的使用，这些变量可以被量化。两个常见的限量词是存在量词$\exists$（“存在”）和普遍量词$\forall$（“所有”）。在谓语逻辑公式中，变量可能是人们谈及的宇宙元素，也许是超越宇宙的关系或函数。举例来说：在标准的谓语逻辑中，一个句子，例如“Ravens are black” （乌鸦是黑的），它呈现的是个“一般命题”，如：
-$$
-(\forall x)(Raven(x) \rightarrow Black(x)).
-$$
-
-谓语逻辑通常与语义学的“理论模型”法一同出现，它视“逻辑公式”为特定领域的模型\cite{Muller2009}。
-
-
-另一个方法是“传统逻辑”推理法，这个概念实际上可以追溯到亚里士多德。在这里，“基本假设”是：命题由两个词语构成，推理过程反过来根据命题来构建。详解如下：
-
-\begin{itemize}
-\item 一个“词语”是言语表达的一部分，但就其本身而言，并没有对或错，例如“男人”或“凡人”。
-\item 一个“命题”包含两个词语，其中一个（“谓语”）是对其它词（“主语”）的“证实”或“否认”。它能够反应“真”或“假”。
-\item “三段论”是一种推理法，其中的一个命题（“结论”）必须遵循另外两个（“前提”）。
-\end{itemize}
-
-在“传统逻辑”推理法中，我们可以这样推理：
-\begin{eqnarray*}
-raven \rightarrow black
-\end{eqnarray*}
-无需引入量词。
-
-以下是一个标准的“三段论”逻辑推理示例：
-\begin{eqnarray*}
-A \rightarrow B \\
-B \rightarrow C \\
-\Rightarrow \\
-A \rightarrow C
-\end{eqnarray*}
-这也是演绎推理的简单形式。
-
-%%%%%%%%%%%
-\item{目前的相关系统}
-%%%%%%%%%%%
-
-\begin{description}
-
-\item[(1)] NARS
-
-在人工智能领域，Pei Wang的NARS引擎运用了传统逻辑推理法\cite{Wang2006}，并引入了独特的数学运算，用于管理与“传统逻辑关系”有关的不确定性。NARS是建构在经验的基础上，而不是模型论语义学。
-
-在许多方面，我们所使用的PLN逻辑形式化体系与NARS有类似的地方，但也存在巨大差异。PLN在一个独特的数学框架下，同时利用传统逻辑和谓语逻辑。此外，PLN还使用概率数学，以推导不确定真值的公式。反之，NARS是基于原始的、非概率的、不确定的管理体系。PLN也是以经验语义为基础，但形式与NARS不同。
-
-
-图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的优势和信心”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=12cm]{figures/nars.png}
-\caption{ NARS/PLN 传统逻辑中演绎推理、归纳推理和回溯推理的形式 }
-\label{fig:nars}
-\end{figure}
-
-\item[(2)]  Cyc
-
-在NLP系统中，开发最彻底的“谓语逻辑”要属由Cycorp公司开发的商用系统Cyc\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓语逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓语逻辑公式，但到目前为止，似乎只对一小部分人类常识进行了编码。 不过，作为智能应用系统，Cyc已经相当成功了。
+在NLP系统中，开发最彻底的“谓词逻辑”要属由Cycorp公司开发的商用系统Cyc\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓词逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓语逻辑公式，但到目前为止，似乎只对一小部分人类常识进行了编码。 不过，作为智能应用系统，Cyc已经相当成功了。
 
 我们之所以在这里讨论Cyc“知识表示”的基础，是为了与我们的系统进行比较。在Cyc系统中，概念名称被称作“常量”。在书写时，它们以"\#\$"开始。以下是几种常量：
 
@@ -161,8 +115,9 @@ Cyc知识库被分为多个“微理论”库，它们是概念和事实的集�
 
 Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系统将自然语言句子映射为Cyc逻辑形式。由于这个系统本身的特性，我们尚不清楚它到底具有什么样的优点和缺点。
 
+\item2) 基于框架的知识表示法 Frame based Representation
 
-\item[(3)] 概念网ConceptNet
+\item3) 语义网络表示法：ConceptNet
 
 知识表示的另一个模式是由ConceptNet提供的\cite{Liu2004}。它从Cyc系统和形式逻辑中借鉴了一些理念，但没有考虑复杂的位元，如量词,并且比较接近自然语言层面。ConceptNet 是个大规模的语义网络，它表达概念（由单词或短语表述）之间的关系。图\ref{fig:concept}是关于子网络的例子。
 
@@ -173,68 +128,70 @@ Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系�
 \label{fig:concept}
 \end{figure}
 
-ConceptNet系统的节点是自然语言碎片，这些碎片按照某个句法模式的本体进行了半结构化。它们适合一阶概念（作为名词短语，如potato chips）和二阶概念（作为动词短语，如：buy potato chips）。
 
-节点可以由19个语义关系相连接：
-\begin{itemize}
+\end{enumerate}
 
-\item 事物
-\begin{itemize}
-\item IsA ?(corresponds loosely to hypernym in WordNet)
-\item PropertyOf ?(e.g. (PropertyOf ``apple'' ``healthy''))
-\item PartOf ?(corresponds loosely to holonym in WordNet)
-\item MadeOf ?(e.g. (MadeOf ``bottle'' ``plastic''))
-\end{itemize}
+\item[2]  {基于概率逻辑的知识表示法}
 
-\item 事件
-\begin{itemize}
-\item FirstSubeventOf, LastSubeventOf ?(e.g. (FirstSubeventOf ``act in play'' ``learn script''))
-\item EventForGoalEvent ?(e.g. (EventForGoalEvent ``drive to grocery store'' ``buy food''))
-\item EventForGoalState ?(e.g. (EventForGoalState ``meditate'' ``enlightenment''))
-\item EventRequiresObject ?(e.g. (EventRequiresObject ``apply for job'' ``resume''))
-\end{itemize}
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/plr-relatioin.png}
+\caption{概率逻辑的不同表示形式的分类}
+\label{fig:plr-relation}
+\end{figure}
 
-\item 动作
-\begin{itemize}
-\item EffectOf ?(e.g. (EffectOf ``commit perjury'' ``go to jail''))
-\item EffectOfIsState ?(e.g. (EffectOfIsState ``commit perjury'' ``criminal prosecution''))
-\item CapableOf ?(e.g. (CapableOf ``police officer'' ``make arrest''))
-\end{itemize}
+\begin{enumerate}
 
-\item 空间
-\begin{itemize}
-\item OftenNear ?(e.g. (OftenNear ``sailboat'' ``marina''))
-\item LocationOf ?(e.g. (LocationOf ``money'' ``in bank account''))
-\end{itemize}
+\item1) Probabilities over different worlds
+XXXX
 
-\item 目标
-\begin{itemize}
-\item DesiresEvent, DesiresNotEvent ?(e.g. (DesiresEvent ``child'' ``be loved''))
-\end{itemize}
+2) Probablities over derivations
+XXXX
 
-\item 功能
-\begin{itemize}
-\item UsedFor ?(e.g. (UsedFor ``whistle'' ``attract attention''))
-\end{itemize}
+3) Probablities over experience: PLN, NARS
+XXX语言需要调整XXX
+Pei Wang的NARS引擎运用了传统逻辑推理法\cite{Wang2006}，并引入了独特的数学运算，用于管理与“传统逻辑关系”有关的不确定性。NARS是建构在经验的基础上，而不是模型论语义学。
 
-\item 通用
-\begin{itemize}
-\item CanDo ?(e.g. (CanDo ``ball'' ``bounce''))
-\item ConceptuallyRelatedTo ?(e.g. (ConceptuallyRelatedTo ``wedding'' ``bride'' ``groom'' )
-\end{itemize}
-\end{itemize}
-
-\end{description}
+在许多方面，我们所使用的PLN逻辑形式化体系与NARS有类似的地方，但也存在巨大差异。PLN在一个独特的数学框架下，同时利用传统逻辑和谓语逻辑。此外，PLN还使用概率数学，以推导不确定真值的公式。反之，NARS是基于原始的、非概率的、不确定的管理体系。PLN也是以经验语义为基础，但形式与NARS不同。
 
 
-\item[(4)] {Atomspace}
+图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的优势和信心”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=12cm]{figures/nars.png}
+\caption{ NARS/PLN 传统逻辑中演绎推理、归纳推理和回溯推理的形式 }
+\label{fig:nars}
+\end{figure}
+
+
+\end{enumerate}
+
+\item[3]  {分布式知识表示法}
+
+
+
+\item[4]  {Compositional Distributional Representation}
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+XXX下面部分语言要稍微调整一下XXX
+
 
 Atomspace是开源的认知体系结构OpenCog\footnote{\url{http://wiki.opencog.org/w/The_Open_Cognition_Project}}里所使用的知识表示体系，也是本文所采用的知识表示机制，会在第\ref{chap:representation}中进一步介绍，这里只对比它和目前存在的一些知识表示方法的比较。
 
-XXX 语言要稍微调整一下
 Atomspace与ConceptNet有些共同之处。我们视Atomspace为“加权标记超图”，但ConceptNet只是一个“加权标记图”。此外，在可以直接表示的关系复杂性方面，Atomspace与ConceptNet有所不同。Atomspace包含与ConceptNet相似的简单节点和链接，但还有更加复杂的，且能够表示量词关系，还含有可执行程序等。它的设计原则是：先利用简单的、ConceptNet类的方法，尽可能地表示，但之后在必要的情况下使用更复杂的表示工具。大多数“表示工具”都来自传统逻辑，而不是谓语逻辑，但必要时也使用与“明确量词关系”相对应的节点和链接。
 
-\end{enumerate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
