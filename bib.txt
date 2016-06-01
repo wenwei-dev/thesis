@@ -1,0 +1,45 @@
+Command Line:   bibtex.exe "main"
+Startup Folder: C:\Users\Wenwei\workspace\thesis
+
+This is BibTeX, Version 0.99d (MiKTeX 2.9)
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: author.aux
+A level-1 auxiliary file: abstracts/cnabstract.aux
+A level-1 auxiliary file: abstracts/enabstract.aux
+A level-1 auxiliary file: chapters/chapter1.aux
+A level-1 auxiliary file: chapters/chapter2.aux
+A level-1 auxiliary file: chapters/chapter3.aux
+A level-1 auxiliary file: chapters/chapter4.aux
+A level-1 auxiliary file: chapters/chapter5.aux
+A level-1 auxiliary file: chapters/chapter6.aux
+A level-1 auxiliary file: chapters/chapter7.aux
+A level-1 auxiliary file: chapters/chapter8.aux
+A level-1 auxiliary file: chapters/chapter9.aux
+The style file: reference/xmuthesis2.bst
+A level-1 auxiliary file: appendix/publications.aux
+A level-1 auxiliary file: appendix/thanks.aux
+Database file #1: reference/references.bib
+Warning--I didn't find a database entry for "Bangalore2006"
+Warning--I didn't find a database entry for "Lee2009a"
+Warning--I didn't find a database entry for "Levin2000"
+Warning--I didn't find a database entry for "yukai2014"
+Warning--I didn't find a database entry for "WilliamsYoung2005"
+Warning--I didn't find a database entry for "Hurtado2005"
+Warning--I didn't find a database entry for "Murao2003"
+Warning--I didn't find a database entry for "Inui2001"
+Warning--I didn't find a database entry for "Melchunk1988"
+Warning--empty pages in Robert2012
+Warning--empty pages in Giordani2010b
+Warning--can't use both author and editor fields in Bui2004
+Warning--empty pages in Kim2015
+Warning--empty pages in Paek2006
+Warning--empty pages in Goertzel2010c
+Warning--empty pages in Goertzel2008d
+Warning--empty journal in Franklin1995
+Warning--empty pages in Lian2012
+Warning--missing publisher in Margaret2013
+Warning--empty booktitle in Goertzel2008w
+Warning--empty pages in Goertzel2008w
+(There were 21 warnings)
+
+

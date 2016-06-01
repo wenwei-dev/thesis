@@ -1,4 +1,4 @@
-Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
+﻿Command Line:   xelatex.exe --interaction=errorstopmode --synctex=1 "main.tex"
 Startup Folder: C:\Users\Wenwei\workspace\thesis
 
 Qt: Untested Windows version 6.2 detected!
@@ -294,27 +294,16 @@ Underfull \vbox (badness 3861) has occurred while \output is active [13]
 Underfull \vbox (badness 5862) has occurred while \output is active [14])
 [15] [16] (C:\Users\Wenwei\workspace\thesis\chapters/chapter1.tex
 第1章
-[1] <use  "figures/dialogue_system.png" >
-
-Package natbib Warning: Citation `Jurafsky2008' on page 2 undefined on input li
-ne 38.
-
-[2] [3] [4] [5] <use  "figures/conceptnet.png" >
+[1] <use  "figures/dialogue_system.png" > [2] [3] [4] [5]
+<use  "figures/conceptnet.png" >
 ! Misplaced alignment tab character &.
 l.151 efficient logical inference &
                                     entailment in the form of contraint sati...
 
 ? 
-<use  "figures/plr-relation.png" > [6] <use  "figures/nars.png" > [7] [8]
+[6] <use  "figures/plr-relation.png" > <use  "figures/nars.png" > [7]
+Underfull \vbox (badness 3701) has occurred while \output is active [8]
 [9]
-
-LaTeX Warning: Reference `fig: knowledgeDM' on page 10 undefined on input line 
-254.
-
-
-Package natbib Warning: Citation `RoySubramaniam2006' on page 10 undefined on i
-nput line 254.
-
 
 Package natbib Warning: Citation `Bangalore2006' on page 10 undefined on input 
 line 254.
@@ -323,56 +312,20 @@ line 254.
 Package natbib Warning: Citation `Lee2009a' on page 10 undefined on input line 
 254.
 
-
-Package natbib Warning: Citation `Griol2009' on page 10 undefined on input line
- 254.
-
-
-Package natbib Warning: Citation `RoySubramaniam2006' on page 10 undefined on i
-nput line 254.
-
 <use  "figures/knowledgeDM.png" > [10]
 
 Package natbib Warning: Citation `Levin2000' on page 11 undefined on input line
  268.
 
+[11]
 
-Package natbib Warning: Citation `WilliamsYoung2007' on page 11 undefined on in
-put line 268.
-
-
-Package natbib Warning: Citation `Williams2013' on page 11 undefined on input l
-ine 268.
-
-
-Package natbib Warning: Citation `Kim2015' on page 11 undefined on input line 2
-68.
-
-
-Package natbib Warning: Citation `Henderson2013' on page 11 undefined on input 
-line 268.
-
-
-Package natbib Warning: Citation `Paek2006' on page 11 undefined on input line 
-270.
-
-
-Package natbib Warning: Citation `yukai2014' on page 11 undefined on input line
+Package natbib Warning: Citation `yukai2014' on page 12 undefined on input line
  270.
 
 
-Package natbib Warning: Citation `WilliamsYoung2005' on page 11 undefined on in
+Package natbib Warning: Citation `WilliamsYoung2005' on page 12 undefined on in
 put line 270.
 
-
-Package natbib Warning: Citation `Young2007' on page 11 undefined on input line
- 270.
-
-
-Package natbib Warning: Citation `Thomson2008' on page 11 undefined on input li
-ne 270.
-
-[11]
 
 Package natbib Warning: Citation `Hurtado2005' on page 12 undefined on input li
 ne 272.
@@ -389,89 +342,15 @@ Package natbib Warning: Citation `Murao2003' on page 12 undefined on input line
 Package natbib Warning: Citation `Inui2001' on page 12 undefined on input line 
 274.
 
-
-Package natbib Warning: Citation `Lee2009c' on page 12 undefined on input line 
-274.
-
-
-Package natbib Warning: Citation `Lee2009c' on page 12 undefined on input line 
-274.
-
-
-Package natbib Warning: Citation `Shang2015' on page 12 undefined on input line
- 276.
-
-
-Package natbib Warning: Citation `Sordoni2015b' on page 12 undefined on input l
-ine 276.
-
-
-Package natbib Warning: Citation `VinyalsLe2015' on page 12 undefined on input 
-line 276.
-
-
-Package natbib Warning: Citation `Serban2015' on page 12 undefined on input lin
-e 276.
-
-[12]
-
-Package natbib Warning: Citation `Pietquin2006' on page 13 undefined on input l
-ine 282.
-
-
-Package natbib Warning: Citation `Schatzmann2007' on page 13 undefined on input
- line 282.
-
-[13]
-Underfull \vbox (badness 10000) has occurred while \output is active [14]
-
-Package natbib Warning: Citation `Gupta2014' on page 15 undefined on input line
- 308.
-
-
-Package natbib Warning: Citation `Gupta2014' on page 15 undefined on input line
- 308.
-
-
-Package natbib Warning: Citation `Chomsky1957' on page 15 undefined on input li
-ne 315.
-
-
-Package natbib Warning: Citation `Tesniere1959' on page 15 undefined on input l
-ine 315.
-
+[12] [13] [14]
 
 Package natbib Warning: Citation `Melchunk1988' on page 15 undefined on input l
 ine 315.
 
 [15] [16] <use  "figures/fcg1.png" > <use  "figures/fcg2.png" > [17] [18]
-
-Package natbib Warning: Citation `Cheyer2007' on page 19 undefined on input lin
-e 375.
-
-
-Package natbib Warning: Citation `Mirkovic2011' on page 19 undefined on input l
-ine 375.
-
-[19]
-
-Package natbib Warning: Citation `Stone 1997' on page 20 undefined on input lin
-e 414.
-
-[20]
-
-LaTeX Warning: Reference `fig: NLG-example-litReview' on page 21 undefined on i
-nput line 424.
-
-<use  "figures/NLG-example-litReview.png" > [21] [22]
-<use  "figures/DAMSL.png" > <use  "figures/Searle.png" > [23]
-Underfull \vbox (badness 5893) has occurred while \output is active [24]
-[25]
-
-LaTeX Warning: Reference `chap:inference' on page 26 undefined on input line 50
-8.
-
-) [26] (C:\Users\Wenwei\workspace\thesis\chapters/chapter2.tex
+[19] [20] <use  "figures/NLG-example-litReview.png" > [21] [22]
+<use  "figures/DAMSL.png" > [23] <use  "figures/Searle.png" > [24] [25])
+[26] (C:\Users\Wenwei\workspace\thesis\chapters/chapter2.tex
 第2章
 [27]
 
@@ -505,11 +384,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active [61]
 [62] [63] [64]
 Underfull \vbox (badness 3525) has occurred while \output is active [65]
 [66] [67] [68] [69] [70] [71] [72]
-
-LaTeX Warning: Reference `chap:litreview' on page 73 undefined on input line 31
-2.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active [73]
 [74] [75]
 Underfull \vbox (badness 10000) has occurred while \output is active [76]
@@ -605,21 +479,22 @@ Overfull \hbox (56.61597pt too wide) in paragraph at lines 724--724
 []\EU1/LucidaSansTypewriterStd(0)/m/n/10.95 a variety of surprisingly interesti
 ng displays recounting, for example, the roles played by var-
 [202] [203] [204] [205] [206]
-Underfull \vbox (badness 10000) has occurred while \output is active [207]
-
-Package natbib Warning: Citation `Spitkovsky2013' on page 208 undefined on inpu
-t line 894.
-
-) [208] (C:\Users\Wenwei\workspace\thesis\chapters/chapter9.tex
+Underfull \vbox (badness 10000) has occurred while \output is active [207])
+[208] (C:\Users\Wenwei\workspace\thesis\chapters/chapter9.tex
 第9章
 [209] [210]) [211] (C:\Users\Wenwei\workspace\thesis\main.bbl [212]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <10.5> not available
 (Font)              size <10.95> substituted on input line 28.
 
-[213] [214] [215] [216] [217]) [218]
-(C:\Users\Wenwei\workspace\thesis\appendix/publications.tex) [219]
-(C:\Users\Wenwei\workspace\thesis\appendix/thanks.tex [220] [221]) [222]
+[213] [214] [215]
+! Misplaced alignment tab character &.
+l.370 ...ternational Journal of Computer Science &
+                                                   Engineering Technology.
+? 
+[216] [217] [218] [219]) [220]
+(C:\Users\Wenwei\workspace\thesis\appendix/publications.tex) [221]
+(C:\Users\Wenwei\workspace\thesis\appendix/thanks.tex [222] [223]) [224]
 
 Package natbib Warning: There were undefined citations.
 
@@ -639,25 +514,10 @@ Package natbib Warning: There were undefined citations.
 (C:\Users\Wenwei\workspace\thesis\appendix/publications.aux)
 (C:\Users\Wenwei\workspace\thesis\appendix/thanks.aux))
 
-LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 0.45pt have occurred.
-
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
-LaTeX Warning: There were undefined references.
-
- )
-Output written on main.pdf (244 pages).
-SyncTeX written on main.synctex.gz.
-Transcript written on main.log.
-
-
 _____________________________________________________________________
 
- XeLaTeX Compilation Report (Pages: 244)
+ XeLaTeX Compilation Report (Pages: 246)
 
- Errors: 3   Warnings: 54   Bad Boxes: 43
+ Errors: 4   Warnings: 24   Bad Boxes: 42
 _____________________________________________________________________
 
