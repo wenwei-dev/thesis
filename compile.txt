@@ -296,51 +296,20 @@ Underfull \vbox (badness 5862) has occurred while \output is active [14])
 第1章
 [1] <use  "figures/dialogue_system.png" > [2] [3] [4] [5]
 <use  "figures/conceptnet.png" >
-! Misplaced alignment tab character &.
-l.151 efficient logical inference &
-                                    entailment in the form of contraint sati...
-
-? 
+Overfull \hbox (3.72736pt too wide) in paragraph at lines 151--152
+[]\EU1/TimesNewRomanPSStd(0)/m/sl/12 efficient logical inference & entailment i
+n the form of contraint satisfaction[],[],[] 
 [6] <use  "figures/plr-relation.png" > <use  "figures/nars.png" > [7]
 Underfull \vbox (badness 3701) has occurred while \output is active [8]
-[9]
-
-Package natbib Warning: Citation `Bangalore2006' on page 10 undefined on input 
-line 254.
-
-
-Package natbib Warning: Citation `Lee2009a' on page 10 undefined on input line 
-254.
-
-<use  "figures/knowledgeDM.png" > [10]
+[9] <use  "figures/knowledgeDM.png" > [10]
 
 Package natbib Warning: Citation `Levin2000' on page 11 undefined on input line
  268.
 
 [11]
 
-Package natbib Warning: Citation `yukai2014' on page 12 undefined on input line
+Package natbib Warning: Citation `Yukai2014' on page 12 undefined on input line
  270.
-
-
-Package natbib Warning: Citation `WilliamsYoung2005' on page 12 undefined on in
-put line 270.
-
-
-Package natbib Warning: Citation `Hurtado2005' on page 12 undefined on input li
-ne 272.
-
-
-Package natbib Warning: Citation `Hurtado2005' on page 12 undefined on input li
-ne 272.
-
-
-Package natbib Warning: Citation `Murao2003' on page 12 undefined on input line
- 274.
-
-
-Package natbib Warning: Citation `Inui2001' on page 12 undefined on input line 
-274.
 
 [12] [13] [14]
 
@@ -370,13 +339,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active [47])
 第3章
 
 Underfull \vbox (badness 10000) has occurred while \output is active [51]
+
+LaTeX Warning: Reference `fig:Mod' on page 52 undefined on input line 23.
+
 <use  "figures/Psi.png" > [52]
 Underfull \vbox (badness 10000) has occurred while \output is active [53]
-[54]
-
-LaTeX Warning: Reference `fig:mod' on page 55 undefined on input line 71.
-
-<use  "figures/PsiModulators.png" > [55] [56] [57]) [58] [59]
+[54] <use  "figures/PsiModulators.png" > [55] [56] [57]) [58] [59]
 (C:\Users\Wenwei\workspace\thesis\chapters/chapter4.tex [60]
 第4章
 
@@ -487,12 +455,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active [207])
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <10.5> not available
 (Font)              size <10.95> substituted on input line 28.
 
-[213] [214] [215]
-! Misplaced alignment tab character &.
-l.370 ...ternational Journal of Computer Science &
-                                                   Engineering Technology.
-? 
-[216] [217] [218] [219]) [220]
+[213] [214] [215] [216] [217] [218] [219]) [220]
 (C:\Users\Wenwei\workspace\thesis\appendix/publications.tex) [221]
 (C:\Users\Wenwei\workspace\thesis\appendix/thanks.tex [222] [223]) [224]
 
@@ -518,6 +481,6 @@ _____________________________________________________________________
 
  XeLaTeX Compilation Report (Pages: 246)
 
- Errors: 4   Warnings: 24   Bad Boxes: 42
+ Errors: 2   Warnings: 16   Bad Boxes: 43
 _____________________________________________________________________
 
