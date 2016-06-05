@@ -35,38 +35,37 @@ XXXX
 
 对于任何以实现复杂功能为目标的自然语言处理系统（如对话系统或复杂的问答系统）来说，该系统内部的知识表示形式，即如何表示语义处理后的自然语言，往往是系统的各方面性能表现的关键所在。本小节将介绍知识表示目前的研究现状并回顾一些典型的知识表示方法及相应的优缺点，我们也会在本节重点介绍与本文所采用的知识表示相关联的几个具有代表性的知识库。
 
-如何合理有效地表示自然语言话语的含义是过去50年来一直被争议的问题，这也是从一个句子中抽取信息的语义建模问题所面临的第一步。然而目前，“知识表示”需要满足哪些条件仍然处于争论状态。\cite{Jurafsky2009}中从不同方面总结了一个完整的知识表示体系的必要条件的列表，其中包括：
+如何合理有效地表示自然语言话语的含义是过去50年来一直被争议的问题，这也是从一个句子中抽取信息的语义建模问题所面临的第一步。然而目前，“知识表示”需要满足哪些条件仍然处于争论状态。Jurasky和Martin在经典的《自然语言处理综论》\cite{Jurafsky2009}中从不同方面总结了一个完整的知识表示体系所要满足的计算需求，其中包括：
 
 \begin{itemize}
-\item 能表示一个命题是否真实
-\item 能支持精确的表示
-\item 能支持逻辑推理
-\item 具有充分表达性
+\item 可能性验证(Verificability)：必须能够确定知识表示的真实性，即知识表示体系能将输入的命题表示与储存相关知识的世界知识库中的表示相比较或匹配。
+\item 无歧义表示(Unambiguous Representation)：知识表示的语言支持的表示只能有一个无歧义的解释。
+\item 规范形式(Canonical Form)：表达同样信息的输入必须具有同样的知识表示形式，即规范形式。
+\item 推论与变元(Inference and Variables)：知识表示体系能根据输入的知识表示以及储存的背景知识推理出可靠结论。
+\item 表达能力(Expressiveness)：知识表示方法需要具备足够的表达能力来处理各种广泛领域的知识。
 \end{itemize}
 
-直到最近，该列表一直被当做是知识表示的一个相当完善的黄金标准。\cite{Yarin2013}中指出了这个必要条件列表并不完整，并提出了一个完善的知识表示体系还需要满足从以下几要素：
+直到最近，这些需求列表一直被当做是知识表示领域中一个相当完善的黄金标准。Yarin等人\cite{Yarin2013}指出了这个必要条件列表并不完整，并指出了知识表示体系还需满足下列需求：
 
 \begin{itemize}
-\item no uncertainty or connotation
-\item not allowed to extract the utterance in a manageable way (i.e. no algorithm for parsing representation from data)
-\item infer the sentiment of an utterrance
-\item capture uncertainty in different proposition
-\item relate utterances of similar meaning to one-another while distinguishing distinct ones
-\item capture activities as well as agents taking part in these activities,
-\item answer questions using meaning in addition to knowledge
-\item generate new utterances of the same meaning
+\item 不确定性和内涵的表示
+\item 能使用可行的方式来抽取话语的信息（即，从数据中抽取相关知识表示的算法的需求）  
+\item 从话语中推理出相对应的情感和观点
+\item 从不同命题中获取相关的不确定性
+\item 不仅需要区分具有不同的意义的话语，还需区分涉及相似意义的话语
+\item 在从话语中获取活动信息的同时还要获取活动相关的动作者(agent)
+\item 回答问题除了使用相关的知识外，还需要能利用这些知识和问题的意义。
+\item 对同一个意义，能生成不同表达方式的话语
 \end{itemize}
 
-
-而近几年提出的一些知识表示方法及相关研究也在试图满足其中的部分或所有需求。下面我们将简单回顾一些具有代表性的知识表示方法以及相应的优缺点，从中也不难看出未来知识表示领域的研究方向。
-
-知识表示的任务比较繁琐，所涉及的领域比较广，
+当然这些需求本身也没有得到相关的验证是否就完全，但近几年提出的一些知识表示方法及相关研究也在试图满足这其中的部分或所有需求。下面我们将简单回顾一些具有代表性的知识表示方法以及相应的优缺点，从中也不难看出未来知识表示领域的研究方向。知识表示的任务比较繁琐，所涉及的领域比较广，因此很难有一个完整的分类体系来概括所有的知识表示方法，本文通过以下几方面来分类介绍典型的具有实用价值的知识表示方法。
 
 \begin{enumerate}
 \item {传统的知识表示方法Traditional and Compositional Representation}
 
+传统的知识表示方法主要有逻辑表示法、框架表示法以及语义网络表示法等，
 XXX这节需要用到的参考文献:
-DSC树\cite{Liang2013}
+
 
 Using PCFG to Capture utterance to First Order Logic Representation\cite{Piantadosi2008}
 
@@ -76,6 +75,11 @@ Follow-up Research for "no complex FOL statements to be captured\cite{Titov2011}
 
 \begin{enumerate}
 \item[1)] 一阶逻辑表示法：CYC
+
+First order logic is a well studied form for meaning representation. It uses 3
+basic building blocks: constants (alternatively atoms), functions, and variables,
+each pointing to an object in the world. 
+
 谓词逻辑既包括一阶逻辑也包括高阶逻辑（如量词）
 
 在NLP系统中，开发最彻底的“谓词逻辑”要属由Cycorp公司开发的商用系统Cyc\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓词逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓语逻辑公式，但到目前为止，似乎只对一小部分人类常识进行了编码。 不过，作为智能应用系统，Cyc已经相当成功了。
@@ -136,6 +140,8 @@ Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系�
 \caption{ An illustrative fragment of ConceptNet }
 \label{fig:concept}
 \end{figure}
+
+\item[4)] DSC树\cite{Liang2013}
 
 
 \end{enumerate}
