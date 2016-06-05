@@ -35,7 +35,7 @@ XXXX
 
 对于任何以实现复杂功能为目标的自然语言处理系统（如对话系统或复杂的问答系统）来说，该系统内部的知识表示形式，即如何表示语义处理后的自然语言，往往是系统的各方面性能表现的关键所在。本小节将介绍知识表示目前的研究现状并回顾一些典型的知识表示方法及相应的优缺点，我们也会在本节重点介绍与本文所采用的知识表示相关联的几个具有代表性的知识库。
 
-如何合理有效地表示自然语言话语的含义是过去50年来一直被争议的问题，这也是从一个句子中抽取信息的语义建模问题所面临的第一步。然而目前，“知识表示”需要满足哪些条件仍然处于争论状态。Jurasky和Martin在经典的《自然语言处理综论》\cite{Jurafsky2009}中从不同方面总结了一个完整的知识表示体系所要满足的计算需求，其中包括：
+如何合理有效地表示自然语言话语的含义是过去50年来一直被争议的问题，这也是从一个句子中抽取信息的语义建模问题所面临的第一步。然而目前，“知识表示”需要满足哪些条件仍然处于争论状态。Jurasky和Martin在经典的《自然语言处理综论》\cite{Jurafsky2009}的第14章中从不同方面总结了一个完整的知识表示体系所要满足的计算需求，其中包括：
 
 \begin{itemize}
 \item 可能性验证(Verificability)：必须能够确定知识表示的真实性，即知识表示体系能将输入的命题表示与储存相关知识的世界知识库中的表示相比较或匹配。
@@ -61,76 +61,107 @@ XXXX
 当然这些需求本身也没有得到相关的验证是否就完全，但近几年提出的一些知识表示方法及相关研究也在试图满足这其中的部分或所有需求。下面我们将简单回顾一些具有代表性的知识表示方法以及相应的优缺点，从中也不难看出未来知识表示领域的研究方向。知识表示的任务比较繁琐，所涉及的领域比较广，因此很难有一个完整的分类体系来概括所有的知识表示方法，本文通过以下几方面来分类介绍典型的具有实用价值的知识表示方法。
 
 \begin{enumerate}
-\item {传统的知识表示方法Traditional and Compositional Representation}
+\item {传统的知识表示方法}
 
-传统的知识表示方法主要有逻辑表示法、框架表示法以及语义网络表示法等，
-XXX这节需要用到的参考文献:
-
-
-Using PCFG to Capture utterance to First Order Logic Representation\cite{Piantadosi2008}
-
-ConceptNet's new reference, Representing General Relational Knowledge in ConceptNet 5\cite{Robert2012}
-
-Follow-up Research for "no complex FOL statements to be captured\cite{Titov2011}
+这里的传统的知识表示方法主要指逻辑表示法、框架表示法以及语义网络表示法，以及在这基础上的一些延伸表示方法，下面将对这几类典型的传统知识表示方法做简单的分析和对比。
 
 \begin{enumerate}
-\item[1)] 一阶逻辑表示法：CYC
+\item[1)] 逻辑表示法
 
-First order logic is a well studied form for meaning representation. It uses 3
-basic building blocks: constants (alternatively atoms), functions, and variables,
-each pointing to an object in the world. 
+逻辑表示法的思路是将自然语言话语转换成某种逻辑约束下的一组逻辑表达式，以及在该逻辑上对这些逻辑表达式的语义解释。常见的用于知识表示的逻辑有命题逻辑，传统逻辑以及谓词逻辑等。对复杂的自然语言来说，命题逻辑和传统逻辑的表达能力相对弱，这里主要介绍基于谓词逻辑的知识表示方法。
 
-谓词逻辑既包括一阶逻辑也包括高阶逻辑（如量词）
+谓词逻辑表示法中既包括一阶逻辑也包括高阶逻辑（如多个量词）的表示，但从实用角度来看，也就是在有限数量信息的下，两者之间可以通过一定的逻辑等价推理来转换，而一阶逻辑具有简洁和易推理的优点，因此相对来说更广泛地被应用，也是被研究地相对成熟的一种知识表示方法。
 
-在NLP系统中，开发最彻底的“谓词逻辑”要属由Cycorp公司开发的商用系统Cyc\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓词逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓语逻辑公式，但到目前为止，似乎只对一小部分人类常识进行了编码。 不过，作为智能应用系统，Cyc已经相当成功了。
+基于一阶逻辑的知识表示体系中使用了三种基本构件：常量（有时也称为原子atom），函数以及变量，每一个构件都指向世界知识中的某个对象。其中，常量通常用于表示世界知识中的对象，比如“狗”；函数通常定义在常量或者变量上，在自然语言的背景下，“函数”可用于产生新的词汇。比如函数“Black(狗)”可生成“黑色的狗”或者“黑狗”；变量则允许我们表达对非具体对象的陈述或预测。将这三个简单的构件和存在量词以及连接符号和否定关系符号，我们可得出以下的表达式用于表示“存在一个实体，这个实体拥有一只黑色的狗，并且给这只黑色的狗喂了红色的肉。”
 
-我们之所以在这里讨论Cyc“知识表示”的基础，是为了与我们的系统进行比较。在Cyc系统中，概念名称被称作“常量”。在书写时，它们以"\#\$"开始。以下是几种常量：
-
-\begin{itemize}
-\item 单个词汇被称为“个体词”，例如：\#\$BillClinton (比尔·克林顿 或 \#\$France（法国）。
-\item 集合词，例如\#\$Tree（树）-ThePlant（植物） (包括所有的树) 或 \#\$EquivalenceRelation （等价关系）(包括所有的等价关系)。
-\item 真值函数，可以运用到一个或多个概念中，并反馈“真”或“假”。例如：\#\$siblings is the sibling relationship，如果两个参数是siblings，那就是真的。按照惯例，真值函数以小写字母开头。真值函数可能会被分拆为逻辑连接词（如：\#\$and, \#\$or, \#\$not, \#\$implies）和量词（如：\#\$forAll, \#\$thereExists等）。
-\item “函数”能够从给定的词中生成新词汇，例如：
-\#\$FruitFn，当提供了一个描述某种植物类型（或集合）的参数，它会给出这类植物的一组水果。按照惯例，“函数常量”以“大写字母”开始，以字符“Fn”结束。
-\end{itemize}
-
-“常量”之间由谓语联系在一起。最重要的谓语是： \#\$isa 和 \#\$genls。第一个(\#\$isa)描述的是：某个个体是某个集合中的一个例子（如：specialization）；第二个（\#\$genls）描述的是：一个集合是另一个集合的子集合（例如：generalization）。
-利用特定的CycL句子，我们可以得出概念事实。谓语是写在它的参数之前的，在圆括号内。例如：
-
- {\tt\begin{small}\begin{lstlisting}
-    (\#\$isa \#\$BillClinton \#\$UnitedStatesPresident) \;
-    \end{lstlisting}\end{small}}
-
-\noindent 意思是 "Bill Clinton belongs to the collection of U.S. presidents" ;
-
- {\tt\begin{small}\begin{lstlisting}
-    (\#\$genls \#\$Tree-ThePlant \#\$Plant) \;
-    \end{lstlisting}\end{small}}
-
-\noindent 意思是 "All trees are plants"; and
-
- {\tt\begin{small}\begin{lstlisting}
-    (\#\$capitalCity \#\$France \#\$Paris) \;
-    \end{lstlisting}\end{small}}
-
-\noindent 意思是 "Paris is the capital of France."
+$$ 
+\exists X(Own(X, Black(Dog))\land Feed(X, Black(Dog), Red(Meat))) 
+$$
 
 
-下面是比较封复杂的例子，它表示了一组或一类词的规则，而不是任意特定的个别词：
+在上述的逻辑表达式上，我们可以进行相关的逻辑推理和蕴含等操作，并且能通过\lambda表达式来确定命题的真值。一阶逻辑表示法允许我们将自然语言话语表示成一种无歧义的表示方式。对于多义词，我们可以采用多个常量（原子）来表达，比如可以用$Bank_{institution}$来表示意思为“银行”的"Bank"，用$Bank_{institution}$来表示意思为“河岸”的"Bank"。此外，这种表示方法的表达能力也适用于表达多个句子的情况。
 
- {\tt\begin{small}\begin{lstlisting}
- (\#\$relationAllExists \#\$biologicalMother
- \#\$ChordataPhylum \#\$FemaleAnimal)
-    \end{lstlisting}\end{small}}
+比较典型的使用一阶逻辑的知识表示体系有早期的Cyc系统\cite{Lenat1990}。Cyc系统拥有一个非常丰富的人工编码知识库，它的终极目标是：以谓词逻辑的形式，将所有人类常识进行编码。虽然它的知识库中已存有数百万的谓词逻辑表达式，但到目前为止，似乎只对一小部分人类常识进行了编码。
+
+一阶逻辑的知识表示方法相对简洁，但由于自然语言的复杂性和不确定性，如何将自然语言话语转换成一阶逻辑的表示形式，是一个极大的挑战。Pianatadosi等人\cite{Piantadosi2008}首先在几十个词的限定条件下构建一个概率模型，使其能对各种可能的语法建模并过滤掉过于复杂的，从而根据这些语法模型来得到相应的一阶逻辑表示形式。在此基础上，他们的研究还深入到通过递归方式来遍历所有可能的上下文无关文法的概率模型，使得递归进行到一定程度能得到一个对话语进行最佳解析的一阶逻辑表示形式。该方法最终能得到一个不可扩展的在迷你规模语法基础上的组合语义获取模型，并没有实用价值。
+
+后期的Cyc系统也为了克服一阶逻辑表示方法的缺点，引入了贝叶斯网络来为该知识库中的概念和事件提供相应的概率真值，但后期Cyc系统也转入商业用途，其数据和表示也不免费公开，因此我们尚不清楚目前其具体研究状况。
+
+\item[2)] 基于框架的知识表示法
+
+基于框架的知识表示方法又被称为槽填充表示法。框架(Frame)可以理解成一种将某一对象或事件所涉及的知识信息存储在一起的复杂的数据结构，通常包括主体和槽(Slot)两部分，其中主体是固定的，表示一个特定的概念、对象或事件，而槽用于表示主体的各属性及属性值。其一般形式可以表示如下：
+
+       <主体>  
+
+       <槽名1><槽值1>| <侧面名11><侧面值111，侧面值112，…>
+
+                                    <侧面名12><侧面值121，侧面值122，…>
+
+比如“我吃蛋炒饭”可以表示成框架形式如下：
+
+       <吃>  
+
+       <施事者><我>
+
+       <受事者><蛋炒饭>
 
 
-Cyc知识库被分为多个“微理论”库，它们是概念和事实的集合，每个“微理论”库都与一个特定领域相关联。每个“微理论”库都不能有相互矛盾的信息，而且可以通过Bayesian网络提供概率真值。
+基于框架的知识表示常被用于语义角色标注中，即标注出句子中的谓词以及相应的参数。比如“我吃蛋炒饭”，语义角色标注可以标注出其中谓词是“吃”（框架主体，表示事件），该事件的槽值可以表示为施事者“我”，受事者“蛋炒饭”。
 
-Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系统将自然语言句子映射为Cyc逻辑形式。由于这个系统本身的特性，我们尚不清楚它到底具有什么样的优点和缺点。
+基于框架的表示法具有代表性的系统有FrameNet\cite{Atkins95}， FrameNet是一个人工编写的基于框架的语义知识库，其中包含了1,200个语义框架，13,000个词汇单元，大约19万个例句，目前被广泛用于语义角色标注的训练语料。
 
-\item[2)] 基于框架的知识表示法 Frame based Representation
+The process of capturing first order logic and frame based representations
+from utterances is not trivial however.
 
-\item[3)] 语义网络表示法：ConceptNet \cite{Robert2012}
+基于框架的表示形式也可以很容易被转换成等价的一阶逻辑表示形式。与一阶逻辑表示相似，将自然语言话语转换成基于框架的表示形式也是该表示方法的巨大挑战。
+
+\item[3)] DSC树\cite{Liang2013}
+Liang, Jordan, and Klein (2013) have suggested reducing the task to a simpler
+problem of constraint satisfaction, and by that allowed for efficient inference
+to be carried out. They developed a new representation called DCS trees – dependency
+based compositional semantics trees – and map utterances to these
+trees in an efficient way through the constraints of pre-specified trigger words
+and a predicate dictionary given in advance (for example the word city would
+trigger the predicate city). Although the model was assessed on small scale
+data-sets with some limitations for scalability originating from the specification
+of trigger words, it can easily be scaled-up to map sentences over much larger
+domains through the use of role-labelled input and shallow extraction of predicates
+from text. Together with recently published large scale fact data-sets such
+as Freebase (Bollacker, Evans, Paritosh, Sturge, and Taylor, 2008) this model
+will allow for scalable question answering to be carried out extending on existing
+question answering systems that rely on simple role-labelling and empty slot
+completion based on previously observed statements.
+
+However the developed representation, studied thoroughly in (Liang, 2011),
+lacks a formal proof for the expressive power it offers. It is unknown yet whether
+all sentences expressible in first order logic can be captured using DCS trees and
+their possible extensions. Furthermore, the formulation of DCS is analogous to
+and inspired by that of database querying languages (from personal communication
+with Liang). But even for these well studied database querying languages
+it has been shown that the expressiveness offered is very limited (Libkin, 2001).
+It has been shown that small differences in the language definition affect the
+behaviour of the language dramatically and that these languages cannot define
+recursive queries regardless of the aggregate functions and arithmetic operations
+specified (these recursive structures can, however, be observed in natural language).
+Furthermore, it was shown that the problem of proving expressiveness
+bounds for these is as hard of a problem as some long-standing open problems
+in complexity theory (Libkin, 2001).
+
+The use of a database querying languages for the representation of natural language utterances and not just knowledge by itself is a very interesting idea that allows for efficient logical inference and entailment to be carried out in the form of constraint satisfaction, and indeed has been studied before
+(Giordani and Moschitti, 2010a; Monteleone, di Buono, and Marano, 2013;
+Giordani and Moschitti, 2009, 2010b). However, even when justified with the
+explicit assumption placed in advance of capturing only a subset of language
+utterances, there is still the question of which representation to choose. The
+mapping of utterances to the SQL query language offers the advantages of the
+well studied language1
+. The expressive power of DCS is still an open problem
+to be explored.
+
+
+\item[4)] 语义网络表示法：ConceptNet \cite{Robert2012}
+
+
+ConceptNet's new reference, Representing General Relational Knowledge in ConceptNet 5\cite{Robert2012}
 
 知识表示的另一个模式是由ConceptNet提供的\cite{Liu2004}。它从Cyc系统和形式逻辑中借鉴了一些理念，但没有考虑复杂的位元，如量词,并且比较接近自然语言层面。ConceptNet 是个大规模的语义网络，它表达概念（由单词或短语表述）之间的关系。图\ref{fig:concept}是关于子网络的例子。
 
@@ -141,10 +172,23 @@ Cyc配备了一个复杂的、基于短语结构语法的NLP系统，这个系�
 \label{fig:concept}
 \end{figure}
 
-\item[4)] DSC树\cite{Liang2013}
-
-
 \end{enumerate}
+
+All the representations above can be thought-of as rigid representations as
+they do not capture uncertainty in the logical inference and entailment process.
+For this reason \cite{Poon2009} have suggested a probabilistic representation
+to do so. The representation used was chosen to be Markov logic \cite{Domingos2007}, a representation that allows one to capture
+logical entailment as well as uncertainty. However, since the representation was
+limited to its most basic form allowing no complex first order logic statements to
+be captured, follow-up research by  \cite{Titov2011} has neglected
+it in favour of a simple role-label representation, where hierarchical Pitman-Yor
+processes were used to model statistical dependencies between predicates and
+their arguments2. There are many other alternative representations suggested
+for probabilistic logic; some of them will be discussed next.
+
+
+
+Follow-up Research for "no complex FOL statements to be captured\cite{Titov2011}
 
 \item {基于概率逻辑的知识表示法}
 
@@ -187,7 +231,7 @@ Pei Wang的NARS引擎运用了传统逻辑推理法\cite{Wang2006}，并引入�
 在许多方面，我们所使用的PLN逻辑形式化体系与NARS有类似的地方，但也存在巨大差异。PLN在一个独特的数学框架下，同时利用传统逻辑和谓语逻辑。此外，PLN还使用概率数学，以推导不确定真值的公式。反之，NARS是基于原始的、非概率的、不确定的管理体系。PLN也是以经验语义为基础，但形式与NARS不同。
 
 
-图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的优势和信心”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。
+图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的强度和置信度”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。
 
 \begin{figure}[htb]
 \centering
