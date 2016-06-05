@@ -1,0 +1,76 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+DSC树部分
+
+\cite{Liang2013}have suggested reducing the task to a simpler
+problem of constraint satisfaction, and by that allowed for efficient inference
+to be carried out. They developed a new representation called DCS trees – dependency
+based compositional semantics trees – and map utterances to these
+trees in an efficient way through the constraints of pre-specified trigger words
+and a predicate dictionary given in advance (for example the word city would
+trigger the predicate city). Although the model was assessed on small scale
+data-sets with some limitations for scalability originating from the specification
+of trigger words, it can easily be scaled-up to map sentences over much larger
+domains through the use of role-labelled input and shallow extraction of predicates
+from text. Together with recently published large scale fact data-sets such
+as Freebase\cite{Bollacker2008} this model
+will allow for scalable question answering to be carried out extending on existing
+question answering systems that rely on simple role-labelling and empty slot
+completion based on previously observed statements.
+
+However the developed representation, studied thoroughly in \cite{Liang2011},
+lacks a formal proof for the expressive power it offers. It is unknown yet whether
+all sentences expressible in first order logic can be captured using DCS trees and
+their possible extensions. Furthermore, the formulation of DCS is analogous to
+and inspired by that of database querying languages (from personal communication
+with Liang). But even for these well studied database querying languages
+it has been shown that the expressiveness offered is very limited \cite{Libkin2003}.
+It has been shown that small differences in the language definition affect the
+behaviour of the language dramatically and that these languages cannot define
+recursive queries regardless of the aggregate functions and arithmetic operations
+specified (these recursive structures can, however, be observed in natural language).
+Furthermore, it was shown that the problem of proving expressiveness
+bounds for these is as hard of a problem as some long-standing open problems
+in complexity theory\cite{Libkin2003}.
+
+The use of a database querying languages for the representation of natural language utterances and not just knowledge by itself is a very interesting idea that allows for efficient logical inference and entailment to be carried out in the form of constraint satisfaction, and indeed has been studied before
+\cite{Giordani2010a}; 
+\cite{Giordani2010b}, \cite{Giordani2009}. However, even when justified with the
+explicit assumption placed in advance of capturing only a subset of language
+utterances, there is still the question of which representation to choose. The
+mapping of utterances to the SQL query language offers the advantages of the
+well studied language1
+. The expressive power of DCS is still an open problem
+to be explored.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cite{Monteleone2013} rejected
+
+\cite{Libkin2001}
+
+@article{Libkin2003,
+ author = {Libkin, Leonid},
+ title = {Expressive Power of SQL},
+ journal = {Theor. Comput. Sci.},
+ issue_date = {14 March 2003},
+ volume = {296},
+ number = {3},
+ month = mar,
+ year = {2003},
+ issn = {0304-3975},
+ pages = {379--404},
+ numpages = {26},
+ url = {http://dx.doi.org/10.1016/S0304-3975(02)00736-3},
+ doi = {10.1016/S0304-3975(02)00736-3},
+ acmid = {782738},
+ publisher = {Elsevier Science Publishers Ltd.},
+ address = {Essex, UK},
+ keywords = {SQL, aggregation, databases, expressive power, locality, query languages},
+} 
+
+
+\cite{Liang2011}
+
+\cite{Bollacker2008}

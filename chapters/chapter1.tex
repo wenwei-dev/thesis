@@ -110,53 +110,11 @@ $$
 
 基于框架的表示法具有代表性的系统有FrameNet\cite{Atkins95}， FrameNet是一个人工编写的基于框架的语义知识库，其中包含了1,200个语义框架，13,000个词汇单元，大约19万个例句，目前被广泛用于语义角色标注的训练语料。
 
-The process of capturing first order logic and frame based representations
-from utterances is not trivial however.
-
 基于框架的表示形式也可以很容易被转换成等价的一阶逻辑表示形式。与一阶逻辑表示相似，将自然语言话语转换成基于框架的表示形式也是该表示方法的巨大挑战。
 
 \item[3)] DSC树\cite{Liang2013}
-Liang, Jordan, and Klein (2013) have suggested reducing the task to a simpler
-problem of constraint satisfaction, and by that allowed for efficient inference
-to be carried out. They developed a new representation called DCS trees – dependency
-based compositional semantics trees – and map utterances to these
-trees in an efficient way through the constraints of pre-specified trigger words
-and a predicate dictionary given in advance (for example the word city would
-trigger the predicate city). Although the model was assessed on small scale
-data-sets with some limitations for scalability originating from the specification
-of trigger words, it can easily be scaled-up to map sentences over much larger
-domains through the use of role-labelled input and shallow extraction of predicates
-from text. Together with recently published large scale fact data-sets such
-as Freebase (Bollacker, Evans, Paritosh, Sturge, and Taylor, 2008) this model
-will allow for scalable question answering to be carried out extending on existing
-question answering systems that rely on simple role-labelling and empty slot
-completion based on previously observed statements.
-
-However the developed representation, studied thoroughly in (Liang, 2011),
-lacks a formal proof for the expressive power it offers. It is unknown yet whether
-all sentences expressible in first order logic can be captured using DCS trees and
-their possible extensions. Furthermore, the formulation of DCS is analogous to
-and inspired by that of database querying languages (from personal communication
-with Liang). But even for these well studied database querying languages
-it has been shown that the expressiveness offered is very limited (Libkin, 2001).
-It has been shown that small differences in the language definition affect the
-behaviour of the language dramatically and that these languages cannot define
-recursive queries regardless of the aggregate functions and arithmetic operations
-specified (these recursive structures can, however, be observed in natural language).
-Furthermore, it was shown that the problem of proving expressiveness
-bounds for these is as hard of a problem as some long-standing open problems
-in complexity theory (Libkin, 2001).
-
-The use of a database querying languages for the representation of natural language utterances and not just knowledge by itself is a very interesting idea that allows for efficient logical inference and entailment to be carried out in the form of constraint satisfaction, and indeed has been studied before
-(Giordani and Moschitti, 2010a; Monteleone, di Buono, and Marano, 2013;
-Giordani and Moschitti, 2009, 2010b). However, even when justified with the
-explicit assumption placed in advance of capturing only a subset of language
-utterances, there is still the question of which representation to choose. The
-mapping of utterances to the SQL query language offers the advantages of the
-well studied language1
-. The expressive power of DCS is still an open problem
-to be explored.
-
+鉴于将自然语言话语转换成上述两种表示形式非常困难，Liang等人\cite{Liang2013}试图将该任务简化成一个约束满足的问题。
+ XXXX
 
 \item[4)] 语义网络表示法：ConceptNet \cite{Robert2012}
 
