@@ -52,41 +52,15 @@ DSC树部分
 
       随着大数据技术的不断发展，不确定性的知识表示和管理在人工智能各领域越来越被重视起来，如上所述，基于概率逻辑的知识表示使得知识表示库能以认知概率形式来储存世界知识中的不确定性。因此，近年来，基于概率逻辑形式的知识表示方法不断涌现并广泛应用于各类学习系统中，如马尔科夫逻辑网（MLN），归纳逻辑编程（ILP），概率逻辑编程（PLP），贝叶斯逻辑编程（BLP），随机逻辑编程（SLP），随机关系模型（SRM），概率关系模型（PRM）等等。篇幅关系，我们这里只简单介绍和本文所使用的知识表示方法相似的几个典型的基于概率逻辑的表示方法。
 
-      贝叶斯逻辑编程 (Bayesian Logic Programs，以下称BLP)\cite{Kersting2007}采用贝叶斯网络来表示知识，其中节点表示命题子句，它是众多“概率Prolog”中的一种。BLP可以用于表示任意带概率的Prolog形式的关系，并能通过逻辑推理来传播这些概率。BLP中维持了概率层次上的“直接因果推理”和逻辑层次上“间接推理”的同构关系，使得该结构中的概率和逻辑推理能达到一致，而无需借助棘手的混合模型。Puech\cite{Puech2003}对BLP的表达能力进行深入研究，并将其与SLP（Stochastic Logic Programs）的表达能力进行对比，其结果显示SLP能将同样的知识表示成BLP的一个子类。但BLP中的推理机制（即通过结构化的EM算法来查找BLP结构）却比SLP要简单的多，而SLP中的推理机制是被公认为非常困难的\cite{DaRaett2003}。然而，由于BLP依赖于Prolog，也继承了Prolog的不足之处，如依赖于特定的逻辑表达式归一化、缺少可扩展的推理机制等。
+      贝叶斯逻辑编程 (Bayesian Logic Programs，以下称BLP)\cite{Kersting2007}采用贝叶斯网络来表示知识，其中节点表示命题子句，它是众多“概率Prolog”中的一种。BLP可以用于表示任意带概率的Prolog形式的关系，并能通过逻辑推理来传播这些概率。BLP中维持了概率层次上的“直接因果影响”和逻辑层次上“间接推理”的同构关系，使得该结构中的概率和逻辑推理能达到一致，而无需借助棘手的混合模型。Puech\cite{Puech2003}对BLP的表达能力进行深入研究，并将其与SLP（Stochastic Logic Programs）的表达能力进行对比，其结果显示SLP能将同样的知识表示成BLP的一个子类。但BLP中的推理机制（即通过结构化的EM算法来查找BLP结构）却比SLP要简单的多，而SLP中的推理机制是被公认为非常困难的\cite{DaRaett2003}。然而，由于BLP依赖于Prolog，也继承了Prolog的不足之处，如依赖于特定的逻辑表达式归一化、缺少可扩展的推理机制等。
      
-   马尔科夫逻辑网（Markov Logic Network，以下称MLN）最初由Domingos等人提出\cite{Domingos2007}，使用
-
-
-MLN
-
-
- Leading figures in the field have adopted this approach
-(Huynh and Mooney, 2008; Mihalkova, Huynh, and Mooney, 2007; Mihalkova and Mooney,
-2007), however due to the difficulties in inference this approach is losing its popularity
-among its advocates (Beltagy, Chau, Boleda, Garrette, Erk, and Mooney,
-2013).
-
-Markov Logic Networks (XX) is a novel formalism for inferring the
-probability distribution associated with a set of entities related by
-propositional logic relationships.   Some of the relationships must be
-given empirically derived probabilities, and then the network derives
-probabilities for the other relationships, via (in one common
-implementation) a Gibbs sampling based algorithm.   The effectiveness
-of the algorithm depends on the connectivity pattern of the graph and
-the complexity of the distribution involved.  For many problems in NLP
-it has proven effective, e.g. for entity extraction and semantic
-relationship extraction.   The formalism underlying the algorithm
-assumes a single probability distribution underlying the entire
-network, which is different philosophically and pragmatically from
-approaches like NARS and PLN that avoid comparable assumptions of
-global consistency.
-
+     马尔科夫逻辑网（Markov Logic Network，以下称MLN）最初由Domingos等人提出\cite{Domingos2007}，MLN采用一阶谓词逻辑来表示实体之间的逻辑关系，采用马尔科夫网络形式的概率图模型来推理其中的概率分布。其基本思想是使一阶谓词逻辑中的硬性规则约束有所松弛，换句话说，当一个可能世界违反了其中某条规则，这个可能世界存在的概率很低，而并非直接设为0。MLN对每条规则都设定一定的权值，用来表示这条规则对可能世界的约束力，当一个规则的权值很大，那么违反该规则的可能世界存在的可能性就越低。MLN较好地结合了一阶逻辑和概率图模型的复杂性和不确定性表示，因此在该领域曾被广泛应用，如(Huynh and Mooney, 2008; Mihalkova, Huynh, and Mooney, 2007; Mihalkova and Mooney, 2007)，其中也包括在NLP的一些领域上的应用，如实体抽取和语义关系抽取等。然而，由于在概率图模型中的推理复杂性，MLN近几年来慢慢失去了热度(Beltagy, Chau, Boleda, Garrette, Erk, and Mooney, 2013)。MLN假设整个网络都是基于一个概率分布的，这显然也不太合常理，而本文采用的PLN以及下面要介绍的NARS\cite{Wang2006}就刻意避开这样的假设。
 
      与传统的知识表示方法相比，上述的知识表示方法的有点在于能在逻辑中表示认知的不确定性，然而，这些这些表示结构都是离散的，无法用来推理句子之间的相似度。因此\cite{Brocheler2012}提出了PLP（Probabilistic Similarity Logic ）来引入原子之间的距离衡量机制，但目前只能用于简单的不确定性逻辑推理中。本文的认知对话系统中所使用的概率逻辑网（Probabilistic Logic Network，以下称PLN）也有类似的地方，且能够将其他非语言渠道（如机器视觉感知）获得的相似度通过概率推理整合得到句子之间的相似度，并整合到其他的逻辑关系（如继承关系）中。
 
       Pei的NARS\cite{Wang2006}引擎运用了传统逻辑推理法，并引入了独特的数学理论来管理传统逻辑关系中的不确定性。但NARS是构建在经验的基础上，而不是基于模型轮语义。 在许多方面，我们所使用的PLN逻辑形式化体系与NARS有类似的地方，但也存在巨大差异。PLN在一套独特的数学理论基础上同时采用了传统逻辑和谓词逻辑，并且根据概率论和模糊数学理论来推导出不确定性真值的公式，而NARS的不确定性推理体系则基于原始的非逻辑形式。
 
-     图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的强度和置信度”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。
+     图\ref{fig:nars}展示了基本演绎推理、归纳推理和外展推理公式。这些公式是PLN和NARS共有的。在每个关系式右边的$<s,c>$表示“每个关系的强度和置信度”。PLN和NARS使用不同的公式，从那些前提中推导（优势、信息）结论的真值。有关PLN的知识表示和推理机制我们将在第XXX中进一步介绍
 
 \begin{figure}[htb]
 \centering
@@ -99,61 +73,14 @@ global consistency.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 组合分布式表示部分
 
-Distributional methods have been in use in lexical semantics for more than 40
-years (Jurafsky and Martin, 2008). They make use of a continuous representation for the words; For each word its neighbouring words are collected resulting
-in long binary vectors, often having their dimensionality reduced. 
-To capture more complex behaviour, we have to turn to a compositional distributional
-representation.
+      分布式表示方法被用于词汇语义学领域已超过40年\cite{Jurafsky2008}，该方法对词汇使用连续表示，也就是说，在表示一个词汇时，同时将其相邻的词也表示在二进制向量中，比较典型的例子就是被广泛使用的词袋模型（bag-of-words model）。但是这类表示方法无法表示较复杂的知识，因此逐渐被组合分布式的表示方法所取代。
 
-Coecke, Sadrzadeh, and Clark (2010) have recently suggested a novel representation
-relying on a combination of the traditional compositional representation
-and the continuous distributional one. The representation uses tensor products3
-to carry information from word
-level to a higher level, and then uses linear functions on these to project into
-lower dimensional sentence spaces.
-
-Grefenstette (2013) has shown that this representation can be used to capture
-uncertainty as well. He explains how the use of linear projections can be
-identified with non-quantified first order logic. However he also proves a negative
-result showing that quantified first order logic cannot be obtained when
-using only linear projections. He then introduces non-linear mappings to obtain
-quantified first order logic.
-
-This representation has been gaining support in the field of semantic modelling
-(Van de Cruys, Poibeau, and Korhonen, 2013; Hermann, Grefenstette, and Blunsom,
-2013). It offers unambiguous representation, it is expressive, it might allow the
-inference of sentiment and role labels (as we will see below), captures uncertainty
-and the truth of a sentence, and models the distance between sentences
-as points in a sentence space thus captures sentence similarity. Current research
-is looking into logical inference and the extraction of the meaning of an
-utterance into the sentence space in a manageable way.
-
-CCG
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Probabilistic Representation \cite{Poon2009}
-
-Markov Logic\cite{Domingos2007}
-
-efficient logical inference \& entailment in the form of contraint satisfaction\cite{Giordani2010a},\cite{Giordani2010b}, \cite{Giordani2009}
-
-\cite{Puech2003}have studied
-the expressive power of these representations and compared them to the expressive
-power of SLPs (which define probabilities over derivations) – showing
-that SLPs can encode the same knowledge as a sub-class of BLPs. 
-
-PLP, BLP\cite{Kersting2007}
+      Coecke, Sadrzadeh, and Clark (2010)提出了将连续分布表示方法和传统的组合表示方法结合起来用于知识表示，并使用张量积（tensor product）将信息从词汇层次带入到更高层次，然后使用线性函数将其映射到较低维度的句子空间中。Grefenstette (2013) 中指出该表示方法是可以用于表示非确定性的，还解释了其中的线性函数映射等同于非量化的一阶逻辑；但也证明了量化的一阶逻辑表示是无法通过线性函数映射得到的。因此，他在该文研究中引入了非线性映射用于获取量化的一阶逻辑表示。
 
 
-Probabilistic Similarity Logic\cite{Brocheler2012}
+组合的分布式知识表示方法还被用于语义建模领域中(Van de Cruys, Poibeau, and Korhonen, 2013; Hermann, Grefenstette, and Blunsom, 2013) 。它提供精确的表示，具有较好的表达能力，常被用于情感和角色标注方面的推理，而且能表示不确定性和句子的真值，目前该领域的研究主要集中于在句子空间中有效地进行语句的含义抽取和逻辑推理，但仍然有待深入研究。
 
-Matthias Brocheler, Lilyana Mihalkova, and Lise Getoor. Probabilistic similarity
-logic. arXiv preprint arXiv:1203.3469, 2012.
-
-Probablistic Logic Representation has two contrasting interpretations\cite{DaRaett2003}
-
-Luc De Raedt and Kristian Kersting. Probabilistic logic learning. ACM
-SIGKDD Explorations Newsletter, 5(1):31–48, 2003. 
+   本文采取了基于超图形式的知识表示Atomspace，并在该表示上使用了概率逻辑网络PLN进行知识推理和学习，这将在第二章中更详细地介绍。
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
